@@ -4,6 +4,6 @@ const PORT = process.env.PORT;
 
 (async () => {
   app.listen(PORT, () => {
-    console.info("Listening on port 3000");
+    console.info(`Listening on port ${PORT}`);
   });
 })();
