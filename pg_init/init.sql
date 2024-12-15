@@ -1,31 +1,39 @@
 BEGIN;
 
+CREATE TABLE "role" (
+  "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  "name" VARCHAR(15) NOT NULL UNIQUE,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  "updated_at" TIMESTAMPTZ
+);
+
 CREATE TABLE "user" (
   "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  "email" TEXT NOT NULL UNIQUE,
-  "password" TEXT NOT NULL,
-  "username" TEXT NOT NULL,
+  "email" VARCHAR(100) NOT NULL UNIQUE,
+  "password" VARCHAR(999) NOT NULL,
+  "username" VARCHAR(20) NOT NULL,
+  "role_id" INT NOT NULL REFERENCES "role"("id"),
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   "updated_at" TIMESTAMPTZ
 );
 
 CREATE TABLE "deck" (
   "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  "name" TEXT NOT NULL UNIQUE,
-  "description" TEXT,
+  "name" VARCHAR(50) NOT NULL UNIQUE,
+  "description" VARCHAR(255),
   "user_id" INT NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   "updated_at" TIMESTAMPTZ
 );
 
 CREATE TABLE "card" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "front" TEXT NOT NULL,
-    "back" TEXT NOT NULL,
-    "difficulty" INT DEFAULT 0,
-    "deck_id" INT NOT NULL REFERENCES "deck"("id") ON DELETE CASCADE,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    "updated_at" TIMESTAMPTZ
+  "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  "front" VARCHAR(100) NOT NULL,
+  "back" VARCHAR(100) NOT NULL,
+  "difficulty" INT DEFAULT 0,
+  "deck_id" INT NOT NULL REFERENCES "deck"("id") ON DELETE CASCADE,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  "updated_at" TIMESTAMPTZ
 );
 
 COMMIT;
