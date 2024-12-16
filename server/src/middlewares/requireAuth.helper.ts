@@ -2,6 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { NotAuthorizedError } from "../errors/NotAuthorizedError.error";
 import { BadRequestError } from "../errors/BadRequestError.error";
 import { Token } from "../helpers/Token";
+import { UserPayload } from "../helpers/UserPayload.helper";
+
+declare module "express" {
+  interface Request {
+    user?: UserPayload;
+  }
+}
 
 export const requireAuth = async (
   req: Request,
