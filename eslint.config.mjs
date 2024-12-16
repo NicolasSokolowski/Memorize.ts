@@ -36,6 +36,15 @@ export default [
           allow: ["error", "info", "warn"],
         },
       ],
+
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          args: "none",
+          ignoreRestSiblings: true,
+        },
+      ],
     },
   },
 ];
