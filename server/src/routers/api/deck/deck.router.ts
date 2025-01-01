@@ -9,6 +9,7 @@ const deckRouter = express.Router();
 deckRouter
   .route("/")
   .post(
+    errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"], "user")),
     errorCatcher(deckController.create)
   );
@@ -24,6 +25,11 @@ deckRouter
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"], "deck")),
     errorCatcher(deckController.update)
+  )
+  .delete(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"], "deck")),
+    errorCatcher(deckController.delete)
   );
 
 export default deckRouter;
