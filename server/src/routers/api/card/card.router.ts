@@ -12,6 +12,11 @@ cardRouter
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"], "card")),
     errorCatcher(cardController.update)
+  )
+  .delete(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"], "card")),
+    errorCatcher(cardController.delete)
   );
 
 export default cardRouter;
