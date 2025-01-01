@@ -2,7 +2,10 @@
 import { Request, Response, NextFunction } from "express";
 import { AccessDeniedError } from "../errors/AccessDeniedError.error";
 import { NotFoundError } from "../errors/NotFoundError.error";
-import { deckDatamapper } from "../datamappers/index.datamappers";
+import {
+  cardDatamapper,
+  deckDatamapper,
+} from "../datamappers/index.datamappers";
 import { UserPayload } from "../helpers/UserPayload.helper";
 
 declare module "express" {
@@ -27,6 +30,14 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
     try {
       switch (entity) {
         case "deck":
+          if (
+            req.params.deck_id &&
+            req.body.deck_id &&
+            req.params.deck_id !== req.body.deck_id
+          ) {
+            throw new AccessDeniedError("Please provide valid data");
+          }
+
           const deck_id = req.params.deck_id || req.body.deck_id;
 
           if (!deck_id) {
@@ -44,8 +55,40 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           }
           break;
 
+        case "card":
+          const card_id = req.params.card_id;
+
+          if (!card_id) {
+            throw new NotFoundError();
+          }
+
+          const card = await cardDatamapper.findByPk(parseInt(card_id, 10));
+
+          if (!card) {
+            throw new NotFoundError();
+          }
+
+          const cardDeck = await deckDatamapper.findByPk(card.deck_id);
+
+          if (!cardDeck) {
+            throw new NotFoundError();
+          }
+
+          if (cardDeck.user_id !== userId) {
+            throw new AccessDeniedError("You do not own this card.");
+          }
+          break;
+
         case "user":
           const user_id = req.params.user_id || req.body.user_id;
+
+          if (
+            req.params.user_id &&
+            req.body.user_id &&
+            req.params.user_id !== req.body.user_id
+          ) {
+            throw new AccessDeniedError("Please provide valid data");
+          }
 
           if (!user_id) {
             throw new NotFoundError();
