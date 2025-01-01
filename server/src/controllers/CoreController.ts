@@ -117,7 +117,8 @@ export abstract class CoreController<
   };
 
   delete = async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id);
+    const paramName = `${this.tableName}_id`;
+    const id: number = parseInt(req.params[paramName]);
 
     if (!id) {
       throw new BadRequestError("This id doesn't exist");
