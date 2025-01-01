@@ -1,21 +1,14 @@
 import express from "express";
 import { errorCatcher } from "../../../helpers/errorCatcher.helper";
 import { requireAuth } from "../../../middlewares/requireAuth.helper";
-import { deckController } from "../../../controllers/index.controllers";
 import { checkPermissions } from "../../../middlewares/checkPermissions.middleware";
+import { deckController } from "../../../controllers/index.controllers";
+import cardsRouter from "../card/cards.router";
 
-const deckRouter = express.Router();
+const deckRouter = express.Router({ mergeParams: true });
 
 deckRouter
   .route("/")
-  .post(
-    errorCatcher(requireAuth),
-    errorCatcher(checkPermissions(["admin", "user"], "user")),
-    errorCatcher(deckController.create)
-  );
-
-deckRouter
-  .route("/:deck_id")
   .get(
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"], "deck")),
@@ -31,5 +24,7 @@ deckRouter
     errorCatcher(checkPermissions(["admin", "user"], "deck")),
     errorCatcher(deckController.delete)
   );
+
+deckRouter.use("/cards", cardsRouter);
 
 export default deckRouter;
