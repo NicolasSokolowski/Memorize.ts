@@ -11,6 +11,10 @@ export abstract class CoreController<
 > {
   protected field: string;
 
+  get tableName(): string {
+    return this.datamapper.tableName;
+  }
+
   constructor(
     public datamapper: T["datamapper"],
     field: string
@@ -19,7 +23,8 @@ export abstract class CoreController<
   }
 
   getByPk = async (req: Request, res: Response): Promise<void> => {
-    const id: number = parseInt(req.params.id);
+    const paramName = `${this.tableName}_id`;
+    const id: number = parseInt(req.params[paramName]);
 
     if (!id) {
       throw new BadRequestError("You should provide an id");
@@ -71,7 +76,8 @@ export abstract class CoreController<
   };
 
   update = async (req: Request, res: Response): Promise<void> => {
-    const id = parseInt(req.params.id, 10);
+    const paramName = `${this.tableName}_id`;
+    const id: number = parseInt(req.params[paramName]);
     let data = req.body;
 
     const checkIfExists = await this.datamapper.findBySpecificField(
@@ -103,8 +109,10 @@ export abstract class CoreController<
     res.status(200).send(updatedItem);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-  preDeletionCheck = async (field: string, value: any): Promise<void> => {
+  preDeletionCheck = async (
+    field: string,
+    value: string | number
+  ): Promise<void> => {
     return;
   };
 
