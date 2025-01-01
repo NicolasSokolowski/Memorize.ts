@@ -8,6 +8,11 @@ const cardRouter = express.Router({ mergeParams: true });
 
 cardRouter
   .route("/")
+  .get(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"], "card")),
+    errorCatcher(cardController.getByPk)
+  )
   .patch(
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"], "card")),
