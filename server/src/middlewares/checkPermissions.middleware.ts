@@ -1,18 +1,67 @@
+/* eslint-disable no-case-declarations */
 import { Request, Response, NextFunction } from "express";
 import { AccessDeniedError } from "../errors/AccessDeniedError.error";
+import { NotFoundError } from "../errors/NotFoundError.error";
+import { deckDatamapper } from "../datamappers/index.datamappers";
+import { UserPayload } from "../helpers/UserPayload.helper";
 
-export const checkPermissions = (permissions: string[]) => {
+declare module "express" {
+  interface Request {
+    user?: UserPayload;
+  }
+}
+
+export const checkPermissions = (permissions: string[], entity?: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const userRole = req.user?.role;
+    const userId = req.user?.id;
 
-    if (!userRole) {
+    if (!userRole || !permissions.includes(userRole!)) {
       throw new AccessDeniedError("Not enough permissions");
     }
 
-    if (permissions.includes(userRole!)) {
+    if (!entity) {
+      return next();
+    }
+
+    try {
+      switch (entity) {
+        case "deck":
+          const deck_id = req.params.deck_id || req.body.deck_id;
+
+          if (!deck_id) {
+            throw new NotFoundError();
+          }
+
+          const deck = await deckDatamapper.findByPk(parseInt(deck_id, 10));
+
+          if (!deck) {
+            throw new NotFoundError();
+          }
+
+          if (deck.user_id !== userId) {
+            throw new AccessDeniedError("You do not own this deck.");
+          }
+          break;
+
+        case "user":
+          const user_id = req.params.user_id || req.body.user_id;
+
+          if (!user_id) {
+            throw new NotFoundError();
+          }
+
+          if (parseInt(user_id, 10) !== userId) {
+            throw new AccessDeniedError("You can only access your data.");
+          }
+          break;
+
+        default:
+          throw new AccessDeniedError("Invalid entity");
+      }
       next();
-    } else {
-      throw new AccessDeniedError("Not enough permissions");
+    } catch (err) {
+      next(err);
     }
   };
 };
