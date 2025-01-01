@@ -1,16 +1,8 @@
 import express from "express";
-import { errorCatcher } from "../../../helpers/errorCatcher.helper";
-import { userController } from "../../../controllers/index.controllers";
-import roleRouter from "./role.router";
-import { requireAuth } from "../../../middlewares/requireAuth.helper";
+import decksRouter from "../deck/decks.router";
 
-const userRouter = express.Router();
+const userRouter = express.Router({ mergeParams: true });
 
-userRouter
-  .route("/")
-  .get(errorCatcher(requireAuth), errorCatcher(userController.getAll))
-  .post(errorCatcher(userController.signup));
-
-userRouter.use("/role", roleRouter);
+userRouter.use("/decks", decksRouter);
 
 export default userRouter;
