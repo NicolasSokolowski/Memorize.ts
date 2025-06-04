@@ -57,7 +57,7 @@ export class UserController extends CoreController<
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new BadRequestError("Please provide and email and a password");
+      throw new BadRequestError("Please provide an email and a password");
     }
 
     const user = await this.datamapper.findBySpecificField("email", email);
