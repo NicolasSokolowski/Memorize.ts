@@ -76,7 +76,6 @@ export class UserController extends CoreController<
     const role = default_role.name;
 
     const userPayload = {
-      id: user.id,
       email: user.email,
       role,
     };

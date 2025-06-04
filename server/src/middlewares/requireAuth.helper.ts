@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { NotAuthorizedError } from "../errors/NotAuthorizedError.error";
-import { BadRequestError } from "../errors/BadRequestError.error";
-import { Token } from "../helpers/Token";
-import { UserPayload } from "../helpers/UserPayload.helper";
+import { NotAuthorizedError, BadRequestError } from "../errors/index.errors";
+import { UserPayload, Token } from "../helpers/index.helpers";
 
 declare module "express" {
   interface Request {
@@ -15,12 +13,7 @@ export const requireAuth = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.headers["authorization"]) {
-    throw new NotAuthorizedError();
-  }
-
-  const authorizationHeader = req.headers["authorization"] as string;
-  const accessToken = authorizationHeader.split(" ")[1];
+  const accessToken = req.cookies["access_token"];
 
   if (!accessToken) {
     throw new NotAuthorizedError();
