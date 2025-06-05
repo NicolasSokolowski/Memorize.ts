@@ -66,11 +66,13 @@ export class UserController extends CoreController<
       throw new NotFoundError();
     }
 
-    const checkPassword = await Password.compare(user.password, password);
+    const isPasswordValid = await Password.compare(user.password, password);
 
-    if (!checkPassword) {
+    if (!isPasswordValid) {
       throw new BadRequestError("Incorrect password");
     }
+
+    delete user.password;
 
     const default_role = await roleController.datamapper.findByPk(2);
     const role = default_role.name;
@@ -83,27 +85,29 @@ export class UserController extends CoreController<
     const accessToken = await Token.generateAccessToken(userPayload);
     const refreshToken = await Token.generateRefreshToken(userPayload);
 
-    const {
-      password: returnedPassword,
-      role_id,
-      created_at,
-      updated_at,
-      ...signedUser
-    } = user;
+    res.cookie("access_token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.cookie("refresh_token", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
 
     const returnedUser = {
-      ...signedUser,
+      ...user,
       role,
     };
 
-    res
-      .status(201)
-      .send({ user: returnedUser, tokens: { accessToken, refreshToken } });
+    res.status(200).send({ user: returnedUser });
   };
 
   refreshToken = async (req: Request, res: Response) => {
     const { REFRESH_TOKEN_SECRET } = process.env;
-    const refreshToken = req.headers["x-refresh-token"] as string;
+    const refreshToken = req.cookies["refresh_token"];
 
     if (!refreshToken) {
       throw new NotAuthorizedError();
