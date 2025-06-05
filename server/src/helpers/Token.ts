@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
 
 export class Token {
-  static generateAccessToken = async ({ id, email, role }: UserPayload) => {
-    const user = { id, email, role };
+  static generateAccessToken = async ({ email, role }: UserPayload) => {
+    const user = { email, role };
 
     if (!ACCESS_TOKEN_SECRET) {
       throw new BadRequestError("Access token secret must be set.");
@@ -19,8 +19,8 @@ export class Token {
     return accessToken;
   };
 
-  static generateRefreshToken = async ({ id, email, role }: UserPayload) => {
-    const user = { id, email, role };
+  static generateRefreshToken = async ({ email, role }: UserPayload) => {
+    const user = { email, role };
 
     if (!REFRESH_TOKEN_SECRET) {
       throw new BadRequestError("Refresh token secret must be set.");

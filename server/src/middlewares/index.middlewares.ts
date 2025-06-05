@@ -1,3 +1,4 @@
 import { errorHandler } from "./errorHandler.middleware";
+import { validateRequest } from "./validateRequest.middleware";
 
-export { errorHandler };
+export { errorHandler, validateRequest };
