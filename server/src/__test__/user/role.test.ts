@@ -97,6 +97,4 @@ describe("Role tests", () => {
       { message: "Provided item already exists." },
     ]);
   });
-
-  // ---------- GET /api/users/role ----------
 });
