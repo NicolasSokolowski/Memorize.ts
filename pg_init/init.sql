@@ -35,4 +35,8 @@ CREATE TABLE "card" (
   "updated_at" TIMESTAMPTZ
 );
 
+INSERT INTO "role" ("name") VALUES
+('admin'),
+('user');
+
 COMMIT;

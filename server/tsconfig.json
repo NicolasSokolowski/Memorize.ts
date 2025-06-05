@@ -9,7 +9,7 @@
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
