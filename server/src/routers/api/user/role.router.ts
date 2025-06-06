@@ -4,6 +4,7 @@ import { roleController } from "../../../controllers/index.controllers";
 import {
   validateRequest,
   requireAuth,
+  checkPermissions,
 } from "../../../middlewares/index.middlewares";
 import { roleCreateSchema } from "../../../validation/index.validation";
 
@@ -14,6 +15,7 @@ roleRouter
   .get(errorCatcher(roleController.getAll))
   .post(
     errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin"])),
     errorCatcher(validateRequest("body", roleCreateSchema)),
     errorCatcher(roleController.create)
   );

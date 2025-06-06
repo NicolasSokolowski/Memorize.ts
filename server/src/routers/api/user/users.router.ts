@@ -5,6 +5,7 @@ import roleRouter from "./role.router";
 import {
   requireAuth,
   validateRequest,
+  checkPermissions,
 } from "../../../middlewares/index.middlewares";
 import userRouter from "./user.router";
 import { userCreateSchema } from "../../../validation/index.validation";
@@ -13,9 +14,14 @@ const usersRouter = express.Router();
 
 usersRouter
   .route("/")
-  .get(errorCatcher(requireAuth), errorCatcher(userController.getAll))
+  .get(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin"])),
+    errorCatcher(userController.getAll)
+  )
   .post(
     errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin"])),
     errorCatcher(validateRequest("body", userCreateSchema)),
     errorCatcher(userController.signup)
   );
