@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { NotAuthorizedError } from "../errors/NotAuthorizedError.error";
-import { BadRequestError } from "../errors/BadRequestError.error";
-import { Token } from "../helpers/Token";
-import { UserPayload } from "../helpers/UserPayload.helper";
+import { NotAuthorizedError, BadRequestError } from "../errors/index.errors";
+import { UserPayload, Token } from "../helpers/index.helpers";
 
 declare module "express" {
   interface Request {
