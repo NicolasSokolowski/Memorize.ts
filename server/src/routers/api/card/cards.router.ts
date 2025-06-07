@@ -2,10 +2,12 @@ import express from "express";
 import { errorCatcher } from "../../../helpers/errorCatcher.helper";
 import {
   requireAuth,
-  checkPermissions
+  checkPermissions,
+  validateRequest
 } from "../../../middlewares/index.middlewares";
 import { cardController } from "../../../controllers/index.controllers";
 import cardRouter from "./card.router";
+import { cardCreateSchema } from "../../../validation/index.validation";
 
 const cardsRouter = express.Router({ mergeParams: true });
 
@@ -14,6 +16,7 @@ cardsRouter
   .post(
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"], "deck")),
+    errorCatcher(validateRequest("body", cardCreateSchema)),
     errorCatcher(cardController.create)
   );
 
