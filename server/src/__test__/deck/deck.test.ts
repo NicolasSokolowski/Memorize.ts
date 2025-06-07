@@ -1,7 +1,10 @@
-import { pool } from "../../database/pg.client";
+import { poolConfig } from "../../database/pg.client";
+import { Pool } from "pg";
 import request from "supertest";
 import { app } from "../../index.app";
 import { UserCookie } from "../helpers/test.helpers";
+
+const pool = new Pool(poolConfig);
 
 describe("Deck tests", () => {
   beforeAll(async () => {
@@ -17,6 +20,7 @@ describe("Deck tests", () => {
     await pool.query(
       `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
     );
+    await pool.end();
   });
 
   afterEach(async () => {

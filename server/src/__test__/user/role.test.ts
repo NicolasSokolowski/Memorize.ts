@@ -1,7 +1,10 @@
-import { pool } from "../../database/pg.client";
+import { poolConfig } from "../../database/pg.client";
+import { Pool } from "pg";
 import request from "supertest";
 import { app } from "../../index.app";
 import { AdminCookie } from "../helpers/test.helpers";
+
+const pool = new Pool(poolConfig);
 
 describe("Role tests", () => {
   beforeAll(async () => {
@@ -10,12 +13,6 @@ describe("Role tests", () => {
     );
     await pool.query(
       `INSERT INTO "user" ("email", "password", "username", "role_id") VALUES ('admin@admin.com', 'pAssw0rd!123', 'test_admin', 1) ON CONFLICT DO NOTHING`
-    );
-  });
-
-  afterAll(async () => {
-    await pool.query(
-      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
     );
   });
 
@@ -111,5 +108,12 @@ describe("Role tests", () => {
     expect(response.body.errors).toEqual([
       { message: "Provided item already exists." }
     ]);
+  });
+
+  afterAll(async () => {
+    await pool.query(
+      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
+    );
+    await pool.end();
   });
 });

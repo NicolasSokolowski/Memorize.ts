@@ -1,10 +1,20 @@
-import { pool } from "../../database/pg.client";
+import { poolConfig } from "../../database/pg.client";
 import request from "supertest";
 import { app } from "../../index.app";
+import { Pool } from "pg";
+
+const pool = new Pool(poolConfig);
 
 describe("User tests", () => {
   afterEach(async () => {
     await pool.query(`DELETE FROM "user" WHERE email = 'testuser@user.com'`);
+  });
+
+  afterAll(async () => {
+    await pool.query(
+      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
+    );
+    await pool.end();
   });
 
   // ---------- POST /api/users ----------
