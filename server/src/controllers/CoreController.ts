@@ -7,7 +7,7 @@ import { EntityControllerReq } from "./interfaces/EntityControllerReq";
 
 export abstract class CoreController<
   T extends EntityControllerReq,
-  Y extends EntityDatamapperReq,
+  Y extends EntityDatamapperReq
 > {
   protected field: string;
 
@@ -97,7 +97,7 @@ export abstract class CoreController<
 
     data = {
       ...data,
-      id,
+      id
     };
 
     const updatedItem = await this.datamapper.update(data);

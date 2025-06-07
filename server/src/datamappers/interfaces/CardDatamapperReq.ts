@@ -10,4 +10,8 @@ export interface CardDatamapperReq extends EntityDatamapperReq {
     difficulty?: number;
     deck_id: number;
   };
+  checkCompositeKey(
+    frontName: string,
+    deckId: number
+  ): Promise<CardDatamapperReq["data"] | null>;
 }

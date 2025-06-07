@@ -33,7 +33,8 @@ CREATE TABLE "card" (
   "difficulty" INT DEFAULT 0,
   "deck_id" INT NOT NULL REFERENCES "deck"("id") ON DELETE CASCADE,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  "updated_at" TIMESTAMPTZ
+  "updated_at" TIMESTAMPTZ,
+  UNIQUE ("front", "deck_id")
 );
 
 INSERT INTO "role" ("name") VALUES
