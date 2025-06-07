@@ -3,6 +3,9 @@ import { DeckDatamapperReq } from "../datamappers/interfaces/DeckDatamapperReq";
 import { CoreController } from "./CoreController";
 import { DeckControllerReq } from "./interfaces/DeckControllerReq";
 import { NotFoundError } from "../errors/NotFoundError.error";
+import { DatabaseConnectionError } from "../errors/DatabaseConnectionError.error";
+import { userDatamapper } from "../datamappers/index.datamappers";
+import { BadRequestError } from "../errors/BadRequestError.error";
 
 export class DeckController extends CoreController<
   DeckControllerReq,
@@ -25,5 +28,35 @@ export class DeckController extends CoreController<
     }
 
     res.status(200).send(decks);
+  };
+
+  create = async (req: Request, res: Response): Promise<void> => {
+    const data = req.body;
+    const userEmail = req.user?.email;
+
+    const user = await userDatamapper.findBySpecificField("email", userEmail);
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
+    data.user_id = user.id;
+
+    const checkIfExists = await this.datamapper.findBySpecificField(
+      this.field,
+      data[this.field]
+    );
+
+    if (checkIfExists) {
+      throw new BadRequestError(`Provided item already exists.`);
+    }
+
+    const createdItem = await this.datamapper.insert(data);
+
+    if (!createdItem) {
+      throw new DatabaseConnectionError();
+    }
+
+    res.status(201).json(createdItem);
   };
 }
