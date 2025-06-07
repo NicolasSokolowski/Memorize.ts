@@ -7,7 +7,16 @@ const { ACCESS_TOKEN_SECRET } = process.env;
 export const mockUserToken = jwt.sign(
   {
     email: "user@user.com",
-    role: "user",
+    role: "user"
+  },
+  ACCESS_TOKEN_SECRET as string,
+  { expiresIn: "1h" }
+);
+
+export const mockAdminToken = jwt.sign(
+  {
+    email: "admin@admin.com",
+    role: "admin"
   },
   ACCESS_TOKEN_SECRET as string,
   { expiresIn: "1h" }
@@ -16,5 +25,11 @@ export const mockUserToken = jwt.sign(
 export const UserCookie = cookie.serialize("access_token", mockUserToken, {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "strict",
+  sameSite: "strict"
+});
+
+export const AdminCookie = cookie.serialize("access_token", mockAdminToken, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict"
 });

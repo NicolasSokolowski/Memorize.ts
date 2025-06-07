@@ -1,9 +1,24 @@
 import { pool } from "../../database/pg.client";
 import request from "supertest";
 import { app } from "../../index.app";
-import { UserCookie } from "../helpers/test.helpers";
+import { AdminCookie } from "../helpers/test.helpers";
 
 describe("Role tests", () => {
+  beforeAll(async () => {
+    await pool.query(
+      `INSERT INTO "user" ("email", "password", "username", "role_id") VALUES ('user@user.com', 'pAssw0rd!123', 'test_user', 2) ON CONFLICT DO NOTHING`
+    );
+    await pool.query(
+      `INSERT INTO "user" ("email", "password", "username", "role_id") VALUES ('admin@admin.com', 'pAssw0rd!123', 'test_admin', 1) ON CONFLICT DO NOTHING`
+    );
+  });
+
+  afterAll(async () => {
+    await pool.query(
+      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
+    );
+  });
+
   afterEach(async () => {
     await pool.query(`DELETE FROM "role" WHERE name = 'test_role'`);
   });
@@ -13,9 +28,9 @@ describe("Role tests", () => {
   it("creates a role when providing correct data", async () => {
     await request(app)
       .post("/api/users/role")
-      .set("Cookie", UserCookie)
+      .set("Cookie", AdminCookie)
       .send({
-        name: "test_role",
+        name: "test_role"
       })
       .expect(201);
   });
@@ -23,21 +38,21 @@ describe("Role tests", () => {
   it("returns a 400 error when providing wrong data type", async () => {
     const response = await request(app)
       .post("/api/users/role")
-      .set("Cookie", UserCookie)
+      .set("Cookie", AdminCookie)
       .send({
-        name: 1, // Wrong data type
+        name: 1 // Wrong data type
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be a string" },
+      { message: "Name must be a string" }
     ]);
   });
 
   it("returns a 400 error when name field is not provided", async () => {
     const response = await request(app)
       .post("/api/users/role")
-      .set("Cookie", UserCookie)
+      .set("Cookie", AdminCookie)
       .send()
       .expect(400);
 
@@ -47,9 +62,9 @@ describe("Role tests", () => {
   it("returns a 400 error when name field is empty", async () => {
     const response = await request(app)
       .post("/api/users/role")
-      .set("Cookie", UserCookie)
+      .set("Cookie", AdminCookie)
       .send({
-        name: "", // Empty name
+        name: "" // Empty name
       })
       .expect(400);
 
@@ -59,42 +74,42 @@ describe("Role tests", () => {
   it("returns a 400 error when name is less then 3 characters", async () => {
     const response = await request(app)
       .post("/api/users/role")
-      .set("Cookie", UserCookie)
+      .set("Cookie", AdminCookie)
       .send({
-        name: "ch", // Less than 3 characters
+        name: "ch" // Less than 3 characters
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be at least 3 characters long" },
+      { message: "Name must be at least 3 characters long" }
     ]);
   });
 
   it("returns a 400 error when name is more than 15 characters", async () => {
     const response = await request(app)
       .post("/api/users/role")
-      .set("Cookie", UserCookie)
+      .set("Cookie", AdminCookie)
       .send({
-        name: "super_long_admin_role_name_for_no_test_purposes", // Less than 3 characters
+        name: "super_long_admin_role_name_for_no_test_purposes" // Less than 3 characters
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be at most 15 characters long" },
+      { message: "Name must be at most 15 characters long" }
     ]);
   });
 
   it("returns an error when provided  role name already exists", async () => {
     const response = await request(app)
       .post("/api/users/role")
-      .set("Cookie", UserCookie)
+      .set("Cookie", AdminCookie)
       .send({
-        name: "user", // Existing role name
+        name: "user" // Existing role name
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Provided item already exists." },
+      { message: "Provided item already exists." }
     ]);
   });
 });
