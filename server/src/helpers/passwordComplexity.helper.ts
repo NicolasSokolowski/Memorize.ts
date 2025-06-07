@@ -5,7 +5,7 @@ const passwordComplexity: ExtensionFactory = (joi) => ({
   base: joi.string(),
   messages: {
     "string.passwordComplexity":
-      "{{#label}} must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+      "{{#label}} must contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
   },
 
   rules: {
@@ -21,9 +21,9 @@ const passwordComplexity: ExtensionFactory = (joi) => ({
         }
 
         return value;
-      },
-    },
-  },
+      }
+    }
+  }
 });
 
 const extendedJoi = Joi.extend(passwordComplexity);
