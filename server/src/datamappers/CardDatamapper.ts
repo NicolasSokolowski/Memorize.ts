@@ -27,4 +27,16 @@ export class CardDatamapper extends CoreDatamapper<CardDatamapperReq> {
     );
     return result.rows[0];
   };
+
+  update = async (
+    data: CardDatamapperReq["data"],
+    emailCookie: string
+  ): Promise<CardDatamapperReq["data"]> => {
+    const { front } = data;
+    const result = await this.pool.query(
+      `UPDATE "${this.tableName}" SET front = $1 WHERE email = $2 RETURNING *`,
+      [front, emailCookie]
+    );
+    return result.rows[0];
+  };
 }

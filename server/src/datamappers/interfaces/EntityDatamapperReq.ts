@@ -15,8 +15,9 @@ export interface EntityDatamapperReq {
   insert(
     item: EntityDatamapperReq["data"]
   ): Promise<EntityDatamapperReq["data"]>;
-  update(
-    item: EntityDatamapperReq["data"]
-  ): Promise<EntityDatamapperReq["data"]>;
   delete(id: number): Promise<EntityDatamapperReq["data"]>;
+  update(
+    data: EntityDatamapperReq["data"],
+    email: string
+  ): Promise<EntityDatamapperReq["data"]>;
 }
