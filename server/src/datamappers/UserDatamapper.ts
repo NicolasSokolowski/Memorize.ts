@@ -18,4 +18,15 @@ export class UserDatamapper extends CoreDatamapper<UserDatamapperReq> {
     );
     return result.rows[0];
   };
+
+  updatePassword = async (
+    newPassword: string,
+    emailCookie: string
+  ): Promise<UserDatamapperReq["data"]> => {
+    const result = await this.pool.query(
+      `UPDATE "${this.tableName}" SET password = $1 WHERE email = $2 RETURNING *`,
+      [newPassword, emailCookie]
+    );
+    return result.rows[0];
+  };
 }

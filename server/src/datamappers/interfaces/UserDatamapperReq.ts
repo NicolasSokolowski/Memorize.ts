@@ -9,4 +9,8 @@ export interface UserDatamapperReq extends EntityDatamapperReq {
     username: string;
     role_id?: number;
   };
+  updatePassword: (
+    newPassword: string,
+    emailCookie: string
+  ) => Promise<UserDatamapperReq["data"]>;
 }
