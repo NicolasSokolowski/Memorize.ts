@@ -167,4 +167,46 @@ export class UserController extends CoreController<
 
     res.status(200).send(updatedUser);
   };
+
+  changePassword = async (req: Request, res: Response): Promise<void> => {
+    const userEmail = req.user?.email;
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await this.datamapper.findBySpecificField(
+      this.field,
+      userEmail
+    );
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
+    const isCurrentPasswordValid = await Password.compare(
+      user.password,
+      currentPassword
+    );
+
+    if (!isCurrentPasswordValid) {
+      throw new BadRequestError("Current password is incorrect");
+    }
+
+    const hashedNewPassword = await Password.toHash(newPassword);
+
+    if (!hashedNewPassword) {
+      throw new BadRequestError("The new password could not be hashed");
+    }
+
+    const updatedPassword = await this.datamapper.updatePassword(
+      hashedNewPassword,
+      userEmail
+    );
+
+    if (!updatedPassword) {
+      throw new DatabaseConnectionError();
+    }
+
+    const { password, ...userWithoutPassword } = updatedPassword;
+
+    res.status(200).send({ user: userWithoutPassword });
+  };
 }
