@@ -11,6 +11,15 @@ import {
 const pool = new Pool(poolConfig);
 
 describe("User tests", () => {
+  beforeAll(async () => {
+    await pool.query(
+      `INSERT INTO "user" ("email", "password", "username", "role_id") VALUES ('user@user.com', 'pAssw0rd!123', 'test_user', 2) ON CONFLICT DO NOTHING`
+    );
+    await pool.query(
+      `INSERT INTO "user" ("email", "password", "username", "role_id") VALUES ('admin@admin.com', 'pAssw0rd!123', 'test_admin', 1) ON CONFLICT DO NOTHING`
+    );
+  });
+
   afterEach(async () => {
     await pool.query(
       `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com', 'newemail@user.com', 'testuser@user.com');`
@@ -18,9 +27,7 @@ describe("User tests", () => {
   });
 
   afterAll(async () => {
-    await pool.query(
-      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com', 'testuser@user.com');`
-    );
+    await pool.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
     await pool.end();
   });
 
@@ -55,7 +62,7 @@ describe("User tests", () => {
       .patch("/api/profile")
       .set("Cookie", cookie)
       .send({
-        email: "user@user.com"
+        email: user.body.user.email
       })
       .expect(400);
 

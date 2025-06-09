@@ -20,6 +20,11 @@ describe("Role tests", () => {
     await pool.query(`DELETE FROM "role" WHERE name = 'test_role'`);
   });
 
+  afterAll(async () => {
+    await pool.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
+    await pool.end();
+  });
+
   // ---------- POST /api/users/role ----------
 
   it("creates a role when providing correct data", async () => {
@@ -108,12 +113,5 @@ describe("Role tests", () => {
     expect(response.body.errors).toEqual([
       { message: "Provided item already exists." }
     ]);
-  });
-
-  afterAll(async () => {
-    await pool.query(
-      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
-    );
-    await pool.end();
   });
 });

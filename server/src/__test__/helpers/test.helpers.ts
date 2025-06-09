@@ -92,7 +92,7 @@ export const createUser = async () => {
   return request(app)
     .post("/api/users")
     .send({
-      email: "user@user.com",
+      email: `${makeRandomString(5)}@user.com`,
       password: "pAssw0rd!123",
       username: makeRandomString(10)
     })
