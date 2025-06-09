@@ -2,7 +2,7 @@ import express from "express";
 import { errorCatcher } from "../../../helpers/errorCatcher.helper";
 import {
   requireAuth,
-  checkPermissions,
+  checkPermissions
 } from "../../../middlewares/index.middlewares";
 import { deckController } from "../../../controllers/index.controllers";
 import cardsRouter from "../card/cards.router";

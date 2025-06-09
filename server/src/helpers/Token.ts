@@ -13,7 +13,7 @@ export class Token {
     }
 
     const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "1d"
     });
 
     return accessToken;
@@ -27,7 +27,7 @@ export class Token {
     }
 
     const refreshToken = jwt.sign(user, REFRESH_TOKEN_SECRET, {
-      expiresIn: "7d",
+      expiresIn: "7d"
     });
 
     return refreshToken;

@@ -12,4 +12,6 @@ export class RoleController extends CoreController<
 
     this.datamapper = datamapper;
   }
+
+  update = async (req: Request, res: Response): Promise<void> => {};
 }

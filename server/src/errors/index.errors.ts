@@ -13,5 +13,5 @@ export {
   DatabaseConnectionError,
   NotAuthorizedError,
   NotFoundError,
-  RequestValidationError,
+  RequestValidationError
 };

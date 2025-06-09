@@ -3,6 +3,7 @@ import { EntityDatamapperReq } from "./interfaces/EntityDatamapperReq";
 export abstract class CoreDatamapper<T extends EntityDatamapperReq> {
   abstract tableName: T["tableName"];
   abstract pool: T["pool"];
+  abstract update(entityObject: T["data"], email: string): Promise<T["data"]>;
 
   findByPk = async (id: number) => {
     const result = await this.pool.query(
@@ -33,28 +34,6 @@ export abstract class CoreDatamapper<T extends EntityDatamapperReq> {
     const query = `INSERT INTO "${this.tableName}" (${columns}) VALUES (${placeholders}) RETURNING *`;
     const result = await this.pool.query(query, values);
 
-    return result.rows[0];
-  };
-
-  update = async (entityObject: T["data"]) => {
-    const id = entityObject["id"];
-
-    if (!id) {
-      throw new Error("Object must contain an id.");
-    }
-
-    const columns = Object.keys(entityObject).filter((key) => key !== "id");
-    const values = columns.map((key) => entityObject[key]);
-
-    const assignments = columns
-      .map((col, index) => `${col} = $${index + 1}`)
-      .join(", ");
-
-    values.push(id);
-
-    const query = `UPDATE ${this.tableName} SET ${assignments} WHERE id = $${values.length} RETURNING *`;
-
-    const result = await this.pool.query(query, values);
     return result.rows[0];
   };
 

@@ -5,7 +5,7 @@ import { NotFoundError } from "../errors/NotFoundError.error";
 import {
   cardDatamapper,
   deckDatamapper,
-  userDatamapper,
+  userDatamapper
 } from "../datamappers/index.datamappers";
 import { UserPayload } from "../helpers/UserPayload.helper";
 
@@ -18,6 +18,7 @@ declare module "express" {
 export const checkPermissions = (permissions: string[], entity?: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const userRole = req.user?.role;
+    const userEmail = req.user?.email;
 
     if (!userRole || !permissions.includes(userRole!)) {
       throw new AccessDeniedError("Not enough permissions");
@@ -30,15 +31,7 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
     try {
       switch (entity) {
         case "deck":
-          if (
-            req.params.deck_id &&
-            req.body.deck_id &&
-            req.params.deck_id !== req.body.deck_id
-          ) {
-            throw new AccessDeniedError("Please provide valid data");
-          }
-
-          const deck_id = req.params.deck_id || req.body.deck_id;
+          const deck_id = req.params.deck_id;
 
           if (!deck_id) {
             throw new NotFoundError();
@@ -50,7 +43,10 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
             throw new NotFoundError();
           }
 
-          const deckUser = await userDatamapper.findByPk(deck.user_id);
+          const deckUser = await userDatamapper.findBySpecificField(
+            "email",
+            userEmail
+          );
 
           if (deck.user_id !== deckUser.id) {
             throw new AccessDeniedError("You do not own this deck.");
@@ -64,44 +60,16 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
             throw new NotFoundError();
           }
 
-          const card = await cardDatamapper.findByPk(parseInt(card_id, 10));
+          const cardUser = await cardDatamapper.findCardUserByCardId(
+            parseInt(card_id, 10)
+          );
 
-          if (!card) {
+          if (!cardUser) {
             throw new NotFoundError();
           }
 
-          const cardDeck = await deckDatamapper.findByPk(card.deck_id);
-
-          if (!cardDeck) {
-            throw new NotFoundError();
-          }
-
-          const cardUser = await userDatamapper.findByPk(cardDeck.user_id);
-
-          if (cardDeck.user_id !== cardUser.id) {
+          if (cardUser.email !== userEmail) {
             throw new AccessDeniedError("You do not own this card.");
-          }
-          break;
-
-        case "user":
-          const user_id = req.params.user_id || req.body.user_id;
-
-          if (
-            req.params.user_id &&
-            req.body.user_id &&
-            req.params.user_id !== req.body.user_id
-          ) {
-            throw new AccessDeniedError("Please provide valid data");
-          }
-
-          if (!user_id) {
-            throw new NotFoundError();
-          }
-
-          const user = await userDatamapper.findByPk(cardDeck.user_id);
-
-          if (parseInt(user_id, 10) !== user.id) {
-            throw new AccessDeniedError("You can only access your data.");
           }
           break;
 

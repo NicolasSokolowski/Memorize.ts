@@ -19,10 +19,11 @@ CREATE TABLE "user" (
 
 CREATE TABLE "deck" (
   "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  "name" VARCHAR(50) NOT NULL UNIQUE,
+  "name" VARCHAR(50) NOT NULL,
   "user_id" INT NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  "updated_at" TIMESTAMPTZ
+  "updated_at" TIMESTAMPTZ,
+  UNIQUE ("name", "user_id")
 );
 
 CREATE TABLE "card" (
@@ -32,7 +33,8 @@ CREATE TABLE "card" (
   "difficulty" INT DEFAULT 0,
   "deck_id" INT NOT NULL REFERENCES "deck"("id") ON DELETE CASCADE,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  "updated_at" TIMESTAMPTZ
+  "updated_at" TIMESTAMPTZ,
+  UNIQUE ("front", "deck_id")
 );
 
 INSERT INTO "role" ("name") VALUES

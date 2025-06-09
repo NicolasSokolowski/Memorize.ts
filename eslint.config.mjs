@@ -29,6 +29,7 @@ export default [
 
     rules: {
       "prettier/prettier": "error",
+      "comma-dangle": ["error", "never"],
 
       "no-console": [
         "error",

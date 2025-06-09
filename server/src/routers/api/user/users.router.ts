@@ -5,9 +5,8 @@ import roleRouter from "./role.router";
 import {
   requireAuth,
   validateRequest,
-  checkPermissions,
+  checkPermissions
 } from "../../../middlewares/index.middlewares";
-import userRouter from "./user.router";
 import { userCreateSchema } from "../../../validation/index.validation";
 
 const usersRouter = express.Router();
@@ -20,13 +19,10 @@ usersRouter
     errorCatcher(userController.getAll)
   )
   .post(
-    errorCatcher(requireAuth),
-    errorCatcher(checkPermissions(["admin"])),
     errorCatcher(validateRequest("body", userCreateSchema)),
     errorCatcher(userController.signup)
   );
 
 usersRouter.use("/role", roleRouter);
-usersRouter.use("/:user_id", userRouter);
 
 export default usersRouter;

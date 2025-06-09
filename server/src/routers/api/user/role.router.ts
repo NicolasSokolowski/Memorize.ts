@@ -4,7 +4,7 @@ import { roleController } from "../../../controllers/index.controllers";
 import {
   validateRequest,
   requireAuth,
-  checkPermissions,
+  checkPermissions
 } from "../../../middlewares/index.middlewares";
 import { roleCreateSchema } from "../../../validation/index.validation";
 
