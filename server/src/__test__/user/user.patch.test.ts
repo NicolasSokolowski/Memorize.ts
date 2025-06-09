@@ -13,13 +13,13 @@ const pool = new Pool(poolConfig);
 describe("User tests", () => {
   afterEach(async () => {
     await pool.query(
-      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com', 'newemail@user.com');`
+      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com', 'newemail@user.com', 'testuser@user.com');`
     );
   });
 
   afterAll(async () => {
     await pool.query(
-      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
+      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com', 'testuser@user.com');`
     );
     await pool.end();
   });
@@ -229,6 +229,169 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message: "Username must be at least 3 characters long"
+      }
+    ]);
+  });
+
+  // ---------- PATCH /api/profile/changepw ----------
+
+  it("updates user password when providing valid data", async () => {
+    const user = await createUser();
+
+    const accessToken = mockUserAccessToken(user.body.user.email);
+    const cookie = mockCookie(accessToken);
+
+    await request(app)
+      .patch("/api/profile/changepw")
+      .set("Cookie", cookie)
+      .send({
+        currentPassword: "pAssw0rd!123",
+        newPassword: "newP@ssw0rd!456",
+        confirmNewPassword: "newP@ssw0rd!456"
+      })
+      .expect(200);
+  });
+
+  it("returns a 400 error when trying to update user password but current password does not match the one stored in the database", async () => {
+    const user = await createUser();
+
+    const accessToken = mockUserAccessToken(user.body.user.email);
+    const cookie = mockCookie(accessToken);
+
+    const response = await request(app)
+      .patch("/api/profile/changepw")
+      .set("Cookie", cookie)
+      .send({
+        currentPassword: "pAssw0rdd!123", // Incorrect current password
+        newPassword: "newP@ssw0rd!456",
+        confirmNewPassword: "newP@ssw0rd!456"
+      })
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Current password is incorrect"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when trying to update user password but new password does not match confirm password", async () => {
+    const user = await createUser();
+
+    const accessToken = mockUserAccessToken(user.body.user.email);
+    const cookie = mockCookie(accessToken);
+
+    const response = await request(app)
+      .patch("/api/profile/changepw")
+      .set("Cookie", cookie)
+      .send({
+        currentPassword: "pAssw0rd!123",
+        newPassword: "newP@ssw0rd!456",
+        confirmNewPassword: "newP@ssw0rd!45" // Mismatch
+      })
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Confirm password must match new password"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when trying to update user password but confirm password is missing", async () => {
+    const user = await createUser();
+
+    const accessToken = mockUserAccessToken(user.body.user.email);
+    const cookie = mockCookie(accessToken);
+
+    const response = await request(app)
+      .patch("/api/profile/changepw")
+      .set("Cookie", cookie)
+      .send({
+        currentPassword: "pAssw0rd!123",
+        newPassword: "newP@ssw0rd!456"
+        // confirmNewPassword is missing
+      })
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Missing field confirmNewPassword"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when trying to update user password but providing wrong data type", async () => {
+    const user = await createUser();
+
+    const accessToken = mockUserAccessToken(user.body.user.email);
+    const cookie = mockCookie(accessToken);
+
+    const response = await request(app)
+      .patch("/api/profile/changepw")
+      .set("Cookie", cookie)
+      .send({
+        currentPassword: 1,
+        newPassword: 1,
+        confirmNewPassword: 1
+      })
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "currentPassword must be a string"
+      },
+      {
+        message: "newPassword must be a string"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when trying to update password with empty fields", async () => {
+    const user = await createUser();
+
+    const accessToken = mockUserAccessToken(user.body.user.email);
+    const cookie = mockCookie(accessToken);
+
+    const response = await request(app)
+      .patch("/api/profile/changepw")
+      .set("Cookie", cookie)
+      .send({
+        currentPassword: "",
+        newPassword: "",
+        confirmNewPassword: "" // Empty fields
+      })
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "currentPassword cannot be empty"
+      },
+      {
+        message: "newPassword cannot be empty"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when trying to update password with missing current password", async () => {
+    const user = await createUser();
+
+    const accessToken = mockUserAccessToken(user.body.user.email);
+    const cookie = mockCookie(accessToken);
+
+    const response = await request(app)
+      .patch("/api/profile/changepw")
+      .set("Cookie", cookie)
+      .send({
+        // currentPassword is missing
+        newPassword: "pAssw0rd!123",
+        confirmNewPassword: "pAssw0rd!123"
+      })
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Missing field currentPassword"
       }
     ]);
   });
