@@ -11,9 +11,7 @@ describe("User tests", () => {
   });
 
   afterAll(async () => {
-    await pool.query(
-      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
-    );
+    await pool.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
     await pool.end();
   });
 
