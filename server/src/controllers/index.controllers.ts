@@ -2,7 +2,7 @@ import {
   roleDatamapper,
   userDatamapper,
   deckDatamapper,
-  cardDatamapper,
+  cardDatamapper
 } from "../datamappers/index.datamappers";
 import { RoleController } from "./RoleController";
 import { UserController } from "./UserController";

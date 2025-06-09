@@ -2,8 +2,9 @@ import { roleDatamapper } from "../datamappers/index.datamappers";
 import { UserDatamapperReq } from "../datamappers/interfaces/UserDatamapperReq";
 import {
   BadRequestError,
+  DatabaseConnectionError,
   NotAuthorizedError,
-  NotFoundError,
+  NotFoundError
 } from "../errors/index.errors";
 import { Password } from "../helpers/Password";
 import { Token } from "../helpers/Token";
@@ -38,7 +39,7 @@ export class UserController extends CoreController<
       email,
       password: hashedPassword,
       username,
-      role_id: default_role.id,
+      role_id: default_role.id
     };
 
     const newUser = await this.datamapper.insert(newUserData);
@@ -79,7 +80,7 @@ export class UserController extends CoreController<
 
     const userPayload = {
       email: user.email,
-      role,
+      role
     };
 
     const accessToken = await Token.generateAccessToken(userPayload);
@@ -88,18 +89,18 @@ export class UserController extends CoreController<
     res.cookie("access_token", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "strict"
     });
 
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "strict"
     });
 
     const returnedUser = {
       ...user,
-      role,
+      role
     };
 
     res.status(200).send({ user: returnedUser });
@@ -130,5 +131,40 @@ export class UserController extends CoreController<
       console.error(err);
       throw new NotAuthorizedError();
     }
+  };
+
+  update = async (req: Request, res: Response): Promise<void> => {
+    const userEmail = req.user?.email;
+    const data = req.body;
+
+    const checkIfEmailExists = await this.datamapper.findBySpecificField(
+      this.field,
+      data.email
+    );
+
+    if (checkIfEmailExists) {
+      throw new BadRequestError(
+        `Provided email is already in use. Please choose another one.`
+      );
+    }
+
+    const user = await this.datamapper.findBySpecificField(
+      this.field,
+      userEmail
+    );
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
+    data.password = user.password; // Preserve the existing password
+
+    const updatedUser = await this.datamapper.update(data, userEmail);
+
+    if (!updatedUser) {
+      throw new DatabaseConnectionError();
+    }
+
+    res.status(200).send(updatedUser);
   };
 }

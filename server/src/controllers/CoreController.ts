@@ -75,40 +75,6 @@ export abstract class CoreController<
     res.status(201).json(createdItem);
   };
 
-  update = async (req: Request, res: Response): Promise<void> => {
-    const paramName = `${this.tableName}_id`;
-    const id: number = parseInt(req.params[paramName]);
-    let data = req.body;
-
-    const checkIfExists = await this.datamapper.findBySpecificField(
-      this.field,
-      data[this.field]
-    );
-
-    if (checkIfExists) {
-      throw new BadRequestError(`Provided item already exists.`);
-    }
-
-    const itemToUpdate = await this.datamapper.findByPk(id);
-
-    if (!itemToUpdate) {
-      throw new NotFoundError();
-    }
-
-    data = {
-      ...data,
-      id
-    };
-
-    const updatedItem = await this.datamapper.update(data);
-
-    if (!updatedItem) {
-      throw new DatabaseConnectionError();
-    }
-
-    res.status(200).send(updatedItem);
-  };
-
   preDeletionCheck = async (
     field: string,
     value: string | number

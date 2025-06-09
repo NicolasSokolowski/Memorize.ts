@@ -59,4 +59,6 @@ export class DeckController extends CoreController<
 
     res.status(201).json(createdItem);
   };
+
+  update = async (req: Request, res: Response): Promise<void> => {};
 }
