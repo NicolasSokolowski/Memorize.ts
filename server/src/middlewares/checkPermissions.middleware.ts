@@ -73,23 +73,6 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           }
           break;
 
-        case "user":
-          const user_id = req.params.user_id || req.body.user_id;
-
-          if (!user_id) {
-            throw new NotFoundError();
-          }
-
-          const user = await userDatamapper.findBySpecificField(
-            "email",
-            userEmail
-          );
-
-          if (parseInt(user_id, 10) !== user.id) {
-            throw new AccessDeniedError("You can only access your data.");
-          }
-          break;
-
         default:
           throw new AccessDeniedError("Invalid entity");
       }
