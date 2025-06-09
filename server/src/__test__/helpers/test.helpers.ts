@@ -18,7 +18,7 @@ export const mockUserToken = jwt.sign(
 export const mockAnotherUserToken = jwt.sign(
   {
     email: "anotherUser@user.com",
-    role: "another_user"
+    role: "user"
   },
   ACCESS_TOKEN_SECRET as string,
   { expiresIn: "1h" }
@@ -38,6 +38,7 @@ export const UserCookie = cookie.serialize("access_token", mockUserToken, {
   secure: process.env.NODE_ENV === "production",
   sameSite: "strict"
 });
+
 export const AnotherUserCookie = cookie.serialize(
   "access_token",
   mockAnotherUserToken,
@@ -85,4 +86,34 @@ export const createAnotherDeck = async () => {
       name: makeRandomString(10)
     })
     .expect(201);
+};
+
+export const createUser = async () => {
+  return request(app)
+    .post("/api/users")
+    .send({
+      email: "user@user.com",
+      password: "pAssw0rd!123",
+      username: makeRandomString(10)
+    })
+    .expect(201);
+};
+
+export const mockUserAccessToken = (email: string) => {
+  return jwt.sign(
+    {
+      email,
+      role: "user"
+    },
+    ACCESS_TOKEN_SECRET as string,
+    { expiresIn: "1h" }
+  );
+};
+
+export const mockCookie = (accessTokenMock: string) => {
+  return cookie.serialize("access_token", accessTokenMock, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict"
+  });
 };
