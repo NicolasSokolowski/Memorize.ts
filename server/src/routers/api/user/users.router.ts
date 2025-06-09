@@ -7,7 +7,6 @@ import {
   validateRequest,
   checkPermissions
 } from "../../../middlewares/index.middlewares";
-import userRouter from "./user.router";
 import { userCreateSchema } from "../../../validation/index.validation";
 
 const usersRouter = express.Router();
@@ -25,6 +24,5 @@ usersRouter
   );
 
 usersRouter.use("/role", roleRouter);
-usersRouter.use("/profile", userRouter);
 
 export default usersRouter;
