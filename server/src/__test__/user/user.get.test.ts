@@ -59,4 +59,26 @@ describe("Role tests", () => {
       }
     ]);
   });
+
+  // ---------- GET /api/profile ----------
+
+  it("returns the profile of the authenticated user", async () => {
+    const response = await request(app)
+      .get("/api/profile")
+      .set("Cookie", UserCookie)
+      .expect(200);
+
+    expect(response.body.user.email).toBe("user@user.com");
+    expect(response.body.user.username).toBe("test_user");
+  });
+
+  it("returns a 401 error when trying to fetch profile without an access token", async () => {
+    const response = await request(app).get("/api/profile").expect(401);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Not authorized"
+      }
+    ]);
+  });
 });
