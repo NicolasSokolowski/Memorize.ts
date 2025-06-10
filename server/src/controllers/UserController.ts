@@ -24,6 +24,23 @@ export class UserController extends CoreController<
     this.datamapper = datamapper;
   }
 
+  getProfile = async (req: Request, res: Response): Promise<void> => {
+    const userEmail = req.user?.email;
+
+    const user = await this.datamapper.findBySpecificField(
+      this.field,
+      userEmail
+    );
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
+    const { password, created_at, updated_at, ...userWithoutPassword } = user;
+
+    res.status(200).send({ user: userWithoutPassword });
+  };
+
   signup = async (req: Request, res: Response): Promise<void> => {
     const { email, password, username } = req.body;
 
