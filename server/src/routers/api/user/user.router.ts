@@ -15,6 +15,11 @@ const userRouter = express.Router();
 
 userRouter
   .route("/")
+  .get(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"])),
+    errorCatcher(userController.getProfile)
+  )
   .patch(
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"])),

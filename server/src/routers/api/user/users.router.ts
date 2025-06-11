@@ -23,6 +23,14 @@ usersRouter
     errorCatcher(userController.signup)
   );
 
+usersRouter
+  .route("/:user_id")
+  .get(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin"])),
+    errorCatcher(userController.getByPk)
+  );
+
 usersRouter.use("/role", roleRouter);
 
 export default usersRouter;

@@ -16,10 +16,6 @@ describe("Role tests", () => {
     );
   });
 
-  afterEach(async () => {
-    await pool.query(`DELETE FROM "role" WHERE name = 'test_role'`);
-  });
-
   afterAll(async () => {
     await pool.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
     await pool.end();
@@ -52,6 +48,88 @@ describe("Role tests", () => {
 
   it("returns a 401 error when trying to fetch users without an access token", async () => {
     const response = await request(app).get("/api/users").expect(401);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Not authorized"
+      }
+    ]);
+  });
+
+  // ---------- GET /api/users/:user_id ----------
+
+  it("returns a user by ID", async () => {
+    const response = await request(app)
+      .get("/api/users/1") // Assuming user with ID 1 exists
+      .set("Cookie", AdminCookie)
+      .expect(200);
+
+    expect(response.body.email).toBe("user@user.com");
+  });
+
+  it("returns a 404 error when trying to fetch a non-existing user", async () => {
+    const response = await request(app)
+      .get("/api/users/9999") // Assuming this ID does not exist
+      .set("Cookie", AdminCookie)
+      .expect(404);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Not Found"
+      }
+    ]);
+  });
+
+  it("returns a 403 error when trying to fetch a user as a regular user", async () => {
+    const response = await request(app)
+      .get("/api/users/1") // Assuming user with ID 1 exists
+      .set("Cookie", UserCookie)
+      .expect(403);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Not enough permissions"
+      }
+    ]);
+  });
+
+  it("returns a 401 error when trying to fetch a user without an access token", async () => {
+    const response = await request(app).get("/api/users/1").expect(401);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Not authorized"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when trying to fetch a user with an invalid ID", async () => {
+    const response = await request(app)
+      .get("/api/users/invalid_id")
+      .set("Cookie", AdminCookie)
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "You should provide an id"
+      }
+    ]);
+  });
+
+  // ---------- GET /api/profile ----------
+
+  it("returns the profile of the authenticated user", async () => {
+    const response = await request(app)
+      .get("/api/profile")
+      .set("Cookie", UserCookie)
+      .expect(200);
+
+    expect(response.body.user.email).toBe("user@user.com");
+    expect(response.body.user.username).toBe("test_user");
+  });
+
+  it("returns a 401 error when trying to fetch profile without an access token", async () => {
+    const response = await request(app).get("/api/profile").expect(401);
 
     expect(response.body.errors).toEqual([
       {
