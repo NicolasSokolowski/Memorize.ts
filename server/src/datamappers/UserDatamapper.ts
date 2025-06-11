@@ -29,4 +29,15 @@ export class UserDatamapper extends CoreDatamapper<UserDatamapperReq> {
     );
     return result.rows[0];
   };
+
+  updateRole = async (
+    userId: number,
+    roleId: number
+  ): Promise<UserDatamapperReq["data"]> => {
+    const result = await this.pool.query(
+      `UPDATE "${this.tableName}" SET role_id = $1 WHERE id = $2 RETURNING *`,
+      [roleId, userId]
+    );
+    return result.rows[0];
+  };
 }
