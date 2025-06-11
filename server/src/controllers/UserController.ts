@@ -150,7 +150,7 @@ export class UserController extends CoreController<
     }
   };
 
-  update = async (req: Request, res: Response): Promise<void> => {
+  updateUser = async (req: Request, res: Response): Promise<void> => {
     const userEmail = req.user?.email;
     const data = req.body;
 
@@ -182,7 +182,44 @@ export class UserController extends CoreController<
       throw new DatabaseConnectionError();
     }
 
-    res.status(200).send(updatedUser);
+    const { password, created_at, updated_at, ...userWithoutPassword } =
+      updatedUser;
+
+    res.status(200).send({ user: userWithoutPassword });
+  };
+
+  updateUserRole = async (req: Request, res: Response): Promise<void> => {
+    const userId: number = parseInt(req.params.user_id);
+    const { name: roleName } = req.body;
+
+    if (!userId) {
+      throw new BadRequestError("You should provide a valid id");
+    }
+
+    const user = await this.datamapper.findByPk(userId);
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
+    const role = await roleController.datamapper.findBySpecificField(
+      "name",
+      roleName
+    );
+
+    if (!role) {
+      throw new NotFoundError();
+    }
+
+    const updatedUser = await this.datamapper.updateRole(userId, role.id);
+
+    if (!updatedUser) {
+      throw new DatabaseConnectionError();
+    }
+
+    const { password, ...userWithoutPassword } = updatedUser;
+
+    res.status(200).send({ user: userWithoutPassword });
   };
 
   changePassword = async (req: Request, res: Response): Promise<void> => {
