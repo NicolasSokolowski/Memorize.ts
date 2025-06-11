@@ -1,13 +1,14 @@
 import express from "express";
 import { errorCatcher } from "../../../helpers/errorCatcher.helper";
 import { userController } from "../../../controllers/index.controllers";
-import roleRouter from "./role.router";
+import rolesRouter from "../role/roles.router";
 import {
   requireAuth,
   validateRequest,
   checkPermissions
 } from "../../../middlewares/index.middlewares";
 import { userCreateSchema } from "../../../validation/index.validation";
+import userRouter from "./user.router";
 
 const usersRouter = express.Router();
 
@@ -23,14 +24,7 @@ usersRouter
     errorCatcher(userController.signup)
   );
 
-usersRouter
-  .route("/:user_id")
-  .get(
-    errorCatcher(requireAuth),
-    errorCatcher(checkPermissions(["admin"])),
-    errorCatcher(userController.getByPk)
-  );
-
-usersRouter.use("/role", roleRouter);
+usersRouter.use("/:user_id", userRouter);
+usersRouter.use("/roles", rolesRouter);
 
 export default usersRouter;
