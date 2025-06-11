@@ -2,11 +2,11 @@ import { poolConfig } from "../../database/pg.client";
 import { Pool } from "pg";
 import request from "supertest";
 import { app } from "../../index.app";
-import { AdminCookie, UserCookie } from "../helpers/test.helpers";
+import { AdminCookie, createUser, UserCookie } from "../helpers/test.helpers";
 
 const pool = new Pool(poolConfig);
 
-describe("Role tests", () => {
+describe("User GET tests", () => {
   beforeAll(async () => {
     await pool.query(
       `INSERT INTO "user" ("email", "password", "username", "role_id") VALUES ('user@user.com', 'pAssw0rd!123', 'test_user', 2) ON CONFLICT DO NOTHING`
@@ -59,12 +59,14 @@ describe("Role tests", () => {
   // ---------- GET /api/users/:user_id ----------
 
   it("returns a user by ID", async () => {
+    const user = await createUser();
+
     const response = await request(app)
-      .get("/api/users/1") // Assuming user with ID 1 exists
+      .get(`/api/users/${user.body.user.id}`)
       .set("Cookie", AdminCookie)
       .expect(200);
 
-    expect(response.body.email).toBe("user@user.com");
+    expect(response.body.email).toBe(user.body.user.email);
   });
 
   it("returns a 404 error when trying to fetch a non-existing user", async () => {
