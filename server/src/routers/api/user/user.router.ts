@@ -1,39 +1,27 @@
 import express from "express";
-import { userController } from "../../../controllers/index.controllers";
-import { errorCatcher } from "../../../helpers/errorCatcher.helper";
-import {
-  userUpdateSchema,
-  passwordUpdateSchema
-} from "../../../validation/index.validation";
+import { errorCatcher } from "../../../helpers/index.helpers";
 import {
   checkPermissions,
-  validateRequest,
-  requireAuth
+  requireAuth,
+  validateRequest
 } from "../../../middlewares/index.middlewares";
+import { userController } from "../../../controllers/index.controllers";
+import { userRoleUpdateSchema } from "../../../validation/index.validation";
 
-const userRouter = express.Router();
+const userRouter = express.Router({ mergeParams: true });
 
 userRouter
   .route("/")
   .get(
     errorCatcher(requireAuth),
-    errorCatcher(checkPermissions(["admin", "user"])),
-    errorCatcher(userController.getProfile)
+    errorCatcher(checkPermissions(["admin"])),
+    errorCatcher(userController.getByPk)
   )
   .patch(
     errorCatcher(requireAuth),
-    errorCatcher(checkPermissions(["admin", "user"])),
-    errorCatcher(validateRequest("body", userUpdateSchema)),
-    errorCatcher(userController.update)
-  );
-
-userRouter
-  .route("/changepw")
-  .patch(
-    errorCatcher(requireAuth),
-    errorCatcher(checkPermissions(["admin", "user"])),
-    errorCatcher(validateRequest("body", passwordUpdateSchema)),
-    errorCatcher(userController.changePassword)
+    errorCatcher(checkPermissions(["admin"])),
+    errorCatcher(validateRequest("body", userRoleUpdateSchema)),
+    errorCatcher(userController.updateUserRole)
   );
 
 export default userRouter;

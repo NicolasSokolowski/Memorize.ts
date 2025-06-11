@@ -8,9 +8,9 @@ import {
 } from "../../../middlewares/index.middlewares";
 import { roleCreateSchema } from "../../../validation/index.validation";
 
-const roleRouter = express.Router();
+const rolesRouter = express.Router();
 
-roleRouter
+rolesRouter
   .route("/")
   .get(errorCatcher(roleController.getAll))
   .post(
@@ -20,4 +20,4 @@ roleRouter
     errorCatcher(roleController.create)
   );
 
-export default roleRouter;
+export default rolesRouter;

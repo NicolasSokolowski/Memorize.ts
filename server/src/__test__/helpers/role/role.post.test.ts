@@ -1,8 +1,8 @@
-import { poolConfig } from "../../database/pg.client";
+import { poolConfig } from "../../../database/pg.client";
 import { Pool } from "pg";
 import request from "supertest";
-import { app } from "../../index.app";
-import { AdminCookie } from "../helpers/test.helpers";
+import { app } from "../../../index.app";
+import { AdminCookie } from "../test.helpers";
 
 const pool = new Pool(poolConfig);
 
@@ -25,11 +25,11 @@ describe("Role tests", () => {
     await pool.end();
   });
 
-  // ---------- POST /api/users/role ----------
+  // ---------- POST /api/users/roles ----------
 
   it("creates a role when providing correct data", async () => {
     await request(app)
-      .post("/api/users/role")
+      .post("/api/users/roles")
       .set("Cookie", AdminCookie)
       .send({
         name: "test_role"
@@ -39,7 +39,7 @@ describe("Role tests", () => {
 
   it("returns a 400 error when providing wrong data type", async () => {
     const response = await request(app)
-      .post("/api/users/role")
+      .post("/api/users/roles")
       .set("Cookie", AdminCookie)
       .send({
         name: 1 // Wrong data type
@@ -53,7 +53,7 @@ describe("Role tests", () => {
 
   it("returns a 400 error when name field is not provided", async () => {
     const response = await request(app)
-      .post("/api/users/role")
+      .post("/api/users/roles")
       .set("Cookie", AdminCookie)
       .send()
       .expect(400);
@@ -63,7 +63,7 @@ describe("Role tests", () => {
 
   it("returns a 400 error when name field is empty", async () => {
     const response = await request(app)
-      .post("/api/users/role")
+      .post("/api/users/roles")
       .set("Cookie", AdminCookie)
       .send({
         name: "" // Empty name
@@ -75,7 +75,7 @@ describe("Role tests", () => {
 
   it("returns a 400 error when name is less then 3 characters", async () => {
     const response = await request(app)
-      .post("/api/users/role")
+      .post("/api/users/roles")
       .set("Cookie", AdminCookie)
       .send({
         name: "ch" // Less than 3 characters
@@ -89,7 +89,7 @@ describe("Role tests", () => {
 
   it("returns a 400 error when name is more than 15 characters", async () => {
     const response = await request(app)
-      .post("/api/users/role")
+      .post("/api/users/roles")
       .set("Cookie", AdminCookie)
       .send({
         name: "super_long_admin_role_name_for_no_test_purposes" // Less than 3 characters
@@ -103,7 +103,7 @@ describe("Role tests", () => {
 
   it("returns an error when provided  role name already exists", async () => {
     const response = await request(app)
-      .post("/api/users/role")
+      .post("/api/users/roles")
       .set("Cookie", AdminCookie)
       .send({
         name: "user" // Existing role name

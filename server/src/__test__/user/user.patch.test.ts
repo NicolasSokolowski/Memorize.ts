@@ -5,7 +5,9 @@ import { Pool } from "pg";
 import {
   createUser,
   mockUserAccessToken,
-  mockCookie
+  mockCookie,
+  UserCookie,
+  AdminCookie
 } from "../helpers/test.helpers";
 
 const pool = new Pool(poolConfig);
@@ -48,8 +50,8 @@ describe("User tests", () => {
       })
       .expect(200);
 
-    expect(response.body.email).toBe("newemail@user.com");
-    expect(response.body.username).toBe("new_username");
+    expect(response.body.user.email).toBe("newemail@user.com");
+    expect(response.body.user.username).toBe("new_username");
   });
 
   it("returns a 400 error when trying to update an user with an already existing email", async () => {
@@ -399,6 +401,124 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message: "Missing field currentPassword"
+      }
+    ]);
+  });
+
+  // ---------- PATCH /api/users/:user_id ----------
+
+  it("updates a user's role when providing correct data", async () => {
+    const user = await createUser();
+
+    const response = await request(app)
+      .patch(`/api/users/${user.body.user.id}`)
+      .set("Cookie", AdminCookie)
+      .send({
+        name: "admin"
+      })
+      .expect(200);
+
+    expect(response.body.user.role_id).toBe(1);
+  });
+
+  it("returns a 403 error when trying to update a user's role as a user", async () => {
+    const user = await createUser();
+
+    const response = await request(app)
+      .patch(`/api/users/${user.body.user.id}`)
+      .set("Cookie", UserCookie)
+      .send({
+        name: "admin"
+      })
+      .expect(403);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Not enough permissions"
+      }
+    ]);
+  });
+
+  it("returns a 404 error when trying to update a user's role that does not exist", async () => {
+    const user = await createUser();
+
+    const response = await request(app)
+      .patch(`/api/users/${user.body.user.id}`)
+      .set("Cookie", AdminCookie)
+      .send({
+        name: "general" // Non-existing role
+      })
+      .expect(404);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Not Found"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when updating a user's role but providing invalid name data type", async () => {
+    const user = await createUser();
+
+    const response = await request(app)
+      .patch(`/api/users/${user.body.user.id}`)
+      .set("Cookie", AdminCookie)
+      .send({
+        name: 1 // Invalid data type
+      })
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Name must be a string"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when updating a user's role but providing empty name", async () => {
+    const user = await createUser();
+
+    const response = await request(app)
+      .patch(`/api/users/${user.body.user.id}`)
+      .set("Cookie", AdminCookie)
+      .send({
+        name: "" // Empty name
+      })
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Name cannot be empty"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when updating a user's role with an invalid id", async () => {
+    const response = await request(app)
+      .patch(`/api/users/invalid_id`) // Invalid ID
+      .set("Cookie", AdminCookie)
+      .send({
+        name: "admin"
+      })
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "You should provide a valid id"
+      }
+    ]);
+  });
+
+  it("returns a 400 error when updating a user's role with missing name field", async () => {
+    const response = await request(app)
+      .patch(`/api/users/invalid_id`)
+      .set("Cookie", AdminCookie)
+      .send() // No name field provided
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      {
+        message: "Missing field name"
       }
     ]);
   });
