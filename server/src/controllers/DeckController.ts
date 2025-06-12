@@ -60,5 +60,37 @@ export class DeckController extends CoreController<
     res.status(201).json(createdItem);
   };
 
-  update = async (req: Request, res: Response): Promise<void> => {};
+  update = async (req: Request, res: Response): Promise<void> => {
+    const deck_id: number = parseInt(req.params.deck_id, 10);
+    const data: DeckDatamapperReq["data"] = req.body;
+
+    if (!deck_id) {
+      throw new BadRequestError("You should provide a valid id");
+    }
+
+    const deck = await this.datamapper.findByPk(deck_id);
+
+    if (!deck) {
+      throw new NotFoundError();
+    }
+
+    if (data.name === deck.name) {
+      throw new BadRequestError(
+        `A deck with the name "${data.name}" already exists.`
+      );
+    }
+
+    data.id = deck_id;
+
+    const updatedDeck = await this.datamapper.update(data);
+
+    if (!updatedDeck) {
+      throw new DatabaseConnectionError();
+    }
+
+    const { user_id, created_at, updated_at, ...deckWithoutSensitiveData } =
+      updatedDeck;
+
+    res.status(200).send(deckWithoutSensitiveData);
+  };
 }

@@ -8,6 +8,7 @@ import {
   userDatamapper
 } from "../datamappers/index.datamappers";
 import { UserPayload } from "../helpers/UserPayload.helper";
+import { BadRequestError } from "../errors/BadRequestError.error";
 
 declare module "express" {
   interface Request {
@@ -33,8 +34,8 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
         case "deck":
           const deck_id = req.params.deck_id;
 
-          if (!deck_id) {
-            throw new NotFoundError();
+          if (!deck_id || isNaN(parseInt(deck_id, 10))) {
+            throw new BadRequestError("Invalid deck ID provided.");
           }
 
           const deck = await deckDatamapper.findByPk(parseInt(deck_id, 10));

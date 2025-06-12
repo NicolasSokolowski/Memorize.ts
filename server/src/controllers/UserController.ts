@@ -189,7 +189,7 @@ export class UserController extends CoreController<
   };
 
   updateUserRole = async (req: Request, res: Response): Promise<void> => {
-    const userId: number = parseInt(req.params.user_id);
+    const userId: number = parseInt(req.params.user_id, 10);
     const { name: roleName } = req.body;
 
     if (!userId) {

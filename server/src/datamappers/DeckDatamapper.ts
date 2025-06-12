@@ -17,13 +17,12 @@ export class DeckDatamapper extends CoreDatamapper<DeckDatamapperReq> {
   };
 
   update = async (
-    data: DeckDatamapperReq["data"],
-    emailCookie: string
+    data: DeckDatamapperReq["data"]
   ): Promise<DeckDatamapperReq["data"]> => {
-    const { name } = data;
+    const { name, id } = data;
     const result = await this.pool.query(
-      `UPDATE "${this.tableName}" SET name = $1 WHERE email = $2 RETURNING *`,
-      [name, emailCookie]
+      `UPDATE "${this.tableName}" SET name = $1 WHERE id = $2 RETURNING *`,
+      [name, id]
     );
     return result.rows[0];
   };
