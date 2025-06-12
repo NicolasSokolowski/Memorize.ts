@@ -57,8 +57,8 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
         case "card":
           const card_id = req.params.card_id;
 
-          if (!card_id) {
-            throw new NotFoundError();
+          if (!card_id || isNaN(parseInt(card_id, 10))) {
+            throw new BadRequestError("Invalid card ID provided.");
           }
 
           const cardUser = await cardDatamapper.findCardUserByCardId(
