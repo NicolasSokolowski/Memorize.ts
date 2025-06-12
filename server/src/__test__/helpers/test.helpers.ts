@@ -78,6 +78,17 @@ export const createDeck = async () => {
     .expect(201);
 };
 
+export const createCard = async (deckId: number) => {
+  return request(app)
+    .post(`/api/decks/${deckId}/cards`)
+    .set("Cookie", UserCookie)
+    .send({
+      front: makeRandomString(10),
+      back: makeRandomString(10)
+    })
+    .expect(201);
+};
+
 export const createAnotherDeck = async () => {
   return request(app)
     .post("/api/decks")
