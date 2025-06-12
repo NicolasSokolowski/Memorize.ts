@@ -4,7 +4,8 @@ import { CoreController } from "./CoreController";
 import { CardControllerReq } from "./interfaces/CardControllerReq";
 import {
   BadRequestError,
-  DatabaseConnectionError
+  DatabaseConnectionError,
+  NotFoundError
 } from "../errors/index.errors";
 
 export class CardController extends CoreController<
@@ -42,5 +43,41 @@ export class CardController extends CoreController<
     res.status(201).json(createdItem);
   };
 
-  update = async (req: Request, res: Response): Promise<void> => {};
+  update = async (req: Request, res: Response): Promise<void> => {
+    const cardId = parseInt(req.params.card_id, 10);
+    const data: Partial<CardDatamapperReq["data"]> = req.body;
+
+    const card = await this.datamapper.findByPk(cardId);
+
+    if (!card) {
+      throw new NotFoundError();
+    }
+
+    const checkIfCardExistsInDeck = await this.datamapper.checkCompositeKey(
+      data.front,
+      card.deck_id
+    );
+
+    if (checkIfCardExistsInDeck && checkIfCardExistsInDeck.id !== cardId) {
+      throw new BadRequestError(
+        `Front side already exists in this deck with ID ${card.deck_id}.`
+      );
+    }
+
+    const mergedData: CardDatamapperReq["data"] = {
+      ...card,
+      ...data,
+      id: cardId
+    };
+
+    const updatedItem = await this.datamapper.update(mergedData);
+
+    if (!updatedItem) {
+      throw new DatabaseConnectionError();
+    }
+
+    const { created_at, updated_at, ...cardWithoutTimestamps } = updatedItem;
+
+    res.status(200).json(cardWithoutTimestamps);
+  };
 }
