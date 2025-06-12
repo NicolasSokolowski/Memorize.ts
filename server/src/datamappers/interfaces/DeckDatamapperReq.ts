@@ -6,6 +6,10 @@ export interface DeckDatamapperReq extends EntityDatamapperReq {
   data: {
     id?: number;
     name: string;
+    user_id?: number;
+    created_at?: Date;
+    updated_at?: Date;
   };
   findAllDecksByUserId(id: number): Promise<DeckDatamapperReq["data"][]>;
+  update(data: DeckDatamapperReq["data"]): Promise<DeckDatamapperReq["data"]>;
 }
