@@ -75,19 +75,12 @@ export abstract class CoreController<
     res.status(201).json(createdItem);
   };
 
-  preDeletionCheck = async (
-    field: string,
-    value: string | number
-  ): Promise<void> => {
-    return;
-  };
-
   delete = async (req: Request, res: Response) => {
     const paramName = `${this.tableName}_id`;
     const id: number = parseInt(req.params[paramName]);
 
-    if (!id) {
-      throw new BadRequestError("This id doesn't exist");
+    if (!id || isNaN(id)) {
+      throw new BadRequestError("Please provide a valid id.");
     }
 
     const itemToDelete = await this.datamapper.findByPk(id);
@@ -95,8 +88,6 @@ export abstract class CoreController<
     if (!itemToDelete) {
       throw new NotFoundError();
     }
-
-    await this.preDeletionCheck(this.field, itemToDelete);
 
     const deletedItem = await this.datamapper.delete(id);
 
