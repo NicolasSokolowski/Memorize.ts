@@ -9,7 +9,7 @@ export class CardDatamapper extends CoreDatamapper<CardDatamapperReq> {
 
   findCardUserByCardId = async (cardId: number) => {
     const result = await this.pool.query(
-      `SELECT "user".email FROM "${this.tableName}" FROM "user"
+      `SELECT "user".email FROM "user"
       LEFT JOIN "deck"
         ON deck.user_id = "user".id
       LEFT JOIN "card"
@@ -29,13 +29,12 @@ export class CardDatamapper extends CoreDatamapper<CardDatamapperReq> {
   };
 
   update = async (
-    data: CardDatamapperReq["data"],
-    emailCookie: string
+    data: CardDatamapperReq["data"]
   ): Promise<CardDatamapperReq["data"]> => {
-    const { front } = data;
+    const { front, back, id } = data;
     const result = await this.pool.query(
-      `UPDATE "${this.tableName}" SET front = $1 WHERE email = $2 RETURNING *`,
-      [front, emailCookie]
+      `UPDATE "${this.tableName}" SET front = $1, back = $2 WHERE id = $3 RETURNING *`,
+      [front, back, id]
     );
     return result.rows[0];
   };
