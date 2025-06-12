@@ -2,10 +2,12 @@ import express from "express";
 import { errorCatcher } from "../../../helpers/errorCatcher.helper";
 import {
   requireAuth,
-  checkPermissions
+  checkPermissions,
+  validateRequest
 } from "../../../middlewares/index.middlewares";
 import { deckController } from "../../../controllers/index.controllers";
 import cardsRouter from "../card/cards.router";
+import { deckUpdateSchema } from "../../../validation/index.validation";
 
 const deckRouter = express.Router({ mergeParams: true });
 
@@ -19,6 +21,7 @@ deckRouter
   .put(
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"], "deck")),
+    errorCatcher(validateRequest("body", deckUpdateSchema)),
     errorCatcher(deckController.update)
   )
   .delete(
