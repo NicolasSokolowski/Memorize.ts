@@ -55,6 +55,31 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           break;
 
         case "card":
+          const deckId = req.params.deck_id;
+
+          if (!deckId || isNaN(parseInt(deckId, 10))) {
+            throw new BadRequestError("Invalid deck ID provided.");
+          }
+
+          const cardDeck = await deckDatamapper.findByPk(parseInt(deckId, 10));
+
+          if (!cardDeck) {
+            throw new NotFoundError();
+          }
+
+          const cardDeckUser = await userDatamapper.findBySpecificField(
+            "email",
+            userEmail
+          );
+
+          if (!cardDeckUser) {
+            throw new NotFoundError();
+          }
+
+          if (cardDeckUser.id !== cardDeck.user_id) {
+            throw new AccessDeniedError("You do not own this deck.");
+          }
+
           const card_id = req.params.card_id;
 
           if (!card_id || isNaN(parseInt(card_id, 10))) {

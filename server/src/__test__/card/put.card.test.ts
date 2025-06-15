@@ -23,6 +23,11 @@ describe("Card tests", () => {
     );
   });
 
+  afterEach(async () => {
+    await pool.query(`DELETE FROM "deck" WHERE name = 'test_deck'`);
+    await pool.query(`DELETE FROM "card" WHERE front = 'test_front'`);
+  });
+
   afterAll(async () => {
     await pool.query(
       `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
@@ -86,14 +91,30 @@ describe("Card tests", () => {
 
   it("returns a 403 error when trying to update another user's card", async () => {
     const deck = await createDeck();
-    const card = await createCard(deck.body.id);
     const anotherUser = await createUser();
     const accessToken = mockUserAccessToken(anotherUser.body.user.email);
     const cookie = mockCookie(accessToken);
 
-    const response = await request(app)
-      .put(`/api/decks/${deck.body.id}/cards/${card.body.id}`)
+    const anotherUserDeck = await request(app)
+      .post("/api/decks")
       .set("Cookie", cookie)
+      .send({
+        name: "test_deck"
+      })
+      .expect(201);
+
+    const anotherUserCard = await request(app)
+      .post(`/api/decks/${anotherUserDeck.body.id}/cards`)
+      .set("Cookie", cookie)
+      .send({
+        front: "test_front",
+        back: "test_back"
+      })
+      .expect(201);
+
+    const response = await request(app)
+      .put(`/api/decks/${deck.body.id}/cards/${anotherUserCard.body.id}`)
+      .set("Cookie", UserCookie)
       .send({
         front: "updated_front",
         back: "updated_back"
