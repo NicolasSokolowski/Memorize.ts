@@ -7,10 +7,15 @@ export class DeckDatamapper extends CoreDatamapper<DeckDatamapperReq> {
   readonly tableName = TableNames.Deck;
   pool = pool;
 
-  findAllDecksByUserId = async (id: number) => {
+  findAllDecksByUserEmail = async (email: string) => {
     const result = await this.pool.query(
-      `SELECT * FROM "${this.tableName}" WHERE "user_id" = $1`,
-      [id]
+      `SELECT * FROM "${this.tableName}" 
+      LEFT JOIN "user"
+      ON deck.user_id = "user".id
+      WHERE "user".email = $1
+      ORDER BY deck.created_at DESC
+      `,
+      [email]
     );
 
     return result.rows;
