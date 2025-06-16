@@ -4,6 +4,8 @@ import request from "supertest";
 import { app } from "../../index.app";
 import {
   createUser,
+  mockAdminAccessToken,
+  mockAdminCookie,
   mockCookie,
   mockUserAccessToken,
   UserCookie
@@ -64,5 +66,77 @@ describe("User GET tests", () => {
       .expect(404);
 
     expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+  });
+
+  // ---------- DELETE /api/users/:user_id ----------
+
+  it("deletes a user by ID when providing correct data", async () => {
+    const user = await createUser();
+    const accessToken = mockAdminAccessToken(user.body.user.email);
+    const cookie = mockAdminCookie(accessToken);
+
+    const userToDelete = await createUser();
+
+    const response = await request(app)
+      .delete(`/api/users/${userToDelete.body.user.id}`)
+      .set("Cookie", cookie)
+      .expect(200);
+
+    expect(response.body.message).toBe("Item successfully deleted.");
+
+    const userCheck = await pool.query(`SELECT * FROM "user" WHERE id = $1`, [
+      userToDelete.body.user.id
+    ]);
+
+    expect(userCheck.rows.length).toBe(0);
+  });
+
+  it("returns a 403 error when trying to delete a user as a regular user", async () => {
+    const user = await createUser();
+
+    const response = await request(app)
+      .delete(`/api/users/${user.body.user.id}`)
+      .set("Cookie", UserCookie)
+      .expect(403);
+
+    expect(response.body.errors).toEqual([
+      { message: "Not enough permissions" }
+    ]);
+  });
+
+  it("returns a 404 error when trying to delete a non-existing user", async () => {
+    const user = await createUser();
+    const accessToken = mockAdminAccessToken(user.body.user.email);
+    const cookie = mockAdminCookie(accessToken);
+
+    const response = await request(app)
+      .delete("/api/users/9999") // Assuming this ID does not exist
+      .set("Cookie", cookie)
+      .expect(404);
+
+    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+  });
+
+  it("returns a 400 error when trying to delete a user with an invalid ID", async () => {
+    const user = await createUser();
+    const accessToken = mockAdminAccessToken(user.body.user.email);
+    const cookie = mockAdminCookie(accessToken);
+
+    const response = await request(app)
+      .delete("/api/users/invalid_id")
+      .set("Cookie", cookie)
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      { message: "Please provide a valid id." }
+    ]);
+  });
+
+  it("returns a 401 error when trying to delete a user without an access token", async () => {
+    const response = await request(app)
+      .delete("/api/users/1") // Assuming user with ID 1 exists
+      .expect(401);
+
+    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
   });
 });
