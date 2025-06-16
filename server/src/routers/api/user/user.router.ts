@@ -22,6 +22,11 @@ userRouter
     errorCatcher(checkPermissions(["admin"])),
     errorCatcher(validateRequest("body", userRoleUpdateSchema)),
     errorCatcher(userController.updateUserRole)
+  )
+  .delete(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin"])),
+    errorCatcher(userController.delete)
   );
 
 export default userRouter;

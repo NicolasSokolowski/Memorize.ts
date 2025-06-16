@@ -1,8 +1,8 @@
-import { poolConfig } from "../../../database/pg.client";
+import { poolConfig } from "../../database/pg.client";
 import { Pool } from "pg";
 import request from "supertest";
-import { app } from "../../../index.app";
-import { AdminCookie } from "../test.helpers";
+import { app } from "../../index.app";
+import { AdminCookie } from "../helpers/test.helpers";
 
 const pool = new Pool(poolConfig);
 

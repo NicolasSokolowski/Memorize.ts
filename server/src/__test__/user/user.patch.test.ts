@@ -24,7 +24,7 @@ describe("User tests", () => {
 
   afterEach(async () => {
     await pool.query(
-      `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com', 'newemail@user.com', 'testuser@user.com');`
+      `DELETE FROM "user" WHERE email IN ('newemail@user.com', 'testuser@user.com');`
     );
   });
 

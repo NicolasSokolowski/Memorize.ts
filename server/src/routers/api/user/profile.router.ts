@@ -25,6 +25,11 @@ profileRouter
     errorCatcher(checkPermissions(["admin", "user"])),
     errorCatcher(validateRequest("body", userUpdateSchema)),
     errorCatcher(userController.updateUser)
+  )
+  .delete(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"])),
+    errorCatcher(userController.deleteAccount)
   );
 
 profileRouter

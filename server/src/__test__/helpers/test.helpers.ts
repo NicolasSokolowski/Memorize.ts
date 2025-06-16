@@ -121,8 +121,27 @@ export const mockUserAccessToken = (email: string) => {
   );
 };
 
-export const mockCookie = (accessTokenMock: string) => {
-  return cookie.serialize("access_token", accessTokenMock, {
+export const mockAdminAccessToken = (email: string) => {
+  return jwt.sign(
+    {
+      email,
+      role: "admin"
+    },
+    ACCESS_TOKEN_SECRET as string,
+    { expiresIn: "1h" }
+  );
+};
+
+export const mockCookie = (accessToken: string) => {
+  return cookie.serialize("access_token", accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict"
+  });
+};
+
+export const mockAdminCookie = (accessToken: string) => {
+  return cookie.serialize("access_token", accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict"

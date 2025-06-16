@@ -25,6 +25,12 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
       throw new AccessDeniedError("Not enough permissions");
     }
 
+    const user = await userDatamapper.findBySpecificField("email", userEmail);
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
     if (!entity) {
       return next();
     }
@@ -44,12 +50,7 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
             throw new NotFoundError();
           }
 
-          const deckUser = await userDatamapper.findBySpecificField(
-            "email",
-            userEmail
-          );
-
-          if (deck.user_id !== deckUser.id) {
+          if (deck.user_id !== user.id) {
             throw new AccessDeniedError("You do not own this deck.");
           }
           break;
@@ -67,16 +68,7 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
             throw new NotFoundError();
           }
 
-          const cardDeckUser = await userDatamapper.findBySpecificField(
-            "email",
-            userEmail
-          );
-
-          if (!cardDeckUser) {
-            throw new NotFoundError();
-          }
-
-          if (cardDeckUser.id !== cardDeck.user_id) {
+          if (user.id !== cardDeck.user_id) {
             throw new AccessDeniedError("You do not own this deck.");
           }
 
