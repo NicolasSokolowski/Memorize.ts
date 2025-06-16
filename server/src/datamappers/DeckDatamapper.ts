@@ -9,7 +9,7 @@ export class DeckDatamapper extends CoreDatamapper<DeckDatamapperReq> {
 
   findAllDecksByUserEmail = async (email: string) => {
     const result = await this.pool.query(
-      `SELECT * FROM "${this.tableName}" 
+      `SELECT deck.* FROM "${this.tableName}" 
       LEFT JOIN "user"
       ON deck.user_id = "user".id
       WHERE "user".email = $1
