@@ -5,5 +5,5 @@ type DeckControllerReqWithoutData = Omit<DeckDatamapperReq, "data">;
 
 export interface DeckControllerReq extends EntityControllerReq {
   datamapper: DeckControllerReqWithoutData;
-  getAllDecksByUserId(): Promise<DeckDatamapperReq["data"][]>;
+  getAllDecksByUserEmail(): Promise<DeckDatamapperReq["data"][]>;
 }

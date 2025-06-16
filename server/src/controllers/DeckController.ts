@@ -18,10 +18,10 @@ export class DeckController extends CoreController<
     this.datamapper = datamapper;
   }
 
-  getAllDecksByUserId = async (req: Request, res: Response) => {
-    const user_id = parseInt(req.params.user_id, 10);
+  getAllDecksByUserEmail = async (req: Request, res: Response) => {
+    const userEmail = req.user?.email;
 
-    const decks = await this.datamapper.findAllDecksByUserId(user_id);
+    const decks = await this.datamapper.findAllDecksByUserEmail(userEmail);
 
     if (!decks) {
       throw new NotFoundError();
