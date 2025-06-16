@@ -263,4 +263,25 @@ export class UserController extends CoreController<
 
     res.status(200).send({ user: userWithoutPassword });
   };
+
+  deleteAccount = async (req: Request, res: Response): Promise<void> => {
+    const userEmail = req.user?.email;
+
+    const user = await this.datamapper.findBySpecificField(
+      this.field,
+      userEmail
+    );
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
+    const deletedUser = await this.datamapper.delete(user.id);
+
+    if (!deletedUser) {
+      throw new DatabaseConnectionError();
+    }
+
+    res.status(200).send({ message: "Account deleted successfully" });
+  };
 }
