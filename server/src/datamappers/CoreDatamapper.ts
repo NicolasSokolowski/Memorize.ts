@@ -39,7 +39,7 @@ export abstract class CoreDatamapper<T extends EntityDatamapperReq> {
 
   delete = async (id: number) => {
     const result = await this.pool.query(
-      `DELETE FROM ${this.tableName} WHERE id = ($1)`,
+      `DELETE FROM "${this.tableName}" WHERE id = ($1)`,
       [id]
     );
 
