@@ -15,8 +15,8 @@ decksRouter
   .route("/")
   .get(
     errorCatcher(requireAuth),
-    errorCatcher(checkPermissions(["admin", "user"], "user")),
-    errorCatcher(deckController.getAllDecksByUserId)
+    errorCatcher(checkPermissions(["admin", "user"])),
+    errorCatcher(deckController.getAllDecksByUserEmail)
   )
   .post(
     errorCatcher(requireAuth),
