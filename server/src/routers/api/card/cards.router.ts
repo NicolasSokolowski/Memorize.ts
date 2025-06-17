@@ -13,6 +13,11 @@ const cardsRouter = express.Router({ mergeParams: true });
 
 cardsRouter
   .route("/")
+  .get(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"], "deck")),
+    errorCatcher(cardController.getAllCardsByDeckId)
+  )
   .post(
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"], "deck")),
