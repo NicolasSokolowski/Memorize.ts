@@ -68,6 +68,42 @@ describe("User GET tests", () => {
     expect(response.body.errors).toEqual([{ message: "Not Found" }]);
   });
 
+  it("deletes all the decks and cards associated with the user", async () => {
+    const user = await createUser();
+    const accessToken = mockUserAccessToken(user.body.user.email);
+    const cookie = mockCookie(accessToken);
+
+    // Create a deck and a card for the user
+    const deck = await request(app)
+      .post("/api/decks")
+      .set("Cookie", cookie)
+      .send({ name: "test_deck" })
+      .expect(201);
+
+    const card = await request(app)
+      .post(`/api/decks/${deck.body.id}/cards`)
+      .set("Cookie", cookie)
+      .send({ front: "test_front", back: "test_back" })
+      .expect(201);
+
+    // Delete the user profile
+
+    await request(app).delete("/api/profile").set("Cookie", cookie).expect(200);
+
+    // Check if the deck and card are deleted
+
+    const deckCheck = await pool.query(`SELECT * FROM "deck" WHERE id = $1`, [
+      deck.body.id
+    ]);
+
+    const cardCheck = await pool.query(`SELECT * FROM "card" WHERE id = $1`, [
+      card.body.id
+    ]);
+
+    expect(deckCheck.rows.length).toBe(0);
+    expect(cardCheck.rows.length).toBe(0);
+  });
+
   // ---------- DELETE /api/users/:user_id ----------
 
   it("deletes a user by ID when providing correct data", async () => {
