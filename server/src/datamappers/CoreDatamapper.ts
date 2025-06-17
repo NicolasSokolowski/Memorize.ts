@@ -1,9 +1,10 @@
+import { Pool } from "pg";
+import { TableNames } from "../helpers/TableNames";
 import { EntityDatamapperReq } from "./interfaces/EntityDatamapperReq";
 
-export abstract class CoreDatamapper<T extends EntityDatamapperReq> {
-  abstract tableName: T["tableName"];
-  abstract pool: T["pool"];
-  abstract update(entityObject: T["data"], email: string): Promise<T["data"]>;
+export abstract class CoreDatamapper<D> implements EntityDatamapperReq<D> {
+  abstract tableName: TableNames;
+  abstract pool: Pool;
 
   findByPk = async (id: number) => {
     const result = await this.pool.query(
@@ -26,7 +27,7 @@ export abstract class CoreDatamapper<T extends EntityDatamapperReq> {
     return result.rows[0];
   };
 
-  insert = async (entityObject: T["data"]) => {
+  insert = async (entityObject: D) => {
     const columns = Object.keys(entityObject).join(", ");
     const values = Object.values(entityObject);
     const placeholders = values.map((_, index) => `$${index + 1}`).join(", ");
@@ -39,7 +40,7 @@ export abstract class CoreDatamapper<T extends EntityDatamapperReq> {
 
   delete = async (id: number) => {
     const result = await this.pool.query(
-      `DELETE FROM "${this.tableName}" WHERE id = ($1)`,
+      `DELETE FROM "${this.tableName}" WHERE id = ($1) RETURNING *`,
       [id]
     );
 
@@ -47,6 +48,6 @@ export abstract class CoreDatamapper<T extends EntityDatamapperReq> {
       return { success: false, message: "Record not found" };
     }
 
-    return { success: true };
+    return result.rows[0];
   };
 }

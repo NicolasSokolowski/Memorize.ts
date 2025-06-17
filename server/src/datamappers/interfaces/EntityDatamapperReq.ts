@@ -2,18 +2,12 @@
 import { Pool } from "pg";
 import { TableNames } from "../../helpers/TableNames";
 
-export interface EntityDatamapperReq {
+export interface EntityDatamapperReq<D = any> {
   tableName: TableNames;
   pool: Pool;
-  data: any;
-  findByPk(id: number): Promise<EntityDatamapperReq["data"]>;
-  findAll(): Promise<EntityDatamapperReq["data"][]>;
-  findBySpecificField(
-    field: string,
-    value: string
-  ): Promise<EntityDatamapperReq["data"]>;
-  insert(
-    item: EntityDatamapperReq["data"]
-  ): Promise<EntityDatamapperReq["data"]>;
-  delete(id: number): Promise<EntityDatamapperReq["data"]>;
+  findByPk(id: number): Promise<D>;
+  findAll(): Promise<D[]>;
+  findBySpecificField(field: string, value: string): Promise<D>;
+  insert(item: D): Promise<D>;
+  delete(id: number): Promise<D>;
 }

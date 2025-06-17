@@ -1,9 +1,9 @@
 import { pool } from "../database/pg.client";
 import { TableNames } from "../helpers/TableNames";
 import { CoreDatamapper } from "./CoreDatamapper";
-import { DeckDatamapperReq } from "./interfaces/DeckDatamapperReq";
+import { DeckData } from "./interfaces/DeckDatamapperReq";
 
-export class DeckDatamapper extends CoreDatamapper<DeckDatamapperReq> {
+export class DeckDatamapper extends CoreDatamapper<DeckData> {
   readonly tableName = TableNames.Deck;
   pool = pool;
 
@@ -21,9 +21,20 @@ export class DeckDatamapper extends CoreDatamapper<DeckDatamapperReq> {
     return result.rows;
   };
 
-  update = async (
-    data: DeckDatamapperReq["data"]
-  ): Promise<DeckDatamapperReq["data"]> => {
+  findAllCardsByDeckId = async (deckId: number) => {
+    const result = await this.pool.query(
+      `SELECT card.* FROM "card"
+      LEFT JOIN "deck"
+      ON card.deck_id = deck.id
+      WHERE deck.id = $1
+      `,
+      [deckId]
+    );
+
+    return result.rows;
+  };
+
+  update = async (data: DeckData): Promise<DeckData> => {
     const { name, id } = data;
     const result = await this.pool.query(
       `UPDATE "${this.tableName}" SET name = $1 WHERE id = $2 RETURNING *`,
