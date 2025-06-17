@@ -5,5 +5,5 @@ import {
 import { EntityControllerReq } from "./EntityControllerReq";
 
 export interface UserControllerReq extends EntityControllerReq<UserData> {
-  datamapper: Omit<UserDatamapperReq, "data">;
+  datamapper: UserDatamapperReq;
 }

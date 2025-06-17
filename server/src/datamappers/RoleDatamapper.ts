@@ -1,9 +1,12 @@
 import { pool } from "../database/pg.client";
 import { TableNames } from "../helpers/TableNames";
 import { CoreDatamapper } from "./CoreDatamapper";
-import { RoleData } from "./interfaces/RoleDatamapperReq";
+import { RoleData, RoleDatamapperReq } from "./interfaces/RoleDatamapperReq";
 
-export class RoleDatamapper extends CoreDatamapper<RoleData> {
+export class RoleDatamapper
+  extends CoreDatamapper<RoleData>
+  implements RoleDatamapperReq
+{
   readonly tableName = TableNames.Role;
   pool = pool;
 

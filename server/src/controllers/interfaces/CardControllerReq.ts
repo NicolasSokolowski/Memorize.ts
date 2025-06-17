@@ -5,5 +5,5 @@ import {
 import { EntityControllerReq } from "./EntityControllerReq";
 
 export interface CardControllerReq extends EntityControllerReq<CardData> {
-  datamapper: Omit<CardDatamapperReq, "data">;
+  datamapper: CardDatamapperReq;
 }

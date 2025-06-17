@@ -1,9 +1,12 @@
 import { pool } from "../database/pg.client";
 import { TableNames } from "../helpers/TableNames";
 import { CoreDatamapper } from "./CoreDatamapper";
-import { UserData } from "./interfaces/UserDatamapperReq";
+import { UserData, UserDatamapperReq } from "./interfaces/UserDatamapperReq";
 
-export class UserDatamapper extends CoreDatamapper<UserData> {
+export class UserDatamapper
+  extends CoreDatamapper<UserData>
+  implements UserDatamapperReq
+{
   readonly tableName = TableNames.User;
   pool = pool;
 

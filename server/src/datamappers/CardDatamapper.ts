@@ -3,7 +3,10 @@ import { TableNames } from "../helpers/TableNames";
 import { CoreDatamapper } from "./CoreDatamapper";
 import { CardData, CardDatamapperReq } from "./interfaces/CardDatamapperReq";
 
-export class CardDatamapper extends CoreDatamapper<CardDatamapperReq> {
+export class CardDatamapper
+  extends CoreDatamapper<CardDatamapperReq>
+  implements CardDatamapperReq
+{
   readonly tableName = TableNames.Card;
   pool = pool;
 
@@ -35,5 +38,13 @@ export class CardDatamapper extends CoreDatamapper<CardDatamapperReq> {
       [front, back, id]
     );
     return result.rows[0];
+  };
+
+  findAllCardsByDeckId = async (deckId: number): Promise<CardData[]> => {
+    const result = await this.pool.query(
+      `SELECT * FROM "${this.tableName}" WHERE deck_id = $1 ORDER BY difficulty DESC`,
+      [deckId]
+    );
+    return result.rows;
   };
 }
