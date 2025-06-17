@@ -4,6 +4,7 @@ import { app } from "../../index.app";
 import request from "supertest";
 import {
   UserCookie,
+  createCard,
   createDeck,
   createUser,
   makeRandomString,
@@ -134,6 +135,121 @@ describe("Card tests", () => {
 
     expect(response.body.errors).toEqual([
       { message: "You do not own this deck." }
+    ]);
+  });
+
+  // ---------- GET /api/decks/:deck_id/cards/:card_id ----------
+
+  it("returns a specific card by ID", async () => {
+    const deck = await createDeck();
+
+    // Create a card in the deck
+    const card = await createCard(deck.body.id);
+
+    const cardId = card.body.id;
+
+    // Fetch the specific card
+    const response = await request(app)
+      .get(`/api/decks/${deck.body.id}/cards/${cardId}`)
+      .set("Cookie", UserCookie)
+      .expect(200);
+
+    expect(response.body.id).toBe(cardId);
+    expect(response.body.front).toBe(card.body.front);
+    expect(response.body.back).toBe(card.body.back);
+  });
+
+  it("returns a 404 error if the card does not exist", async () => {
+    const deck = await createDeck();
+
+    const response = await request(app)
+      .get(`/api/decks/${deck.body.id}/cards/999999`) // Non-existent card ID
+      .set("Cookie", UserCookie)
+      .expect(404);
+
+    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+  });
+
+  it("returns a 400 error if the card ID is invalid", async () => {
+    const deck = await createDeck();
+
+    const response = await request(app)
+      .get(`/api/decks/${deck.body.id}/cards/invalid_id`)
+      .set("Cookie", UserCookie)
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      { message: "Invalid card ID provided." }
+    ]);
+  });
+
+  it("returns a 401 error if the user is not authenticated", async () => {
+    const deck = await createDeck();
+    const card = await createCard(deck.body.id);
+
+    const response = await request(app)
+      .get(`/api/decks/${deck.body.id}/cards/${card.body.id}`)
+      .expect(401);
+
+    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+  });
+
+  it("returns a 403 error if the user tries to access a card from a deck he doesn't own", async () => {
+    const user = await createUser();
+    const accessToken = mockUserAccessToken(user.body.user.email);
+    const cookie = mockCookie(accessToken);
+
+    const anotherDeck = await request(app)
+      .post("/api/decks")
+      .set("Cookie", cookie)
+      .send({
+        name: makeRandomString(10)
+      })
+      .expect(201);
+
+    const card = await request(app)
+      .post(`/api/decks/${anotherDeck.body.id}/cards`)
+      .set("Cookie", cookie)
+      .send({
+        front: "test_front",
+        back: "test_back"
+      })
+      .expect(201);
+
+    const response = await request(app)
+      .get(`/api/decks/${anotherDeck.body.id}/cards/${card.body.id}`)
+      .set("Cookie", UserCookie) // Assuming this user does not own the deck
+      .expect(403);
+
+    expect(response.body.errors).toEqual([
+      { message: "You do not own this deck." }
+    ]);
+  });
+
+  it("returns a 403 error if the user tries to access a card he doesn't own", async () => {
+    const deck = await createDeck();
+    const card = await createCard(deck.body.id);
+
+    // Attempt to access the card with a different user
+    const anotherUser = await createUser();
+    const anotherAccessToken = mockUserAccessToken(anotherUser.body.user.email);
+    const anotherCookie = mockCookie(anotherAccessToken);
+
+    const anotherDeck = await request(app)
+      .post("/api/decks")
+      .set("Cookie", anotherCookie)
+      .send({
+        name: makeRandomString(10)
+      })
+      .expect(201);
+
+    const response = await request(app)
+      .get(`/api/decks/${anotherDeck.body.id}/cards/${card.body.id}`)
+      .set("Cookie", anotherCookie) // Different user
+      .expect(403);
+
+    expect(response.body.errors).toEqual([
+      { message: "You do not own this card." }
     ]);
   });
 });
