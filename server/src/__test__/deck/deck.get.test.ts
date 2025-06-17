@@ -9,7 +9,7 @@ import {
   mockUserAccessToken,
   UserCookie
 } from "../helpers/test.helpers";
-import { DeckDatamapperReq } from "../../datamappers/interfaces/DeckDatamapperReq";
+import { DeckData } from "../../datamappers/interfaces/DeckDatamapperReq";
 
 const pool = new Pool(poolConfig);
 
@@ -44,9 +44,7 @@ describe("Deck tests", () => {
     expect(response.body).toBeInstanceOf(Array);
     expect(response.body.length).toBe(2);
 
-    const deckIds = response.body.map(
-      (deck: DeckDatamapperReq["data"]) => deck.id
-    );
+    const deckIds = response.body.map((deck: DeckData) => deck.id);
 
     expect(deckIds).toContain(deckOne.body.id);
     expect(deckIds).toContain(deckTwo.body.id);
