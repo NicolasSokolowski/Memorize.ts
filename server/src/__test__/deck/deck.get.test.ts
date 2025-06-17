@@ -80,4 +80,63 @@ describe("Deck tests", () => {
 
     expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
   });
+
+  // ---------- GET /api/decks/:deck_id ----------
+
+  it("returns a deck by ID", async () => {
+    const deck = await createDeck();
+
+    const response = await request(app)
+      .get(`/api/decks/${deck.body.id}`)
+      .set("Cookie", UserCookie)
+      .expect(200);
+
+    expect(response.body.id).toBe(deck.body.id);
+    expect(response.body.name).toBe(deck.body.name);
+  });
+
+  it("returns a 404 error when trying to fetch a non-existing deck", async () => {
+    const response = await request(app)
+      .get("/api/decks/9999") // Assuming this ID does not exist
+      .set("Cookie", UserCookie)
+      .expect(404);
+
+    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+  });
+
+  it("returns a 400 error when trying to fetch a deck with an invalid ID", async () => {
+    const response = await request(app)
+      .get("/api/decks/invalid_id")
+      .set("Cookie", UserCookie)
+      .expect(400);
+
+    expect(response.body.errors).toEqual([
+      { message: "Invalid deck ID provided." }
+    ]);
+  });
+
+  it("returns a 401 error when trying to fetch a deck without an access token", async () => {
+    const response = await request(app)
+      .get("/api/decks/1") // Assuming user with ID 1 exists
+      .expect(401);
+
+    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+  });
+
+  it("returns a 403 error when trying to fetch another user's deck", async () => {
+    const deck = await createDeck();
+    const anotherUser = await createUser();
+
+    const accessTokenMock = mockUserAccessToken(anotherUser.body.user.email);
+    const cookie = mockCookie(accessTokenMock);
+
+    const response = await request(app)
+      .get(`/api/decks/${deck.body.id}`)
+      .set("Cookie", cookie)
+      .expect(403);
+
+    expect(response.body.errors).toEqual([
+      { message: "You do not own this deck." }
+    ]);
+  });
 });
