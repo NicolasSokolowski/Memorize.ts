@@ -1,9 +1,10 @@
-import { DeckDatamapperReq } from "../../datamappers/interfaces/DeckDatamapperReq";
+import {
+  DeckData,
+  DeckDatamapperReq
+} from "../../datamappers/interfaces/DeckDatamapperReq";
 import { EntityControllerReq } from "./EntityControllerReq";
 
-type DeckControllerReqWithoutData = Omit<DeckDatamapperReq, "data">;
-
-export interface DeckControllerReq extends EntityControllerReq {
-  datamapper: DeckControllerReqWithoutData;
-  getAllDecksByUserEmail(): Promise<DeckDatamapperReq["data"][]>;
+export interface DeckControllerReq extends EntityControllerReq<DeckData> {
+  datamapper: Omit<DeckDatamapperReq, "data">;
+  getAllDecksByUserEmail(): Promise<DeckData[]>;
 }

@@ -1,10 +1,10 @@
-import { RoleDatamapperReq } from "../datamappers/interfaces/RoleDatamapperReq";
+import { RoleData } from "../datamappers/interfaces/RoleDatamapperReq";
 import { CoreController } from "./CoreController";
 import { RoleControllerReq } from "./interfaces/RoleControllerReq";
 
 export class RoleController extends CoreController<
   RoleControllerReq,
-  RoleDatamapperReq
+  RoleData
 > {
   constructor(datamapper: RoleControllerReq["datamapper"]) {
     const field = "name";

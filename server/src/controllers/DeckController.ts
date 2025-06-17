@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { DeckDatamapperReq } from "../datamappers/interfaces/DeckDatamapperReq";
+import { DeckData } from "../datamappers/interfaces/DeckDatamapperReq";
 import { CoreController } from "./CoreController";
 import { DeckControllerReq } from "./interfaces/DeckControllerReq";
 import { NotFoundError } from "../errors/NotFoundError.error";
@@ -9,7 +9,7 @@ import { BadRequestError } from "../errors/BadRequestError.error";
 
 export class DeckController extends CoreController<
   DeckControllerReq,
-  DeckDatamapperReq
+  DeckData
 > {
   constructor(datamapper: DeckControllerReq["datamapper"]) {
     const field = "name";
@@ -62,7 +62,7 @@ export class DeckController extends CoreController<
 
   update = async (req: Request, res: Response): Promise<void> => {
     const deck_id: number = parseInt(req.params.deck_id, 10);
-    const data: DeckDatamapperReq["data"] = req.body;
+    const data: DeckData = req.body;
 
     if (!deck_id) {
       throw new BadRequestError("You should provide a valid id");

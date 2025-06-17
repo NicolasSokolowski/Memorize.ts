@@ -1,12 +1,10 @@
 import { EntityDatamapperReq } from "../../datamappers/interfaces/EntityDatamapperReq";
 
-type EntityDatamapperReqWithoutData = Omit<EntityDatamapperReq, "data">;
-
-export interface EntityControllerReq {
-  datamapper: EntityDatamapperReqWithoutData;
+export interface EntityControllerReq<D> {
+  datamapper: EntityDatamapperReq<D>;
   getByPk(): Promise<void>;
   getAll(): Promise<void>;
-  getBySpecificField(): Promise<EntityDatamapperReq["data"]>;
+  getBySpecificField(): Promise<D>;
   create(): Promise<void>;
   delete(): Promise<void>;
 }
