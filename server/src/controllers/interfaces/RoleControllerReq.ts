@@ -5,5 +5,5 @@ import {
 import { EntityControllerReq } from "./EntityControllerReq";
 
 export interface RoleControllerReq extends EntityControllerReq<RoleData> {
-  datamapper: Omit<RoleDatamapperReq, "data">;
+  datamapper: RoleDatamapperReq;
 }

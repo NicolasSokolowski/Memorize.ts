@@ -2,9 +2,4 @@ import { EntityDatamapperReq } from "../../datamappers/interfaces/EntityDatamapp
 
 export interface EntityControllerReq<D> {
   datamapper: EntityDatamapperReq<D>;
-  getByPk(): Promise<void>;
-  getAll(): Promise<void>;
-  getBySpecificField(): Promise<D>;
-  create(): Promise<void>;
-  delete(): Promise<void>;
 }
