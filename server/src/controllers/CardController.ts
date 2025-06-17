@@ -19,6 +19,18 @@ export class CardController extends CoreController<
     this.datamapper = datamapper;
   }
 
+  getAllCardsByDeckId = async (req: Request, res: Response): Promise<void> => {
+    const deckId = parseInt(req.params.deck_id, 10);
+
+    const cards = await this.datamapper.findAllCardsByDeckId(deckId);
+
+    if (!cards) {
+      throw new NotFoundError();
+    }
+
+    res.status(200).send(cards);
+  };
+
   create = async (req: Request, res: Response): Promise<void> => {
     const data = req.body;
     const deckId = parseInt(req.params.deck_id, 10);
