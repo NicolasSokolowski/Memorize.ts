@@ -1,7 +1,7 @@
 import { pool } from "../database/pg.client";
 import { TableNames } from "../helpers/TableNames";
 import { CoreDatamapper } from "./CoreDatamapper";
-import { CardDatamapperReq } from "./interfaces/CardDatamapperReq";
+import { CardData, CardDatamapperReq } from "./interfaces/CardDatamapperReq";
 
 export class CardDatamapper extends CoreDatamapper<CardDatamapperReq> {
   readonly tableName = TableNames.Card;
@@ -28,9 +28,7 @@ export class CardDatamapper extends CoreDatamapper<CardDatamapperReq> {
     return result.rows[0];
   };
 
-  update = async (
-    data: CardDatamapperReq["data"]
-  ): Promise<CardDatamapperReq["data"]> => {
+  update = async (data: CardData): Promise<CardData> => {
     const { front, back, id } = data;
     const result = await this.pool.query(
       `UPDATE "${this.tableName}" SET front = $1, back = $2 WHERE id = $3 RETURNING *`,

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CardDatamapperReq } from "../datamappers/interfaces/CardDatamapperReq";
+import { CardData } from "../datamappers/interfaces/CardDatamapperReq";
 import { CoreController } from "./CoreController";
 import { CardControllerReq } from "./interfaces/CardControllerReq";
 import {
@@ -10,7 +10,7 @@ import {
 
 export class CardController extends CoreController<
   CardControllerReq,
-  CardDatamapperReq
+  CardData
 > {
   constructor(datamapper: CardControllerReq["datamapper"]) {
     const field = "front";
@@ -45,7 +45,7 @@ export class CardController extends CoreController<
 
   update = async (req: Request, res: Response): Promise<void> => {
     const cardId = parseInt(req.params.card_id, 10);
-    const data: Partial<CardDatamapperReq["data"]> = req.body;
+    const data: Partial<CardData> = req.body;
 
     const card = await this.datamapper.findByPk(cardId);
 
@@ -64,7 +64,7 @@ export class CardController extends CoreController<
       );
     }
 
-    const mergedData: CardDatamapperReq["data"] = {
+    const mergedData: CardData = {
       ...card,
       ...data,
       id: cardId

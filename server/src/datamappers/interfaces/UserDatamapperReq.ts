@@ -1,24 +1,22 @@
 import { TableNames } from "../../helpers/TableNames";
 import { EntityDatamapperReq } from "./EntityDatamapperReq";
 
+export type UserData = {
+  id?: number;
+  username: string;
+  email: string;
+  password: string;
+  role_id?: number;
+  created_at?: Date;
+  updated_at?: Date;
+};
+
 export interface UserDatamapperReq extends EntityDatamapperReq {
   tableName: TableNames.User;
-  data: {
-    email: string;
-    password: string;
-    username: string;
-    role_id?: number;
-  };
   updatePassword: (
     newPassword: string,
     emailCookie: string
-  ) => Promise<UserDatamapperReq["data"]>;
-  updateRole: (
-    userId: number,
-    roleId: number
-  ) => Promise<UserDatamapperReq["data"]>;
-  update(
-    data: EntityDatamapperReq["data"],
-    email: string
-  ): Promise<EntityDatamapperReq["data"]>;
+  ) => Promise<UserData>;
+  updateRole: (userId: number, roleId: number) => Promise<UserData>;
+  update(data: UserData, email: string): Promise<UserData>;
 }

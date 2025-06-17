@@ -2,13 +2,9 @@ import { Request, Response } from "express";
 import { BadRequestError } from "../errors/BadRequestError.error";
 import { NotFoundError } from "../errors/NotFoundError.error";
 import { DatabaseConnectionError } from "../errors/DatabaseConnectionError.error";
-import { EntityDatamapperReq } from "../datamappers/interfaces/EntityDatamapperReq";
 import { EntityControllerReq } from "./interfaces/EntityControllerReq";
 
-export abstract class CoreController<
-  T extends EntityControllerReq,
-  Y extends EntityDatamapperReq
-> {
+export abstract class CoreController<T extends EntityControllerReq<D>, D> {
   protected field: string;
 
   get tableName(): string {
@@ -49,13 +45,13 @@ export abstract class CoreController<
     res.status(200).send(itemsList);
   };
 
-  getBySpecificField = async (field: string, value: string) => {
+  getBySpecificField = async (field: string, value: string): Promise<D> => {
     const item = await this.datamapper.findBySpecificField(field, value);
     return item;
   };
 
   create = async (req: Request, res: Response): Promise<void> => {
-    const data: Y["data"] = req.body;
+    const data: D = req.body;
 
     const checkIfExists = await this.datamapper.findBySpecificField(
       this.field,

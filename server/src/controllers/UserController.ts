@@ -1,5 +1,5 @@
 import { roleDatamapper } from "../datamappers/index.datamappers";
-import { UserDatamapperReq } from "../datamappers/interfaces/UserDatamapperReq";
+import { UserData } from "../datamappers/interfaces/UserDatamapperReq";
 import {
   BadRequestError,
   DatabaseConnectionError,
@@ -15,7 +15,7 @@ import { Request, Response } from "express";
 
 export class UserController extends CoreController<
   UserControllerReq,
-  UserDatamapperReq
+  UserData
 > {
   constructor(datamapper: UserControllerReq["datamapper"]) {
     const field = "email";
