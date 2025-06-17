@@ -10,4 +10,5 @@ export type RoleData = {
 
 export interface RoleDatamapperReq extends EntityDatamapperReq {
   tableName: TableNames.Role;
+  update(data: RoleData, emailCookie: string): Promise<RoleData>;
 }

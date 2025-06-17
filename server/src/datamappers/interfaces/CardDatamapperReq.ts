@@ -18,4 +18,5 @@ export interface CardDatamapperReq extends EntityDatamapperReq {
     deckId: number
   ): Promise<CardData | null>;
   update(data: CardData): Promise<CardData>;
+  findAllCardsByDeckId(deckId: number): Promise<CardData[]>;
 }

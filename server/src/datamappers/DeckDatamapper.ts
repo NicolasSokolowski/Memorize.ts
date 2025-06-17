@@ -1,9 +1,12 @@
 import { pool } from "../database/pg.client";
 import { TableNames } from "../helpers/TableNames";
 import { CoreDatamapper } from "./CoreDatamapper";
-import { DeckData } from "./interfaces/DeckDatamapperReq";
+import { DeckData, DeckDatamapperReq } from "./interfaces/DeckDatamapperReq";
 
-export class DeckDatamapper extends CoreDatamapper<DeckData> {
+export class DeckDatamapper
+  extends CoreDatamapper<DeckData>
+  implements DeckDatamapperReq
+{
   readonly tableName = TableNames.Deck;
   pool = pool;
 
