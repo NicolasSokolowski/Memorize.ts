@@ -1,6 +1,9 @@
 import express from "express";
 import { errorCatcher } from "../../../helpers/errorCatcher.helper";
-import { userController } from "../../../controllers/index.controllers";
+import {
+  cardController,
+  userController
+} from "../../../controllers/index.controllers";
 import rolesRouter from "../role/roles.router";
 import {
   requireAuth,
@@ -22,6 +25,14 @@ usersRouter
   .post(
     errorCatcher(validateRequest("body", userCreateSchema)),
     errorCatcher(userController.signup)
+  );
+
+usersRouter
+  .route("/me/cards")
+  .get(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"])),
+    errorCatcher(cardController.getAllCardsByUserEmail)
   );
 
 usersRouter.use("/:user_id", userRouter);
