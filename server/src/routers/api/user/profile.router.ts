@@ -3,7 +3,8 @@ import { userController } from "../../../controllers/index.controllers";
 import { errorCatcher } from "../../../helpers/errorCatcher.helper";
 import {
   userUpdateSchema,
-  passwordUpdateSchema
+  passwordUpdateSchema,
+  userSigninSchema
 } from "../../../validation/index.validation";
 import {
   checkPermissions,
@@ -19,6 +20,10 @@ profileRouter
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"])),
     errorCatcher(userController.getProfile)
+  )
+  .post(
+    errorCatcher(validateRequest("body", userSigninSchema)),
+    errorCatcher(userController.signin)
   )
   .patch(
     errorCatcher(requireAuth),
