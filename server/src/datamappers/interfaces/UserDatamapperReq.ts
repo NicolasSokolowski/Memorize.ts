@@ -7,6 +7,7 @@ export type UserData = {
   email: string;
   password: string;
   role_id?: number;
+  last_login?: Date;
   created_at?: Date;
   updated_at?: Date;
 };

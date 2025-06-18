@@ -1,4 +1,7 @@
-import { roleDatamapper } from "../datamappers/index.datamappers";
+import {
+  cardDatamapper,
+  roleDatamapper
+} from "../datamappers/index.datamappers";
 import { UserData } from "../datamappers/interfaces/UserDatamapperReq";
 import {
   BadRequestError,
@@ -90,8 +93,6 @@ export class UserController extends CoreController<
       throw new BadRequestError("Incorrect password");
     }
 
-    delete user.password;
-
     const default_role = await roleController.datamapper.findByPk(2);
     const role = default_role.name;
 
@@ -99,6 +100,45 @@ export class UserController extends CoreController<
       email: user.email,
       role
     };
+
+    // Update cards difficulty
+
+    const date: Date = new Date();
+    const lastLoginDate: Date = user.last_login;
+    let diffInDays: number;
+
+    if (!lastLoginDate) {
+      diffInDays = 0;
+    } else {
+      const diff = Math.abs(date.getTime() - new Date(lastLoginDate).getTime());
+      diffInDays = Math.floor(diff / (1000 * 3600 * 24));
+    }
+
+    const cards = await cardDatamapper.findAllCardsByUserEmail(user.email);
+
+    for (const card of cards) {
+      if (card.difficulty > 0) {
+        card.difficulty = Math.max(0, card.difficulty - diffInDays);
+      }
+    }
+
+    const updatedCards =
+      await cardDatamapper.updateCardsDifficultyAtLogin(cards);
+
+    if (!updatedCards) {
+      throw new DatabaseConnectionError();
+    }
+
+    // Update user last login date
+
+    user.last_login = new Date();
+    const updatedUser = await this.datamapper.update(user, user.email);
+
+    if (!updatedUser) {
+      throw new DatabaseConnectionError();
+    }
+
+    // Generate tokens
 
     const accessToken = await Token.generateAccessToken(userPayload);
     const refreshToken = await Token.generateRefreshToken(userPayload);
@@ -114,6 +154,8 @@ export class UserController extends CoreController<
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict"
     });
+
+    delete user.password;
 
     const returnedUser = {
       ...user,
