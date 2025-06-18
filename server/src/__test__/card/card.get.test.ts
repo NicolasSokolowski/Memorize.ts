@@ -24,6 +24,11 @@ describe("Card tests", () => {
     );
   });
 
+  afterEach(async () => {
+    await pool.query(`DELETE FROM "card";`);
+    await pool.query(`DELETE FROM "deck";`);
+  });
+
   afterAll(async () => {
     await pool.query(
       `DELETE FROM "user" WHERE email IN ('user@user.com', 'admin@admin.com');`
@@ -251,5 +256,49 @@ describe("Card tests", () => {
     expect(response.body.errors).toEqual([
       { message: "You do not own this card." }
     ]);
+  });
+
+  // ---------- GET /api/users/me/cards ----------
+
+  it("returns all cards for the authenticated user", async () => {
+    const deck = await createDeck();
+    const deckTwo = await createDeck();
+    await createCard(deck.body.id);
+    await createCard(deck.body.id);
+    await createCard(deck.body.id);
+    await createCard(deckTwo.body.id);
+
+    const response = await request(app)
+      .get("/api/users/me/cards")
+      .set("Cookie", UserCookie)
+      .expect(200);
+
+    expect(response.body).toBeInstanceOf(Array);
+    expect(response.body.length).toBe(4); // Should return all cards created by the user
+  });
+
+  it("returns an empty array if the user has no cards when trying to fetch all cards by user", async () => {
+    const response = await request(app)
+      .get("/api/users/me/cards")
+      .set("Cookie", UserCookie)
+      .expect(200);
+
+    expect(response.body).toBeInstanceOf(Array);
+    expect(response.body.length).toBe(0); // No cards created yet
+  });
+
+  it("returns a 401 error if the user is not authenticated when trying to fetch all cards by user", async () => {
+    const response = await request(app).get("/api/users/me/cards").expect(401);
+
+    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+  });
+
+  it("returns a 401 error if the access token is invalid when trying to fetch all cards by user", async () => {
+    const response = await request(app)
+      .get("/api/users/me/cards")
+      .set("Cookie", "invalid_token")
+      .expect(401);
+
+    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
   });
 });
