@@ -60,4 +60,30 @@ export class CardDatamapper
     );
     return result.rows;
   };
+
+  updateCardsDifficultyAtLogin = async (
+    cards: CardData[]
+  ): Promise<CardData[]> => {
+    if (cards.length === 0) return [];
+
+    const valuesPlaceholders = cards
+      .map((_, index) => `($${index * 2 + 1}::INT, $${index * 2 + 2}::INT)`)
+      .join(", ");
+
+    const values = cards.flatMap((card) => [
+      Number(card.id),
+      Number(card.difficulty)
+    ]);
+
+    const query = `
+    UPDATE "${this.tableName}" AS c
+    SET difficulty = v.difficulty
+    FROM (VALUES ${valuesPlaceholders}) AS v(id, difficulty)
+    WHERE c.id = v.id
+    RETURNING c.*;
+  `;
+    const result = await this.pool.query(query, values);
+
+    return result.rows;
+  };
 }

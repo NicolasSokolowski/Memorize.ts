@@ -20,4 +20,5 @@ export interface CardDatamapperReq extends EntityDatamapperReq {
   update(data: CardData): Promise<CardData>;
   findAllCardsByDeckId(deckId: number): Promise<CardData[]>;
   findAllCardsByUserEmail(email: string): Promise<CardData[]>;
+  updateCardsDifficultyAtLogin(cards: CardData[]): Promise<CardData[]>;
 }
