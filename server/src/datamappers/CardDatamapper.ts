@@ -13,9 +13,9 @@ export class CardDatamapper
   findCardUserByCardId = async (cardId: number) => {
     const result = await this.pool.query(
       `SELECT "user".email FROM "user"
-      LEFT JOIN "deck"
+      INNER JOIN "deck"
         ON deck.user_id = "user".id
-      LEFT JOIN "card"
+      INNER JOIN "card"
         ON card.deck_id = deck.id
       WHERE card.id = $1`,
       [cardId]
@@ -44,6 +44,19 @@ export class CardDatamapper
     const result = await this.pool.query(
       `SELECT * FROM "${this.tableName}" WHERE deck_id = $1 ORDER BY difficulty DESC`,
       [deckId]
+    );
+    return result.rows;
+  };
+
+  findAllCardsByUserEmail = async (email: string): Promise<CardData[]> => {
+    const result = await this.pool.query(
+      `SELECT card.* FROM "${this.tableName}"
+      JOIN deck 
+      ON card.deck_id = deck.id
+      JOIN "user" 
+      ON deck.user_id = "user".id
+      WHERE "user".email = $1`,
+      [email]
     );
     return result.rows;
   };

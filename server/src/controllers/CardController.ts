@@ -31,6 +31,21 @@ export class CardController extends CoreController<
     res.status(200).send(cards);
   };
 
+  getAllCardsByUserEmail = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const userEmail = req.user?.email;
+
+    const cards = await this.datamapper.findAllCardsByUserEmail(userEmail);
+
+    if (!cards) {
+      throw new NotFoundError();
+    }
+
+    res.status(200).send(cards);
+  };
+
   create = async (req: Request, res: Response): Promise<void> => {
     const data = req.body;
     const deckId = parseInt(req.params.deck_id, 10);

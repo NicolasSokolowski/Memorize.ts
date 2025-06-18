@@ -13,7 +13,7 @@ export class DeckDatamapper
   findAllDecksByUserEmail = async (email: string) => {
     const result = await this.pool.query(
       `SELECT deck.* FROM "${this.tableName}" 
-      LEFT JOIN "user"
+      INNER JOIN "user"
       ON deck.user_id = "user".id
       WHERE "user".email = $1
       ORDER BY deck.created_at DESC
@@ -27,7 +27,7 @@ export class DeckDatamapper
   findAllCardsByDeckId = async (deckId: number) => {
     const result = await this.pool.query(
       `SELECT card.* FROM "card"
-      LEFT JOIN "deck"
+      INNER JOIN "deck"
       ON card.deck_id = deck.id
       WHERE deck.id = $1
       `,
