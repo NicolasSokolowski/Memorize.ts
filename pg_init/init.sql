@@ -13,6 +13,7 @@ CREATE TABLE "user" (
   "password" VARCHAR(999) NOT NULL,
   "username" VARCHAR(20) NOT NULL,
   "role_id" INT NOT NULL REFERENCES "role"("id"),
+  "last_login" TIMESTAMPTZ DEFAULT NULL,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   "updated_at" TIMESTAMPTZ
 );
