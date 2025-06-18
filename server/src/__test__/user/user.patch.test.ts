@@ -9,16 +9,24 @@ import {
   UserCookie,
   AdminCookie
 } from "../helpers/test.helpers";
+import { Password } from "../../helpers/Password";
 
 const pool = new Pool(poolConfig);
 
 describe("User tests", () => {
   beforeAll(async () => {
+    const hashedPassword = await Password.toHash("pAssw0rd!123");
+
     await pool.query(
-      `INSERT INTO "user" ("email", "password", "username", "role_id") VALUES ('user@user.com', 'pAssw0rd!123', 'test_user', 2) ON CONFLICT DO NOTHING`
+      `INSERT INTO "user" ("email", "password", "username", "role_id")
+     VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING`,
+      ["user@user.com", hashedPassword, "test_user", 2]
     );
+
     await pool.query(
-      `INSERT INTO "user" ("email", "password", "username", "role_id") VALUES ('admin@admin.com', 'pAssw0rd!123', 'test_admin', 1) ON CONFLICT DO NOTHING`
+      `INSERT INTO "user" ("email", "password", "username", "role_id")
+     VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING`,
+      ["admin@admin.com", hashedPassword, "test_admin", 1]
     );
   });
 
