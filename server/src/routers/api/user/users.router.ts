@@ -10,7 +10,10 @@ import {
   validateRequest,
   checkPermissions
 } from "../../../middlewares/index.middlewares";
-import { userCreateSchema } from "../../../validation/index.validation";
+import {
+  cardsArraySchema,
+  userCreateSchema
+} from "../../../validation/index.validation";
 import userRouter from "./user.router";
 
 const usersRouter = express.Router();
@@ -33,6 +36,12 @@ usersRouter
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"])),
     errorCatcher(cardController.getAllCardsByUserEmail)
+  )
+  .patch(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"])),
+    errorCatcher(validateRequest("body", cardsArraySchema)),
+    errorCatcher(cardController.updateCardsDifficulty)
   );
 
 usersRouter.use("/:user_id", userRouter);
