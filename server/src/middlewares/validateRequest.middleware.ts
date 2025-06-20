@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { RequestValidationError } from "../errors/index.errors";
 
 export const validateRequest =
-  (sourceProperty: keyof Request, schema: Joi.ObjectSchema) =>
+  (sourceProperty: keyof Request, schema: Joi.Schema) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.validateAsync(req[sourceProperty], { abortEarly: false });

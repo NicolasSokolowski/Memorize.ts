@@ -426,16 +426,18 @@ describe("User tests", () => {
       [user.body.user.id]
     );
 
-    // Set initial difficulties for the cards
-    await pool.query(`UPDATE "card" SET "difficulty" = 16 WHERE "id" = $1`, [
-      cardOne.body.id
-    ]);
+    // Set initial next_occurrence for the cards
+    await pool.query(
+      `UPDATE "card" SET "next_occurrence" = 16, "difficulty" = 3 WHERE "id" = $1`,
+      [cardOne.body.id]
+    );
 
-    await pool.query(`UPDATE "card" SET "difficulty" = 8 WHERE "id" = $1`, [
-      cardTwo.body.id
-    ]);
+    await pool.query(
+      `UPDATE "card" SET "next_occurrence" = 1, "difficulty" = 24 WHERE "id" = $1`,
+      [cardTwo.body.id]
+    );
 
-    // Log in to trigger the difficulty update
+    // Log in to trigger the card update
     await request(app)
       .post("/api/profile")
       .send({
@@ -454,7 +456,16 @@ describe("User tests", () => {
       .set("Cookie", UserCookie)
       .expect(200);
 
-    expect(responseOne.body.difficulty).toBe(15);
-    expect(responseTwo.body.difficulty).toBe(7);
+    expect(responseOne.body.difficulty).toBe(3);
+    expect(responseTwo.body.difficulty).toBe(24);
+
+    expect(responseOne.body.win_streak).toBe(0);
+    expect(responseTwo.body.win_streak).toBe(0);
+
+    expect(responseOne.body.next_occurrence).toBe(15);
+    expect(responseTwo.body.next_occurrence).toBe(0);
+
+    expect(responseOne.body.max_early).toBe(0);
+    expect(responseTwo.body.max_early).toBe(27);
   });
 });

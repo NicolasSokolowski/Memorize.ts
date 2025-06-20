@@ -101,8 +101,7 @@ export class UserController extends CoreController<
       role
     };
 
-    // Update cards difficulty
-
+    // Update cards next_occurrence based on last login date
     const date: Date = new Date();
     const lastLoginDate: Date = user.last_login;
     let diffInDays: number;
@@ -116,14 +115,18 @@ export class UserController extends CoreController<
 
     const cards = await cardDatamapper.findAllCardsByUserEmail(user.email);
 
+    // Decrease next_occurrence by number of days since last login
     for (const card of cards) {
-      if (card.difficulty > 0) {
-        card.difficulty = Math.max(0, card.difficulty - diffInDays);
+      if (card.next_occurrence > 0) {
+        card.next_occurrence = Math.max(0, card.next_occurrence - diffInDays);
+      }
+
+      if (card.next_occurrence === 0) {
+        card.max_early = card.difficulty + 3;
       }
     }
 
-    const updatedCards =
-      await cardDatamapper.updateCardsDifficultyAtLogin(cards);
+    const updatedCards = await cardDatamapper.updateCardsOccurrence(cards);
 
     if (!updatedCards) {
       throw new DatabaseConnectionError();
@@ -155,6 +158,7 @@ export class UserController extends CoreController<
       sameSite: "strict"
     });
 
+    // Remove sensitive data before sending response
     delete user.password;
 
     const returnedUser = {
