@@ -25,7 +25,7 @@ services:
     build: ./server
     command: npm run dev
     restart: always
-    env_file: ./server/.env
+    env_file: .env
     volumes:
       - ./server:/app
     depends_on:
