@@ -28,3 +28,11 @@ export const updateCardsStats = createAsyncThunk<Card[], Card[]>(
     return response.data as Card[];
   }
 );
+
+export const deleteCard = createAsyncThunk<Card, Card>(
+  "DELETE_CARD",
+  async (card: Card) => {
+    const response = await axiosInstance.delete(`/cards/${card.id}`);
+    return response.data as Card;
+  }
+);
