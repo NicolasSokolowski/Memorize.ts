@@ -36,7 +36,7 @@ const cardSlice = createSlice({
         state.cards[index] = action.payload;
       }
     },
-    updateCards(state, action: PayloadAction<Card[]>) {
+    updateCardsStats(state, action: PayloadAction<Card[]>) {
       action.payload.forEach((card: Card) => {
         const index = state.cards.findIndex((c: Card) => c.id === card.id);
         if (index !== -1) {
@@ -57,7 +57,7 @@ const cardSlice = createSlice({
   }
 });
 
-export const { addCard, updateCard, updateCards, deleteCard, setCards } =
+export const { addCard, updateCard, updateCardsStats, deleteCard, setCards } =
   cardSlice.actions;
 
 export default cardSlice.reducer;

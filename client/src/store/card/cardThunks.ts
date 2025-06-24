@@ -20,3 +20,11 @@ export const updateCard = createAsyncThunk<Card, Partial<Card>>(
     return response.data as Card;
   }
 );
+
+export const updateCardsStats = createAsyncThunk<Card[], Card[]>(
+  "UPDATE_CARDS_STATS",
+  async (cards: Card[]) => {
+    const response = await axiosInstance.patch("/me/cards", cards);
+    return response.data as Card[];
+  }
+);
