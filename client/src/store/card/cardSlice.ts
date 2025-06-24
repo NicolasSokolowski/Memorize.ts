@@ -9,6 +9,8 @@ export interface Card {
   win_streak: number;
   max_early: number;
   next_occurrence: number;
+  created_at: string;
+  updated_at: string;
 }
 
 interface CardState {
