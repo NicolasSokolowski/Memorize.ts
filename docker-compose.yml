@@ -36,8 +36,7 @@ services:
     build: ./client
     command: npm run dev
     restart: always
-    environment:
-      - VITE_API_URL=http://localhost:5050/api
+    env_file: ./client/.env
     volumes:
       - ./client/src:/app/src
 
