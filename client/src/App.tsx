@@ -1,10 +1,24 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+import AppLayout from "./ui/AppLayout";
+import Home from "./ui/Home";
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />
+      }
+    ]
+  }
+]);
 
 function App() {
   return (
     <>
-      <h1>Hello, ici le client de growMind</h1>
-      <p>Il y a encore tout à construire, bon courage</p>
+      <RouterProvider router={router} />
     </>
   );
 }
