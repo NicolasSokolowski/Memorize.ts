@@ -26,6 +26,11 @@ export default {
       boxShadow: {
         "inner-strong": "inset 0 4px 8px rgba(0, 0, 0, 0.25)", // plus profonde
         "inner-deep": "inset 0 6px 12px rgba(0, 0, 0, 0.35)" // encore plus visible
+      },
+      colors: {
+        primary: "#9BC4BC",
+        secondary: "#60B1DA",
+        tertiary: "#F4EFE5"
       }
     }
   },
