@@ -2,11 +2,9 @@ import { Outlet } from "react-router-dom";
 
 function AppLayout() {
   return (
-    <div>
-      <main>
-        <Outlet />
-      </main>
-    </div>
+    <main className="flex min-h-screen w-full flex-col">
+      <Outlet />
+    </main>
   );
 }
 
