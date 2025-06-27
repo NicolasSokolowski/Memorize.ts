@@ -1,10 +1,14 @@
 import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
 
 function AppLayout() {
   return (
-    <main className="flex min-h-screen w-full flex-col">
-      <Outlet />
-    </main>
+    <div className="flex h-screen flex-col">
+      <main className="h-[97%]">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
   );
 }
 
