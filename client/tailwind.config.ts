@@ -31,6 +31,9 @@ export default {
         primary: "#9BC4BC",
         secondary: "#60B1DA",
         tertiary: "#F4EFE5"
+      },
+      fontFamily: {
+        patua: ['"Patua One"', "cursive"]
       }
     }
   },
