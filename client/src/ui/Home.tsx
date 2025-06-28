@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axiosInstance from "../services/axios.instance";
 
 const initialState = {
   email: "",
@@ -9,16 +10,33 @@ const initialState = {
 function Home() {
   const [userInfo, setUserInfo] = useState(initialState);
 
+  const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const response = await axiosInstance.post("/users", userInfo);
+
+    if (response.status !== 201) {
+      // Need to modify this to handle errors properly
+      // For now, just log the error
+      console.error("Error during registration:", response.data);
+      return;
+    }
+
+    // Display success message and switch back to login form
+
+    setUserInfo(initialState);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center gap-10 bg-primary">
-      <section className="flex h-128 w-128 flex-col justify-end gap-8">
-        <div className="flex h-40 w-128 items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center gap-16 bg-primary">
+      <section className="flex h-144 w-128 flex-col justify-end gap-8">
+        <div className="flex h-2/5 items-center justify-center">
           <img
             src="/logo.png"
             alt="GrowMind Logo"
             className="h-full object-contain"
           />
-          <h1 className="mr-10 font-patua text-6xl text-tertiary">growMind</h1>
+          <h1 className="mr-14 font-patua text-6xl text-tertiary">Memorize</h1>
         </div>
         <div className="flex h-72 w-128 items-center self-end rounded-md border-gray-300 bg-white shadow-inner-strong">
           <article className="m-4 font-patua">
@@ -35,9 +53,12 @@ function Home() {
           </article>
         </div>
       </section>
-      <section className="h-128 w-100  rounded-md border-gray-300 bg-white shadow-inner-strong">
+      <section className="h-144 w-100  rounded-md border-gray-300 bg-white shadow-xl">
         <h2 className="m-5 text-center font-patua text-4xl">Inscription</h2>
-        <form className="flex flex-col items-center justify-center gap-2 p-5">
+        <form
+          className="flex flex-col items-center justify-center gap-6 p-5"
+          onSubmit={handleSubmit()}
+        >
           <div className="flex flex-col items-start gap-2">
             <label className="font-patua text-xl" htmlFor="email">
               E-mail
@@ -83,19 +104,24 @@ function Home() {
               className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
             />
           </div>
-          <button className="mt-5 w-80 rounded-md bg-secondary p-3 shadow-xl">
-            <span className="rounded-md font-patua text-3xl text-white">
-              S'inscrire
-            </span>
-          </button>
-          <div className="flex w-80 justify-between">
-            <button className="font-patua text-sm text-secondary underline underline-offset-2">
-              J'ai déjà un compte
+          <div className="flex w-80 flex-col gap-3">
+            <button
+              type="submit"
+              className="mt-5 w-80 rounded-md bg-secondary p-3 shadow-xl"
+            >
+              <span className="rounded-md font-patua text-3xl text-white">
+                S'inscrire
+              </span>
             </button>
-            <p className="font-patua text-sm text-secondary underline underline-offset-2">
-              {/* Modify later to a Link */}
-              Mot de passe oublié ?
-            </p>
+            <div className="flex justify-between">
+              <button className="font-patua text-sm text-secondary underline underline-offset-2">
+                J'ai déjà un compte
+              </button>
+              <p className="font-patua text-sm text-secondary underline underline-offset-2">
+                {/* Modify later to a Link */}
+                Mot de passe oublié ?
+              </p>
+            </div>
           </div>
         </form>
       </section>
