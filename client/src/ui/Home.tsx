@@ -1,4 +1,14 @@
+import { useState } from "react";
+
+const initialState = {
+  email: "",
+  password: "",
+  username: ""
+};
+
 function Home() {
+  const [userInfo, setUserInfo] = useState(initialState);
+
   return (
     <div className="flex min-h-screen items-center justify-center gap-10 bg-primary">
       <section className="flex h-128 w-128 flex-col justify-end gap-8">
@@ -35,6 +45,10 @@ function Home() {
             <input
               id="email"
               type="text"
+              value={userInfo.email}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, email: e.target.value })
+              }
               placeholder="Adresse e-mail"
               className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
             />
@@ -45,7 +59,11 @@ function Home() {
             </label>
             <input
               id="password"
-              type="text"
+              type="password"
+              value={userInfo.password}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, password: e.target.value })
+              }
               placeholder="Mot de passe"
               className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
             />
@@ -57,6 +75,10 @@ function Home() {
             <input
               id="username"
               type="text"
+              value={userInfo.username}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, username: e.target.value })
+              }
               placeholder="Nom d'utilisateur"
               className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
             />
