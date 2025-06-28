@@ -79,7 +79,7 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be a string" }
+      { message: "Name must be a string", field: "name" }
     ]);
   });
 
@@ -92,7 +92,9 @@ describe("Deck tests", () => {
       })
       .expect(400);
 
-    expect(response.body.errors).toEqual([{ message: "Name cannot be empty" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Name cannot be empty", field: "name" }
+    ]);
   });
 
   it("returns a 400 error when providing a name with more than 50 characters", async () => {
@@ -105,7 +107,7 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be at most 50 characters long" }
+      { message: "Name must be at most 50 characters long", field: "name" }
     ]);
   });
 
@@ -116,6 +118,8 @@ describe("Deck tests", () => {
       .send() // No name provided
       .expect(400);
 
-    expect(response.body.errors).toEqual([{ message: "Missing field name" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Missing field name", field: "name" }
+    ]);
   });
 });

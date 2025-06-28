@@ -55,7 +55,7 @@ describe("Role tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be a string" }
+      { message: "Name must be a string", field: "name" }
     ]);
   });
 
@@ -66,7 +66,9 @@ describe("Role tests", () => {
       .send()
       .expect(400);
 
-    expect(response.body.errors).toEqual([{ message: "Missing field name" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Missing field name", field: "name" }
+    ]);
   });
 
   it("returns a 400 error when name field is empty", async () => {
@@ -78,7 +80,9 @@ describe("Role tests", () => {
       })
       .expect(400);
 
-    expect(response.body.errors).toEqual([{ message: "Name cannot be empty" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Name cannot be empty", field: "name" }
+    ]);
   });
 
   it("returns a 400 error when name is less then 3 characters", async () => {
@@ -91,7 +95,7 @@ describe("Role tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be at least 3 characters long" }
+      { message: "Name must be at least 3 characters long", field: "name" }
     ]);
   });
 
@@ -105,7 +109,7 @@ describe("Role tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be at most 15 characters long" }
+      { message: "Name must be at most 15 characters long", field: "name" }
     ]);
   });
 

@@ -92,8 +92,8 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Front must be a string" },
-      { message: "Back must be a string" }
+      { message: "Front must be a string", field: "front" },
+      { message: "Back must be a string", field: "back" }
     ]);
   });
 
@@ -148,8 +148,8 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Front cannot be empty" },
-      { message: "Back cannot be empty" }
+      { message: "Front cannot be empty", field: "front" },
+      { message: "Back cannot be empty", field: "back" }
     ]);
   });
 

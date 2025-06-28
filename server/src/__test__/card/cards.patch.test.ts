@@ -179,7 +179,7 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field 0,user_answer" }
+      { message: "Missing field 0,user_answer", field: 0 }
     ]);
   });
 
@@ -217,8 +217,11 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: 'User answer must be one of "easy", "medium", or "hard"' },
-      { message: "User answer cannot be empty" }
+      {
+        message: 'User answer must be one of "easy", "medium", or "hard"',
+        field: 0
+      },
+      { message: "User answer cannot be empty", field: 0 }
     ]);
   });
 
@@ -230,9 +233,12 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Card ID must be a number" },
-      { message: 'User answer must be one of "easy", "medium", or "hard"' },
-      { message: "User answer must be a string" }
+      { message: "Card ID must be a number", field: 0 },
+      {
+        message: 'User answer must be one of "easy", "medium", or "hard"',
+        field: 0
+      },
+      { message: "User answer must be a string", field: 0 }
     ]);
   });
 
