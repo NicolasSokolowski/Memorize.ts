@@ -12,15 +12,3 @@ export const login = createAsyncThunk<
   });
   return response.data as User;
 });
-
-export const register = createAsyncThunk<
-  User,
-  { email: string; password: string; username: string }
->("USER_REGISTER", async ({ email, password, username }) => {
-  const response = await axiosInstance.post("/users", {
-    email,
-    password,
-    username
-  });
-  return response.data as User;
-});
