@@ -5,7 +5,7 @@ function Footer() {
         <p>CGU</p>
         <p>About us</p>
         <p>Contact</p>
-        <p>© 2025 growMind. All rights reserved.</p>
+        <p>© 2025 Memorize. All rights reserved.</p>
       </div>
     </footer>
   );
