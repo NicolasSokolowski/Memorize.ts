@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axiosInstance from "../services/axios.instance";
+import { AxiosError } from "axios";
 
 const initialState = {
   email: "",
@@ -7,24 +8,58 @@ const initialState = {
   username: ""
 };
 
+interface ApiErrorResponse {
+  errors: {
+    message: string;
+    field?: string;
+  }[];
+}
+
 function Home() {
   const [userInfo, setUserInfo] = useState(initialState);
+  const [error, setError] = useState({
+    email: "",
+    password: "",
+    username: ""
+  });
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const response = await axiosInstance.post("/users", userInfo);
+    try {
+      await axiosInstance.post("/users", userInfo);
 
-    if (response.status !== 201) {
-      // Need to modify this to handle errors properly
-      // For now, just log the error
-      console.error("Error during registration:", response.data);
-      return;
+      // Display success message and switch back to login form
+      setUserInfo(initialState);
+    } catch (err: unknown) {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+
+      if (axiosError.response?.data.errors) {
+        for (const error of axiosError.response.data.errors) {
+          if (error.field === "email") {
+            setError((prev) => ({ ...prev, email: error.message }));
+          } else if (error.field === "password") {
+            setError((prev) => ({ ...prev, password: error.message }));
+          } else if (error.field === "username") {
+            setError((prev) => ({ ...prev, username: error.message }));
+          }
+        }
+      }
     }
+  };
 
-    // Display success message and switch back to login form
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
 
-    setUserInfo(initialState);
+    setError((prev) => ({
+      ...prev,
+      [id]: ""
+    }));
+
+    setUserInfo((prev) => ({
+      ...prev,
+      [id]: value
+    }));
   };
 
   return (
@@ -53,7 +88,7 @@ function Home() {
           </article>
         </div>
       </section>
-      <section className="h-144 w-100  rounded-md border-gray-300 bg-white shadow-xl">
+      <section className="min-h-[36rem] w-100  overflow-hidden rounded-md border-gray-300 bg-white shadow-xl transition-all duration-300">
         <h2 className="m-5 text-center font-patua text-4xl">Inscription</h2>
         <form
           className="flex flex-col items-center justify-center gap-6 p-5"
@@ -67,27 +102,33 @@ function Home() {
               id="email"
               type="text"
               value={userInfo.email}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, email: e.target.value })
-              }
+              onChange={(e) => handleChange(e)}
               placeholder="Adresse e-mail"
               className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
             />
+            {error.email && (
+              <p className="max-w-full break-words font-patua text-sm text-red-500">
+                {error.email}
+              </p>
+            )}
           </div>
-          <div className="flex flex-col items-start gap-2">
-            <label className="font-patua text-xl" htmlFor="password">
+          <div className="flex w-80 flex-col items-start gap-2">
+            <label className="font-patua text-xl " htmlFor="password">
               Mot de passe
             </label>
             <input
               id="password"
               type="password"
               value={userInfo.password}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, password: e.target.value })
-              }
+              onChange={(e) => handleChange(e)}
               placeholder="Mot de passe"
               className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
             />
+            {error.password && (
+              <p className="max-w-full break-words font-patua text-sm text-red-500">
+                {error.password}
+              </p>
+            )}
           </div>
           <div className="flex flex-col items-start gap-2">
             <label className="font-patua text-xl" htmlFor="username">
@@ -97,12 +138,15 @@ function Home() {
               id="username"
               type="text"
               value={userInfo.username}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, username: e.target.value })
-              }
+              onChange={(e) => handleChange(e)}
               placeholder="Nom d'utilisateur"
               className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
             />
+            {error.username && (
+              <p className="max-w-full break-words font-patua text-sm text-red-500">
+                {error.username}
+              </p>
+            )}
           </div>
           <div className="flex w-80 flex-col gap-3">
             <button
@@ -113,14 +157,10 @@ function Home() {
                 S'inscrire
               </span>
             </button>
-            <div className="flex justify-between">
+            <div className="flex justify-start">
               <button className="font-patua text-sm text-secondary underline underline-offset-2">
                 J'ai déjà un compte
               </button>
-              <p className="font-patua text-sm text-secondary underline underline-offset-2">
-                {/* Modify later to a Link */}
-                Mot de passe oublié ?
-              </p>
             </div>
           </div>
         </form>
