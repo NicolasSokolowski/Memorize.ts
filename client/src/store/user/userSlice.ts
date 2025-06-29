@@ -13,17 +13,25 @@ export interface User {
 interface UserState {
   user: User | null;
   isLoading: boolean;
+  hasAccount?: boolean;
 }
 
 const initialState: UserState = {
   user: null,
-  isLoading: false
+  isLoading: false,
+  hasAccount: false
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {}
+  reducers: {
+    setHasAccount: (state, action) => {
+      state.hasAccount = action.payload;
+    }
+  }
 });
+
+export const { setHasAccount } = userSlice.actions;
 
 export default userSlice.reducer;
