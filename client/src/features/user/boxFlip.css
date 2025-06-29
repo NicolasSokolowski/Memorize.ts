@@ -1,0 +1,36 @@
+.flip-box {
+  background-color: transparent;
+  perspective: 1000px;
+  width: 25rem;
+  height: 32rem;
+  position: relative;
+}
+
+.flip-box-inner {
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-box.flip .flip-box-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-box-signup,
+.flip-box-login {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-box-login {
+  transform: rotateY(180deg);
+}
