@@ -52,14 +52,21 @@ function LoginForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
+    const fieldMap: Record<string, keyof typeof initialState> = {
+      "email-log": "email",
+      "password-log": "password"
+    };
+
+    const field = fieldMap[id];
+
     setError((prev) => ({
       ...prev,
-      [id]: ""
+      [field]: ""
     }));
 
     setUserInfo((prev) => ({
       ...prev,
-      [id]: value
+      [field]: value
     }));
   };
 
@@ -84,11 +91,11 @@ function LoginForm() {
         onSubmit={handleSubmit()}
       >
         <div className="flex flex-col items-start gap-2">
-          <label className="font-patua text-xl" htmlFor="email">
+          <label className="font-patua text-xl" htmlFor="email-log">
             E-mail
           </label>
           <input
-            id="email"
+            id="email-log"
             type="text"
             value={userInfo.email}
             onChange={(e) => handleChange(e)}
@@ -102,11 +109,11 @@ function LoginForm() {
           )}
         </div>
         <div className="flex w-80 flex-col items-start gap-2">
-          <label className="font-patua text-xl " htmlFor="password">
+          <label className="font-patua text-xl " htmlFor="password-log">
             Mot de passe
           </label>
           <input
-            id="password"
+            id="password-log"
             type="password"
             value={userInfo.password}
             onChange={(e) => handleChange(e)}
