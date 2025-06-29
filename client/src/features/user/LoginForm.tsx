@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axiosInstance from "../../services/axios.instance";
 import { AxiosError } from "axios";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { login } from "../../store/user/userThunk";
 
 const initialState = {
   email: "",
@@ -28,9 +28,8 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-      await axiosInstance.post("/profile", userInfo);
+      await dispatch(login(userInfo)).unwrap();
 
-      // Update user state in Redux store
       // Redirect to user's decks page
 
       setUserInfo(initialState);
@@ -52,6 +51,7 @@ function LoginForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
+    // Create an object from the form's id to map to the state keys
     const fieldMap: Record<string, keyof typeof initialState> = {
       "email-log": "email",
       "password-log": "password"
