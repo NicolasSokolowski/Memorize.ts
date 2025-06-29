@@ -47,13 +47,26 @@ export class UserController extends CoreController<
   signup = async (req: Request, res: Response): Promise<void> => {
     const { email, password, username } = req.body;
 
+    const isEmailUsed = await this.datamapper.findBySpecificField(
+      this.field,
+      email
+    );
+
+    if (isEmailUsed) {
+      throw new BadRequestError("Provided email is already in use.", "email");
+    }
+
     const hashedPassword = await Password.toHash(password);
 
     if (!hashedPassword) {
-      throw new BadRequestError("The password could not be hashed");
+      throw new BadRequestError("The password could not be hashed", "password");
     }
 
     const default_role = await roleDatamapper.findByPk(2);
+
+    if (!default_role) {
+      throw new NotFoundError();
+    }
 
     const newUserData = {
       email,
@@ -63,6 +76,10 @@ export class UserController extends CoreController<
     };
 
     const newUser = await this.datamapper.insert(newUserData);
+
+    if (!newUser) {
+      throw new DatabaseConnectionError();
+    }
 
     const {
       password: returnedPassword,

@@ -10,7 +10,8 @@ export const validateRequest =
       next();
     } catch (err: unknown) {
       if (err instanceof ValidationError) {
-        next(new RequestValidationError(err.details));
+        const field = (err.details[0].path[0] as string) || undefined;
+        next(new RequestValidationError(err.details, field));
       } else {
         next(err);
       }

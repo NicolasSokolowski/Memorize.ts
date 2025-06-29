@@ -79,7 +79,8 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message:
-          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'
+          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+        field: "password"
       }
     ]);
   });
@@ -97,7 +98,8 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message:
-          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'
+          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+        field: "password"
       }
     ]);
   });
@@ -115,7 +117,8 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message:
-          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'
+          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+        field: "password"
       }
     ]);
   });
@@ -133,7 +136,8 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message:
-          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'
+          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+        field: "password"
       }
     ]);
   });
@@ -150,11 +154,13 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Password must be at least 12 characters long"
+        message: "Password must be at least 12 characters long",
+        field: "password"
       },
       {
         message:
-          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'
+          '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+        field: "password"
       }
     ]);
   });
@@ -170,7 +176,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Password cannot be empty" }
+      { message: "Password cannot be empty", field: "password" }
     ]);
   });
 
@@ -185,7 +191,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Password must be a string" }
+      { message: "Password must be a string", field: "password" }
     ]);
   });
 
@@ -200,7 +206,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field password" }
+      { message: "Missing field password", field: "password" }
     ]);
   });
 
@@ -215,7 +221,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email must be a valid email address" }
+      { message: "Email must be a valid email address", field: "email" }
     ]);
   });
 
@@ -230,7 +236,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email must be a string" }
+      { message: "Email must be a string", field: "email" }
     ]);
   });
 
@@ -245,7 +251,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email cannot be empty" }
+      { message: "Email cannot be empty", field: "email" }
     ]);
   });
 
@@ -259,7 +265,9 @@ describe("User tests", () => {
       })
       .expect(400);
 
-    expect(response.body.errors).toEqual([{ message: "Missing field email" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Missing field email", field: "email" }
+    ]);
   });
 
   it("returns a 400 error when providing an username with more than 20 characters", async () => {
@@ -273,7 +281,10 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Username must be at most 20 characters long" }
+      {
+        message: "Username must be at most 20 characters long",
+        field: "username"
+      }
     ]);
   });
 
@@ -288,7 +299,10 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Username must be at least 3 characters long" }
+      {
+        message: "Username must be at least 3 characters long",
+        field: "username"
+      }
     ]);
   });
 
@@ -303,7 +317,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Username cannot be empty" }
+      { message: "Username cannot be empty", field: "username" }
     ]);
   });
 
@@ -318,7 +332,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field username" }
+      { message: "Missing field username", field: "username" }
     ]);
   });
 
@@ -351,7 +365,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email must be a valid email address" }
+      { message: "Email must be a valid email address", field: "email" }
     ]);
   });
 
@@ -365,7 +379,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email must be a string" }
+      { message: "Email must be a string", field: "email" }
     ]);
   });
 
@@ -379,8 +393,8 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email cannot be empty" },
-      { message: "Password cannot be empty" }
+      { message: "Email cannot be empty", field: "email" },
+      { message: "Password cannot be empty", field: "password" }
     ]);
   });
 
@@ -391,8 +405,8 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field email" },
-      { message: "Missing field password" }
+      { message: "Missing field email", field: "email" },
+      { message: "Missing field password", field: "password" }
     ]);
   });
 
@@ -406,7 +420,7 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Password must be a string" }
+      { message: "Password must be a string", field: "password" }
     ]);
   });
 

@@ -99,7 +99,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Email must be a valid email address"
+        message: "Email must be a valid email address",
+        field: "email"
       }
     ]);
   });
@@ -120,7 +121,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Email must be a string"
+        message: "Email must be a string",
+        field: "email"
       }
     ]);
   });
@@ -141,7 +143,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Email cannot be empty"
+        message: "Email cannot be empty",
+        field: "email"
       }
     ]);
   });
@@ -182,7 +185,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username must be a string"
+        message: "Username must be a string",
+        field: "username"
       }
     ]);
   });
@@ -203,7 +207,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username cannot be empty"
+        message: "Username cannot be empty",
+        field: "username"
       }
     ]);
   });
@@ -224,7 +229,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username must be at most 20 characters long"
+        message: "Username must be at most 20 characters long",
+        field: "username"
       }
     ]);
   });
@@ -245,7 +251,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username must be at least 3 characters long"
+        message: "Username must be at least 3 characters long",
+        field: "username"
       }
     ]);
   });
@@ -310,7 +317,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Confirm password must match new password"
+        message: "Confirm password must match new password",
+        field: "confirmNewPassword"
       }
     ]);
   });
@@ -333,7 +341,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Missing field confirmNewPassword"
+        message: "Missing field confirmNewPassword",
+        field: "confirmNewPassword"
       }
     ]);
   });
@@ -356,10 +365,12 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "currentPassword must be a string"
+        message: "currentPassword must be a string",
+        field: "currentPassword"
       },
       {
-        message: "newPassword must be a string"
+        message: "newPassword must be a string",
+        field: "newPassword"
       }
     ]);
   });
@@ -382,10 +393,12 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "currentPassword cannot be empty"
+        message: "currentPassword cannot be empty",
+        field: "currentPassword"
       },
       {
-        message: "newPassword cannot be empty"
+        message: "newPassword cannot be empty",
+        field: "newPassword"
       }
     ]);
   });
@@ -408,7 +421,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Missing field currentPassword"
+        message: "Missing field currentPassword",
+        field: "currentPassword"
       }
     ]);
   });
@@ -478,7 +492,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Name must be a string"
+        message: "Name must be a string",
+        field: "name"
       }
     ]);
   });
@@ -496,7 +511,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Name cannot be empty"
+        message: "Name cannot be empty",
+        field: "name"
       }
     ]);
   });
@@ -526,7 +542,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Missing field name"
+        message: "Missing field name",
+        field: "name"
       }
     ]);
   });
