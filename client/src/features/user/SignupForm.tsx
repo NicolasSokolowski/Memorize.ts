@@ -33,7 +33,10 @@ function SignupForm() {
     try {
       await axiosInstance.post("/users", userInfo);
 
-      // Display success message and switch back to login form
+      dispatch(setHasAccount(!hasAccount));
+
+      // TODO. Display success message and switch back to login form
+
       setUserInfo(initialState);
     } catch (err: unknown) {
       const axiosError = err as AxiosError<ApiErrorResponse>;
@@ -81,7 +84,7 @@ function SignupForm() {
   };
 
   return (
-    <section className="min-h-[36rem] w-100  overflow-hidden rounded-md border-gray-300 bg-white shadow-xl transition-all duration-300">
+    <section className="min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-white shadow-xl transition-all duration-300">
       <h2 className="m-5 text-center font-patua text-4xl">Inscription</h2>
       <form
         className="flex flex-col items-center justify-center gap-6 p-5"
