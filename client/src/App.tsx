@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppLayout from "./ui/AppLayout";
 import Home from "./ui/Home";
+import DecksList from "./features/deck/DecksList";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/decks",
-        element: <DeckList />
+        element: <DecksList />
       }
     ]
   }
