@@ -4,7 +4,7 @@ import Footer from "./Footer";
 function AppLayout() {
   return (
     <div className="flex h-screen flex-col">
-      <main className="h-[97%]">
+      <main className="grow overflow-hidden">
         <Outlet />
       </main>
       <Footer />
