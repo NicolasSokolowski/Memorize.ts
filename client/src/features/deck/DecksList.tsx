@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getDecks } from "../../store/deck/deckThunk";
+import DeckDetails from "./DeckDetails";
 
 function DecksList() {
   const dispatch = useAppDispatch();
@@ -11,12 +12,13 @@ function DecksList() {
   }, [dispatch]);
 
   return (
-    <div>
-      {decks.map((deck) => (
-        <div key={deck.id}>
-          <h3>{deck.name}</h3>
-        </div>
-      ))}
+    <div className="h-full overflow-y-auto bg-primary p-12">
+      <div className="flex h-full flex-wrap justify-start gap-12">
+        {decks.map((deck) => (
+          <DeckDetails key={deck.id} deck={deck} />
+        ))}
+        <div className="h-1 w-full" />
+      </div>
     </div>
   );
 }
