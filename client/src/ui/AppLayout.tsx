@@ -1,13 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Footer from "./Footer";
 
 function AppLayout() {
   return (
     <div className="flex h-screen flex-col">
-      <main className="grow overflow-hidden">
+      <main>
         <Outlet />
       </main>
-      <Footer />
     </div>
   );
 }
