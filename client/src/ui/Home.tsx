@@ -12,7 +12,7 @@ function Home() {
 
   useEffect(() => {
     if (user) {
-      navigate("/decks");
+      navigate("/user/decks");
     }
   });
 
