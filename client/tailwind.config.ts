@@ -24,8 +24,9 @@ export default {
         "192": "48rem"
       },
       boxShadow: {
-        "inner-strong": "inset 0 4px 8px rgba(0, 0, 0, 0.25)", // plus profonde
-        "inner-deep": "inset 0 6px 12px rgba(0, 0, 0, 0.35)" // encore plus visible
+        "inner-strong": "inset 0 4px 8px rgba(0, 0, 0, 0.25)",
+        "inner-deep": "inset 0 6px 12px rgba(0, 0, 0, 0.35)",
+        right: "4px 0 25px rgba(0, 0, 0, 0.25)"
       },
       colors: {
         primary: "#9BC4BC",
