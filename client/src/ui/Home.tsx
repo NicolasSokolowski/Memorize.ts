@@ -1,10 +1,20 @@
-import LoginForm from "../features/user/LoginForm";
 import SignupForm from "../features/user/SignupForm";
+import LoginForm from "../features/user/LoginForm";
 import { useAppSelector } from "../store/hooks";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import "../features/user/boxFlip.css";
 
 function Home() {
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
+  const user = useAppSelector((state) => state.user.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/decks");
+    }
+  });
 
   return (
     <div className="flex h-160 min-h-screen items-center justify-center gap-16 bg-primary">

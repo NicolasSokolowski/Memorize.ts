@@ -30,8 +30,6 @@ function LoginForm() {
     try {
       await dispatch(login(userInfo)).unwrap();
 
-      // Redirect to user's decks page
-
       setUserInfo(initialState);
     } catch (err: unknown) {
       const axiosError = err as AxiosError<ApiErrorResponse>;
