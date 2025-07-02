@@ -22,7 +22,7 @@ function Home() {
         <div className="flex h-2/5 items-center justify-center">
           <img
             src="/logo.png"
-            alt="GrowMind Logo"
+            alt="Memorize Logo"
             className="h-full object-contain"
           />
           <h1 className="mr-14 font-patua text-6xl text-tertiary">Memorize</h1>
