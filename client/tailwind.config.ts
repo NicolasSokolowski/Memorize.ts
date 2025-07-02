@@ -3,7 +3,7 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {
-      sans: "Roboto Mono, monospace"
+      patua: ['"Patua One"', "cursive"]
     },
     extend: {
       height: {
@@ -30,10 +30,8 @@ export default {
       colors: {
         primary: "#9BC4BC",
         secondary: "#60B1DA",
-        tertiary: "#F4EFE5"
-      },
-      fontFamily: {
-        patua: ['"Patua One"', "cursive"]
+        tertiary: "#F4EFE5",
+        textPrimary: "#060606"
       }
     }
   },
