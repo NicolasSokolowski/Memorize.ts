@@ -44,6 +44,20 @@ function DeckCreation() {
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+
+    setError((prev) => ({
+      ...prev,
+      [id]: ""
+    }));
+
+    setDeckData((prev) => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
   return (
     <div className={`flip-box-deck ${isCreating ? "flip" : ""}`}>
       <div className="flip-box-inner">
@@ -59,27 +73,26 @@ function DeckCreation() {
         </div>
         <div className="flip-box-b-top size-60 rounded-lg bg-tertiary shadow-lg">
           <div className="flex h-full flex-col justify-between">
-            <span className="mt-4 text-center font-patua text-xl">Créer</span>
+            <h3 className="mt-4 text-center font-patua text-xl">Créer</h3>
             <div className="flex h-full flex-col items-center justify-center">
               <form
                 onSubmit={handleSubmit()}
                 className="flex flex-col items-center gap-2"
               >
                 <input
+                  id="name"
                   type="text"
                   value={deckData.name}
-                  onChange={(e) =>
-                    setDeckData({ ...deckData, name: e.target.value })
-                  }
+                  onChange={(e) => handleChange(e)}
                   placeholder="Nom du deck"
-                  className="h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+                  className="mt-2 h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
                 />
                 {error.name && (
                   <p className="w-44 break-words font-patua text-sm text-red-500">
                     {error.name}
                   </p>
                 )}
-                <div className="flex w-full justify-between gap-6">
+                <div className="flex w-full translate-y--2 justify-between gap-6">
                   <button type="button">
                     <img
                       src="/cancelation.png"
