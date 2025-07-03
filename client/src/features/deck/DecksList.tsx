@@ -13,11 +13,10 @@ function DecksList() {
 
   return (
     <div className="h-full overflow-y-auto bg-primary p-12">
-      <div className="flex h-full flex-wrap justify-start gap-12">
+      <div className="grid grid-cols-5 gap-10 pb-8">
         {decks.map((deck) => (
           <DeckDetails key={deck.id} deck={deck} />
         ))}
-        <div className="h-1 w-full" />
       </div>
     </div>
   );
