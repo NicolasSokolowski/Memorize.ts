@@ -1,6 +1,11 @@
 import { useState } from "react";
 
+const initialState = {
+  name: ""
+};
+
 function DeckCreation() {
+  const [deckData, setDeckData] = useState(initialState);
   const [isCreating, setIsCreating] = useState(false);
 
   return (
@@ -18,11 +23,15 @@ function DeckCreation() {
         </div>
         <div className="flip-box-b size-60 rounded-lg bg-tertiary shadow-lg">
           <div className="flex h-full flex-col justify-between">
-            <div className="mt-4 text-center font-patua text-xl">Créer</div>
+            <span className="mt-4 text-center font-patua text-xl">Créer</span>
             <div className="flex h-full flex-col items-center justify-center">
               <form className="flex flex-col items-center gap-2">
                 <input
                   type="text"
+                  value={deckData.name}
+                  onChange={(e) =>
+                    setDeckData({ ...deckData, name: e.target.value })
+                  }
                   placeholder="Nom du deck"
                   className="h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
                 ></input>
