@@ -6,6 +6,14 @@
   position: relative;
 }
 
+.flip-box-deck {
+  background-color: transparent;
+  perspective: 1000px;
+  width: 15rem;
+  height: 15rem;
+  position: relative;
+}
+
 .flip-box-inner {
   transition: transform 0.8s;
   transform-style: preserve-3d;
@@ -20,8 +28,12 @@
   transform: rotateY(180deg);
 }
 
-.flip-box-signup,
-.flip-box-login {
+.flip-box-deck.flip .flip-box-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-box-a,
+.flip-box-b {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -31,6 +43,6 @@
   backface-visibility: hidden;
 }
 
-.flip-box-login {
+.flip-box-b {
   transform: rotateY(180deg);
 }
