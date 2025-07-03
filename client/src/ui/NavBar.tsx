@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function NavBar() {
+  const navigate = useNavigate();
+
   return (
     <div className="flex h-full w-60 flex-col justify-between bg-tertiary">
       <div className="flex flex-col justify-between">
@@ -23,16 +27,23 @@ function NavBar() {
               />
             </div>
           </li>
-          <li className="flex h-14 w-full items-center rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl">
-            <p className="w-full">Mes decks</p>
-            <div className="flex items-center">
-              <img src="/deck.png" alt="Deck icon" className="ml-3 w-20" />
-            </div>
+          <li>
+            <button
+              onClick={() => navigate("/user/decks")}
+              className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
+            >
+              <p>Mes decks</p>
+              <img
+                src="/deck.png"
+                alt="Deck icon"
+                className="w-24 translate-x-6"
+              />
+            </button>
           </li>
           <li className="flex h-14 w-full items-center rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl">
             <p className="w-full">Mes cartes</p>
             <div className="flex items-center">
-              <img src="/card.png" alt="Card icon" className="ml-2 w-16" />
+              <img src="/card.png" alt="Card icon" className="ml-1 w-16" />
             </div>
           </li>
         </ol>
