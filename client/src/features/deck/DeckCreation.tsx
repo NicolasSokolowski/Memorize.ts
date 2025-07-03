@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { createDeck } from "../../store/deck/deckThunk";
-import { AxiosError } from "axios";
 
 const initialState = {
   name: ""
@@ -17,6 +16,9 @@ interface ApiErrorResponse {
 function DeckCreation() {
   const [deckData, setDeckData] = useState(initialState);
   const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState({
+    name: ""
+  });
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,14 +27,20 @@ function DeckCreation() {
     if (!deckData.name) return;
 
     try {
-      await dispatch(createDeck(deckData));
+      await dispatch(createDeck(deckData)).unwrap();
 
       setDeckData(initialState);
       setIsCreating(false);
     } catch (err: unknown) {
-      const axiosError = err as AxiosError<ApiErrorResponse>;
+      const error = err as ApiErrorResponse;
 
-      console.error(axiosError.message);
+      if (error.errors) {
+        for (const e of error.errors) {
+          if (e.field === "name") {
+            setError((prev) => ({ ...prev, name: e.message }));
+          }
+        }
+      }
     }
   };
 
@@ -65,7 +73,12 @@ function DeckCreation() {
                   }
                   placeholder="Nom du deck"
                   className="h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
-                ></input>
+                />
+                {error.name && (
+                  <p className="w-44 break-words font-patua text-sm text-red-500">
+                    {error.name}
+                  </p>
+                )}
                 <div className="flex w-full justify-between gap-6">
                   <button type="button">
                     <img

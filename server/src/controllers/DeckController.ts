@@ -48,7 +48,10 @@ export class DeckController extends CoreController<
     );
 
     if (checkIfExists) {
-      throw new BadRequestError(`Provided item already exists.`);
+      throw new BadRequestError(
+        "Deck name already exists in this deck.",
+        "name"
+      );
     }
 
     const createdItem = await this.datamapper.insert(data);
