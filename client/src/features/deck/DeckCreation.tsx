@@ -36,11 +36,12 @@ function DeckCreation() {
                   className="h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
                 ></input>
                 <div className="flex w-full justify-between gap-6">
-                  <button>
+                  <button type="button">
                     <img
                       src="/cancelation.png"
                       alt="Cancelation icon"
                       className="w-24"
+                      onClick={() => setIsCreating(!isCreating)}
                     />
                   </button>
                   <button className="mr-2">
