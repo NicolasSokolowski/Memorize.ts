@@ -29,11 +29,12 @@
 }
 
 .flip-box-deck.flip .flip-box-inner {
-  transform: rotateY(180deg);
+  transform: rotateX(180deg);
 }
 
 .flip-box-a,
-.flip-box-b {
+.flip-box-b,
+.flip-box-b-top {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -45,4 +46,8 @@
 
 .flip-box-b {
   transform: rotateY(180deg);
+}
+
+.flip-box-b-top {
+  transform: rotateX(180deg);
 }

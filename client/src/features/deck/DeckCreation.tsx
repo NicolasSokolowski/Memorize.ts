@@ -49,7 +49,7 @@ function DeckCreation() {
             </span>
           </button>
         </div>
-        <div className="flip-box-b size-60 rounded-lg bg-tertiary shadow-lg">
+        <div className="flip-box-b-top size-60 rounded-lg bg-tertiary shadow-lg">
           <div className="flex h-full flex-col justify-between">
             <span className="mt-4 text-center font-patua text-xl">Créer</span>
             <div className="flex h-full flex-col items-center justify-center">
