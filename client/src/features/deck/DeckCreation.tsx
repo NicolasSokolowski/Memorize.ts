@@ -1,12 +1,40 @@
 import { useState } from "react";
+import { useAppDispatch } from "../../store/hooks";
+import { createDeck } from "../../store/deck/deckThunk";
+import { AxiosError } from "axios";
 
 const initialState = {
   name: ""
 };
 
+interface ApiErrorResponse {
+  errors: {
+    message: string;
+    field?: string;
+  }[];
+}
+
 function DeckCreation() {
   const [deckData, setDeckData] = useState(initialState);
   const [isCreating, setIsCreating] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!deckData.name) return;
+
+    try {
+      await dispatch(createDeck(deckData));
+
+      setDeckData(initialState);
+      setIsCreating(false);
+    } catch (err: unknown) {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+
+      console.error(axiosError.message);
+    }
+  };
 
   return (
     <div className={`flip-box-deck ${isCreating ? "flip" : ""}`}>
@@ -25,7 +53,10 @@ function DeckCreation() {
           <div className="flex h-full flex-col justify-between">
             <span className="mt-4 text-center font-patua text-xl">Créer</span>
             <div className="flex h-full flex-col items-center justify-center">
-              <form className="flex flex-col items-center gap-2">
+              <form
+                onSubmit={handleSubmit()}
+                className="flex flex-col items-center gap-2"
+              >
                 <input
                   type="text"
                   value={deckData.name}
@@ -44,7 +75,7 @@ function DeckCreation() {
                       onClick={() => setIsCreating(!isCreating)}
                     />
                   </button>
-                  <button className="mr-2">
+                  <button type="submit" className="mr-2">
                     <img
                       src="/validation.png"
                       alt="Validation icon"
