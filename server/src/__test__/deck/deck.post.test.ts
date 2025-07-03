@@ -65,7 +65,7 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Provided item already exists." }
+      { message: "Deck name already exists in this deck.", field: "name" }
     ]);
   });
 
