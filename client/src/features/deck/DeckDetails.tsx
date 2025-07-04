@@ -31,7 +31,7 @@ function DeckDetails({ deck }: DeckProps) {
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!deckData.name) return;
+    if (!deckData.name || deckData.name === deck.name) return;
 
     try {
       await dispatch(updateDeck({ id: deck.id, data: deckData })).unwrap();
