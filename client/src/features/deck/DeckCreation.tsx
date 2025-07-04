@@ -70,7 +70,7 @@ function DeckCreation() {
         <div className="flip-box-a">
           <button
             className="flex size-60 items-center justify-center rounded-lg bg-tertiary shadow-lg"
-            onClick={handleCancel}
+            onClick={() => setIsCreating(!isCreating)}
           >
             <span className="relative top-[-12px] font-patua text-9xl text-secondary">
               +
