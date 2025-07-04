@@ -8,6 +8,7 @@ export interface DeckProps {
 
 function DeckDetails({ deck }: DeckProps) {
   const [isModifying, setIsModifying] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <div className={`flip-box-left ${isModifying ? "flip" : ""}`}>
@@ -29,6 +30,9 @@ function DeckDetails({ deck }: DeckProps) {
                   alt="Modification icon"
                   className="w-16"
                 />
+              </button>
+              <button type="button" onClick={() => setIsDeleting(!isDeleting)}>
+                <img src="/deletion.png" alt="Deletion icon" className="w-16" />
               </button>
             </div>
           </div>
