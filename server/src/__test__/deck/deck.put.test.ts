@@ -82,7 +82,7 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: `A deck with the name "${deck.body.name}" already exists.` }
+      { message: `Name already exists in this deck.`, field: "name" }
     ]);
   });
 
