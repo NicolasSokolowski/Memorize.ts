@@ -32,7 +32,7 @@ export const createDeck = createAsyncThunk<
 });
 
 interface UpdateDeckPayload {
-  id: string;
+  id: number;
   data: Partial<Omit<Deck, "id">>;
 }
 

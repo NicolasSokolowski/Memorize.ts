@@ -1,15 +1,48 @@
 import { useState } from "react";
 import { Deck } from "../../store/deck/deckSlice";
+import { useAppDispatch } from "../../store/hooks";
+import { updateDeck } from "../../store/deck/deckThunk";
 
 interface DeckProps {
   deck: Deck;
 }
 
+const initialState = {
+  name: ""
+};
+
+interface ApiErrorResponse {
+  errors: {
+    message: string;
+    field?: string;
+  }[];
+}
+
 function DeckDetails({ deck }: DeckProps) {
   const [isModifying, setIsModifying] = useState(false);
-  const [deckData, setDeckData] = useState({
-    name: deck.name
-  });
+  const [deckData, setDeckData] = useState(initialState);
+  const dispatch = useAppDispatch();
+
+  const handleEdit = () => {
+    setDeckData({ name: deck.name });
+    setIsModifying(true);
+  };
+
+  const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!deckData.name) return;
+
+    try {
+      await dispatch(updateDeck({ id: deck.id, data: deckData })).unwrap();
+
+      setDeckData(initialState);
+      setIsModifying(false);
+    } catch (err: unknown) {
+      const error = err as ApiErrorResponse;
+      console.error(error);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -31,10 +64,7 @@ function DeckDetails({ deck }: DeckProps) {
               </h3>
             </div>
             <div className="flex h-16 w-full justify-between">
-              <button
-                type="button"
-                onClick={() => setIsModifying(!isModifying)}
-              >
+              <button type="button" onClick={handleEdit}>
                 <img
                   src="/modification.png"
                   alt="Modification icon"
@@ -48,7 +78,10 @@ function DeckDetails({ deck }: DeckProps) {
           <div className="flex h-full flex-col justify-between">
             <h3 className="mt-4 text-center font-patua text-xl">Modifier</h3>
             <div className="flex h-full flex-col items-center justify-center">
-              <form className="flex flex-col items-center gap-2">
+              <form
+                className="flex flex-col items-center gap-2"
+                onSubmit={handleSubmit()}
+              >
                 <input
                   id="name"
                   type="text"
