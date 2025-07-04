@@ -58,13 +58,19 @@ function DeckCreation() {
     }));
   };
 
+  const handleCancel = () => {
+    setDeckData(initialState);
+    setError({ name: "" });
+    setIsCreating(!isCreating);
+  };
+
   return (
     <div className={`flip-box-deck ${isCreating ? "flip" : ""}`}>
       <div className="flip-box-inner">
         <div className="flip-box-a">
           <button
             className="flex size-60 items-center justify-center rounded-lg bg-tertiary shadow-lg"
-            onClick={() => setIsCreating(!isCreating)}
+            onClick={handleCancel}
           >
             <span className="relative top-[-12px] font-patua text-9xl text-secondary">
               +
@@ -92,20 +98,20 @@ function DeckCreation() {
                     {error.name}
                   </p>
                 )}
-                <div className="flex w-full translate-y--2 justify-between gap-6">
+                <div className="flex w-full translate-y--2 justify-between gap-10">
                   <button type="button">
                     <img
                       src="/cancelation.png"
                       alt="Cancelation icon"
-                      className="w-24"
-                      onClick={() => setIsCreating(!isCreating)}
+                      className="w-20"
+                      onClick={handleCancel}
                     />
                   </button>
                   <button type="submit" className="mr-2">
                     <img
                       src="/validation.png"
                       alt="Validation icon"
-                      className="w-20"
+                      className="w-16"
                     />
                   </button>
                 </div>
