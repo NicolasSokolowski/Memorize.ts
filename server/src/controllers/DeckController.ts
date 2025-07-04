@@ -48,10 +48,7 @@ export class DeckController extends CoreController<
     );
 
     if (checkIfExists) {
-      throw new BadRequestError(
-        "Deck name already exists in this deck.",
-        "name"
-      );
+      throw new BadRequestError("Name already exists in this deck.", "name");
     }
 
     const createdItem = await this.datamapper.insert(data);
@@ -77,10 +74,13 @@ export class DeckController extends CoreController<
       throw new NotFoundError();
     }
 
-    if (data.name === deck.name) {
-      throw new BadRequestError(
-        `A deck with the name "${data.name}" already exists.`
-      );
+    const checkIfExists = await this.datamapper.findBySpecificField(
+      this.field,
+      data[this.field]
+    );
+
+    if (checkIfExists) {
+      throw new BadRequestError("Name already exists in this deck.", "name");
     }
 
     data.id = deck_id;

@@ -14,7 +14,7 @@ function DecksList() {
 
   return (
     <div className="h-full overflow-y-auto bg-primary p-12">
-      <div className="grid grid-cols-5 gap-10 pb-8">
+      <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-14 pb-8">
         <DeckCreation />
         {decks.map((deck) => (
           <DeckDetails key={deck.id} deck={deck} />

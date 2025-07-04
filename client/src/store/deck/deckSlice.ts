@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createDeck, getDecks } from "./deckThunk";
+import { createDeck, getDecks, updateDeck } from "./deckThunk";
 
 export interface Deck {
   id: number;
@@ -47,6 +47,20 @@ const deckSlice = createSlice({
       .addCase(createDeck.rejected, (state, action) => {
         state.isLoading = false;
         console.error("Failed to create deck", action.error.message);
+      })
+      // PUT DECK
+      .addCase(updateDeck.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateDeck.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.decks = state.decks.map((deck) =>
+          deck.id === action.payload.id ? action.payload : deck
+        );
+      })
+      .addCase(updateDeck.rejected, (state, action) => {
+        state.isLoading = false;
+        console.error("Failed to update deck", action.error.message);
       });
   }
 });

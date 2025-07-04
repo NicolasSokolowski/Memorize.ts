@@ -45,16 +45,16 @@ function DeckCreation() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
+    const { value } = e.target;
 
     setError((prev) => ({
       ...prev,
-      [id]: ""
+      name: ""
     }));
 
     setDeckData((prev) => ({
       ...prev,
-      [id]: value
+      name: value
     }));
   };
 
@@ -70,14 +70,14 @@ function DeckCreation() {
         <div className="flip-box-a">
           <button
             className="flex size-60 items-center justify-center rounded-lg bg-tertiary shadow-lg"
-            onClick={handleCancel}
+            onClick={() => setIsCreating(!isCreating)}
           >
             <span className="relative top-[-12px] font-patua text-9xl text-secondary">
               +
             </span>
           </button>
         </div>
-        <div className="flip-box-b-top size-60 rounded-lg bg-tertiary shadow-lg">
+        <div className="flip-box-b-top mr-2 size-60 rounded-lg bg-tertiary shadow-lg">
           <div className="flex h-full flex-col justify-between">
             <h3 className="mt-4 text-center font-patua text-xl">Créer</h3>
             <div className="flex h-full flex-col items-center justify-center">
