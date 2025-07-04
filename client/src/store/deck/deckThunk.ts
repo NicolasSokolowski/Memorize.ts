@@ -30,3 +30,24 @@ export const createDeck = createAsyncThunk<
     throw err;
   }
 });
+
+interface UpdateDeckPayload {
+  id: string;
+  data: Partial<Omit<Deck, "id">>;
+}
+
+export const updateDeck = createAsyncThunk<
+  Deck,
+  UpdateDeckPayload,
+  { rejectValue: ApiErrorResponse }
+>("UPDATE_DECK", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.put(`/decks/${id}`, data);
+    return response.data as Deck;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
+  }
+});
