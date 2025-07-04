@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getDecks } from "./deckThunk";
+import { createDeck, getDecks } from "./deckThunk";
 
 export interface Deck {
   id: number;
@@ -24,6 +24,7 @@ const deckSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // GET all decks
       .addCase(getDecks.pending, (state) => {
         state.isLoading = true;
       })
@@ -34,6 +35,18 @@ const deckSlice = createSlice({
       .addCase(getDecks.rejected, (state) => {
         state.isLoading = false;
         console.error("Failed to fetch decks");
+      })
+      // POST deck
+      .addCase(createDeck.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createDeck.fulfilled, (state, action) => {
+        state.decks.push(action.payload);
+        state.isLoading = false;
+      })
+      .addCase(createDeck.rejected, (state, action) => {
+        state.isLoading = false;
+        console.error("Failed to create deck", action.error.message);
       });
   }
 });

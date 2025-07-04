@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AxiosError } from "axios";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { login } from "../../store/user/userThunk";
+import { setHasAccount } from "../../store/user/userSlice";
 
 const initialState = {
   email: "",
@@ -78,7 +79,7 @@ function LoginForm() {
 
     setUserInfo(initialState);
 
-    dispatch({ type: "user/setHasAccount", payload: !hasAccount });
+    dispatch(setHasAccount(!hasAccount));
   };
 
   return (

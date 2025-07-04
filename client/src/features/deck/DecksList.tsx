@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getDecks } from "../../store/deck/deckThunk";
 import DeckDetails from "./DeckDetails";
+import DeckCreation from "./DeckCreation";
 
 function DecksList() {
   const dispatch = useAppDispatch();
@@ -14,6 +15,7 @@ function DecksList() {
   return (
     <div className="h-full overflow-y-auto bg-primary p-12">
       <div className="grid grid-cols-5 gap-10 pb-8">
+        <DeckCreation />
         {decks.map((deck) => (
           <DeckDetails key={deck.id} deck={deck} />
         ))}

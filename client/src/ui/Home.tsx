@@ -3,7 +3,6 @@ import LoginForm from "../features/user/LoginForm";
 import { useAppSelector } from "../store/hooks";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import "../features/user/boxFlip.css";
 
 function Home() {
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
@@ -44,10 +43,10 @@ function Home() {
       </section>
       <div className={`flip-box ${hasAccount ? "flip" : ""}`}>
         <div className="flip-box-inner">
-          <div className="flip-box-signup">
+          <div className="flip-box-a">
             <SignupForm />
           </div>
-          <div className="flip-box-login">
+          <div className="flip-box-b">
             <LoginForm />
           </div>
         </div>
