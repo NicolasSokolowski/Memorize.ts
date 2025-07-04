@@ -21,6 +21,9 @@ interface ApiErrorResponse {
 function DeckDetails({ deck }: DeckProps) {
   const [isModifying, setIsModifying] = useState(false);
   const [deckData, setDeckData] = useState(initialState);
+  const [error, setError] = useState({
+    name: ""
+  });
   const dispatch = useAppDispatch();
 
   const handleEdit = () => {
@@ -31,7 +34,7 @@ function DeckDetails({ deck }: DeckProps) {
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!deckData.name || deckData.name === deck.name) return;
+    if (!deckData.name) return;
 
     try {
       await dispatch(updateDeck({ id: deck.id, data: deckData })).unwrap();
@@ -40,12 +43,24 @@ function DeckDetails({ deck }: DeckProps) {
       setIsModifying(false);
     } catch (err: unknown) {
       const error = err as ApiErrorResponse;
-      console.error(error);
+
+      if (error.errors) {
+        for (const e of error.errors) {
+          if (e.field === "name") {
+            setError((prev) => ({ ...prev, name: e.message }));
+          }
+        }
+      }
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+
+    setError((prev) => ({
+      ...prev,
+      name: ""
+    }));
 
     setDeckData((prev) => ({
       ...prev,
@@ -90,6 +105,11 @@ function DeckDetails({ deck }: DeckProps) {
                   placeholder="Nom du deck"
                   className="mt-2 h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
                 />
+                {error.name && (
+                  <p className="w-44 break-words font-patua text-sm text-red-500">
+                    {error.name}
+                  </p>
+                )}
                 <div className="flex w-full justify-between gap-10">
                   <button type="button">
                     <img
