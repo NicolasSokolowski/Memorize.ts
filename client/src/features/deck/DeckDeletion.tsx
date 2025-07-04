@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { deleteDeck } from "../../store/deck/deckThunk";
 import { useAppDispatch } from "../../store/hooks";
 import { DeckProps } from "./DeckDetails";
@@ -14,6 +15,9 @@ interface ApiErrorResponse {
 }
 
 function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
+  const [error, setError] = useState({
+    message: ""
+  });
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,7 +29,14 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
       onCancel();
     } catch (err: unknown) {
       const error = err as ApiErrorResponse;
-      console.error(error);
+
+      if (error.errors) {
+        for (const e of error.errors) {
+          if (e.field === "name") {
+            setError((prev) => ({ ...prev, message: e.message }));
+          }
+        }
+      }
     }
   };
 
@@ -41,6 +52,11 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
             <p className="w-44 pl-2 font-patua text-base text-textPrimary">
               Voulez-vous vraiment supprimer ?
             </p>
+            {error.message && (
+              <p className="w-44 break-words pl-1 font-patua text-sm text-red-500">
+                {error.message}
+              </p>
+            )}
             <div className="flex w-full justify-between gap-10">
               <button type="button" onClick={() => onCancel()}>
                 <img
