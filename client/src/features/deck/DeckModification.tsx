@@ -15,15 +15,10 @@ const initialState = {
 };
 
 interface DeckModificationProps extends DeckProps {
-  isModifying: boolean;
-  setIsModifying: React.Dispatch<React.SetStateAction<boolean>>;
+  onCancel: () => void;
 }
 
-function DeckModification({
-  deck,
-  isModifying,
-  setIsModifying
-}: DeckModificationProps) {
+function DeckModification({ deck, onCancel }: DeckModificationProps) {
   const [deckData, setDeckData] = useState(initialState);
   const [error, setError] = useState({
     name: ""
@@ -47,7 +42,7 @@ function DeckModification({
     try {
       await dispatch(updateDeck({ id: deck.id, data: deckData })).unwrap();
 
-      setIsModifying(false);
+      onCancel();
     } catch (err: unknown) {
       const error = err as ApiErrorResponse;
 
@@ -78,7 +73,7 @@ function DeckModification({
   const handleCancel = () => {
     setDeckData({ name: deck.name });
     setError({ name: "" });
-    setIsModifying(!isModifying);
+    onCancel();
   };
 
   return (

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createDeck, getDecks, updateDeck } from "./deckThunk";
+import { createDeck, deleteDeck, getDecks, updateDeck } from "./deckThunk";
 
 export interface Deck {
   id: number;
@@ -61,6 +61,18 @@ const deckSlice = createSlice({
       .addCase(updateDeck.rejected, (state, action) => {
         state.isLoading = false;
         console.error("Failed to update deck", action.error.message);
+      })
+      // DELETE DECK
+      .addCase(deleteDeck.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteDeck.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.decks = state.decks.filter((deck) => deck.id !== action.payload);
+      })
+      .addCase(deleteDeck.rejected, (state, action) => {
+        state.isLoading = false;
+        console.error("Failed at deleting deck", action.error.message);
       });
   }
 });

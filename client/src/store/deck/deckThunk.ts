@@ -51,3 +51,19 @@ export const updateDeck = createAsyncThunk<
     throw err;
   }
 });
+
+export const deleteDeck = createAsyncThunk<
+  number,
+  number,
+  { rejectValue: ApiErrorResponse }
+>("DELETE_DECK", async (id, { rejectWithValue }) => {
+  try {
+    await axiosInstance.delete(`/decks/${id}`);
+    return id;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
+  }
+});
