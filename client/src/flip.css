@@ -1,45 +1,8 @@
-.flip-box {
-  background-color: transparent;
-  perspective: 1000px;
-  width: 25rem;
-  height: 32rem;
-  position: relative;
-}
-
-.flip-box-deck {
-  background-color: transparent;
-  perspective: 1000px;
-  width: 15rem;
-  height: 15rem;
-  position: relative;
-}
-
-.flip-box-inner {
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-}
-
-.flip-box.flip .flip-box-inner {
-  transform: rotateY(180deg);
-}
-
-.flip-box-deck.flip .flip-box-inner {
-  transform: rotateX(180deg);
-}
-
-.flip-box-left.flip .flip-box-inner {
-  transform: rotateY(-180deg);
-}
-
 .flip-box-a,
 .flip-box-b,
 .flip-box-b-top,
-.flip-box-b-left {
+.flip-box-b-left,
+.flip-box-b-right {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -49,7 +12,47 @@
   backface-visibility: hidden;
 }
 
-.flip-box-b {
+.flip-box-inner {
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Signup & Login forms */
+
+.flip-box {
+  background-color: transparent;
+  perspective: 1000px;
+  width: 25rem;
+  height: 32rem;
+  position: relative;
+}
+
+.flip-box.flip .flip-box-inner {
+  transform: rotateY(180deg);
+}
+
+/* Decks & Cards */
+
+.flip-box-deck {
+  background-color: transparent;
+  perspective: 1000px;
+  width: 15rem;
+  height: 15rem;
+  position: relative;
+}
+
+.flip-box-deck.flip .flip-box-inner {
+  transform: rotateX(180deg);
+}
+
+.flip-left .flip-box-inner {
+  transform: rotateY(-180deg);
+}
+
+.flip-right .flip-box-inner {
   transform: rotateY(180deg);
 }
 
@@ -60,3 +63,8 @@
 .flip-box-b-left {
   transform: rotateY(-180deg);
 }
+
+.flip-box-b-right {
+  transform: rotateY(180deg);
+}
+
