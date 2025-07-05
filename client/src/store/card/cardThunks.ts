@@ -2,6 +2,14 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Card } from "./cardSlice";
 import axiosInstance from "../../services/axios.instance";
 
+export const getCards = createAsyncThunk<Card[], number>(
+  "GET_CARDS",
+  async (id) => {
+    const response = await axiosInstance.get(`/decks/${id}/cards`);
+    return response.data as Card[];
+  }
+);
+
 export const createCard = createAsyncThunk<Card, Partial<Card>>(
   "CREATE_CARD",
   async (newCard: Partial<Card>) => {
