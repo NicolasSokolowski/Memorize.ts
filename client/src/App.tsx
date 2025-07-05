@@ -3,6 +3,7 @@ import AppLayout from "./ui/AppLayout";
 import Home from "./ui/Home";
 import DecksList from "./features/deck/DecksList";
 import UserLayout from "./ui/UserLayout";
+import CardsList from "./features/card/CardsList";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,13 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/user/decks",
-            element: <DecksList />
+            element: <DecksList />,
+            children: [
+              {
+                path: "/user/decks/:deckId/cards",
+                element: <CardsList />
+              }
+            ]
           }
         ]
       }
