@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Card } from "./cardSlice";
 import axiosInstance from "../../services/axios.instance";
 
-export const getCards = createAsyncThunk<Card[], number>(
+export const getCardsByDeckId = createAsyncThunk<Card[], number>(
   "GET_CARDS",
   async (id) => {
     const response = await axiosInstance.get(`/decks/${id}/cards`);

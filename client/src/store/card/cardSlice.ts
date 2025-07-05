@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  getCardsByDeckId,
   createCard,
   deleteCard,
   updateCard,
@@ -35,6 +36,22 @@ const cardSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // GET CARDS
+      .addCase(getCardsByDeckId.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCardsByDeckId.fulfilled, (state, action) => {
+        // Retrieve deck id sent as a parameter in the thunk
+        const deckId = action.meta.arg;
+
+        // Update cards without deleting other deck's cards
+        state.cards = [
+          ...state.cards.filter((card) => card.deck_id !== deckId),
+          ...action.payload
+        ];
+
+        state.isLoading = false;
+      })
       .addCase(createCard.pending, (state) => {
         state.isLoading = true;
       })
