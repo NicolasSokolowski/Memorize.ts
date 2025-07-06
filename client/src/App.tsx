@@ -19,13 +19,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/user/decks",
-            element: <DecksList />,
-            children: [
-              {
-                path: "/user/decks/:deckId/cards",
-                element: <CardsList />
-              }
-            ]
+            element: <DecksList />
+          },
+          {
+            path: "/user/decks/:deckId/cards",
+            element: <CardsList />
           }
         ]
       }
