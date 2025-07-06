@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useEffect } from "react";
 import { getCardsByDeckId } from "../../store/card/cardThunks";
 import { selectCardsByDeckId } from "../../store/card/cardSelector";
+import CardDetails from "./CardDetails";
 
 function CardsList() {
   const { deckId } = useParams<{ deckId: string }>();
@@ -17,13 +18,12 @@ function CardsList() {
   }, [dispatch, cards, deckId, isLoading]);
 
   return (
-    <div>
-      {cards.map((card) => (
-        <div key={card.id}>
-          <div>{card.front}</div>
-          <div>{card.back}</div>
-        </div>
-      ))}
+    <div className="h-full overflow-y-auto bg-primary p-12">
+      <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-14 pb-8">
+        {cards.map((card) => (
+          <CardDetails key={card.id} card={card} />
+        ))}
+      </div>
     </div>
   );
 }
