@@ -90,6 +90,7 @@ function DeckCreation() {
                   type="text"
                   value={deckData.name}
                   onChange={(e) => handleChange(e)}
+                  autoComplete="off"
                   placeholder="Nom du deck"
                   className="mt-2 h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
                 />
