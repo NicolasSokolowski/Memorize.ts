@@ -62,6 +62,7 @@ function DeckDetails({ deck }: DeckProps) {
                   src="/modification.png"
                   alt="Modification icon"
                   className="w-16"
+                  draggable={false}
                 />
               </button>
               <button
@@ -71,7 +72,12 @@ function DeckDetails({ deck }: DeckProps) {
                   handleDeleteClick();
                 }}
               >
-                <img src="/deletion.png" alt="Deletion icon" className="w-16" />
+                <img
+                  src="/deletion.png"
+                  alt="Deletion icon"
+                  className="w-16"
+                  draggable={false}
+                />
               </button>
             </div>
           </div>

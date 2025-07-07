@@ -106,6 +106,7 @@ function DeckCreation() {
                       alt="Cancelation icon"
                       className="w-20"
                       onClick={handleCancel}
+                      draggable={false}
                     />
                   </button>
                   <button type="submit" className="mr-2">
@@ -113,6 +114,7 @@ function DeckCreation() {
                       src="/validation.png"
                       alt="Validation icon"
                       className="w-16"
+                      draggable={false}
                     />
                   </button>
                 </div>

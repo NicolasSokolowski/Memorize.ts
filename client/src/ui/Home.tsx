@@ -20,9 +20,10 @@ function Home() {
       <section className="flex h-160 w-128 flex-col justify-end gap-8">
         <div className="flex h-2/5 items-center justify-center">
           <img
-            src="/logo.png"
+            src="/card.png"
             alt="Memorize Logo"
             className="h-full object-contain"
+            draggable={false}
           />
           <h1 className="mr-14 font-patua text-6xl text-tertiary">Memorize</h1>
         </div>

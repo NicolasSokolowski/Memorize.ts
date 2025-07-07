@@ -63,6 +63,7 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
                   src="/cancelation.png"
                   alt="Cancelation icon"
                   className="w-20"
+                  draggable={false}
                 />
               </button>
               <button type="submit" className="mr-2">
@@ -70,6 +71,7 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
                   src="/validation.png"
                   alt="Validation icon"
                   className="w-16"
+                  draggable={false}
                 />
               </button>
             </div>

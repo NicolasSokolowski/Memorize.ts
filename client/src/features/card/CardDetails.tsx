@@ -25,6 +25,7 @@ function CardDetails({ card }: CardProps) {
               src="/card.png"
               alt="Card icon"
               className="absolute top-14 w-32"
+              draggable={false}
             />
           </div>
         </div>
@@ -42,6 +43,7 @@ function CardDetails({ card }: CardProps) {
               src="/cardback.png"
               alt="Card back icon"
               className="absolute top-14 w-32"
+              draggable={false}
             />
           </div>
         </div>
