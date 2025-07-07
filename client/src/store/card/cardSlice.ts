@@ -52,6 +52,7 @@ const cardSlice = createSlice({
 
         state.isLoading = false;
       })
+      // Create card
       .addCase(createCard.pending, (state) => {
         state.isLoading = true;
       })

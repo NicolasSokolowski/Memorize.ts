@@ -21,7 +21,7 @@ export const getCardsByDeckId = createAsyncThunk<Card[], number>(
 // Card creation thunk
 
 interface CreateCardPayload {
-  id: number;
+  deckId: number;
   data: Partial<Card>;
 }
 
@@ -29,9 +29,9 @@ export const createCard = createAsyncThunk<
   Card,
   CreateCardPayload,
   { rejectValue: ApiErrorResponse }
->("CREATE_CARD", async ({ id, data }, { rejectWithValue }) => {
+>("CREATE_CARD", async ({ deckId, data }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/decks/${id}/cards`, data);
+    const response = await axiosInstance.post(`/decks/${deckId}/cards`, data);
     return response.data as Card;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {

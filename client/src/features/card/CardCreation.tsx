@@ -1,14 +1,28 @@
 import { useState } from "react";
+import { useAppDispatch } from "../../store/hooks";
+import { createCard } from "../../store/card/cardThunks";
 
 const initialState = {
   front: "",
   back: ""
 };
 
-function CardCreation() {
+interface CardCreationProp {
+  deckId: number;
+}
+
+interface ApiErrorResponse {
+  errors: {
+    message: string;
+    field?: string;
+  }[];
+}
+
+function CardCreation({ deckId }: CardCreationProp) {
   const [cardData, setCardData] = useState(initialState);
   const [isCreating, setIsCreating] = useState(false);
   const [isInputFlipped, setIsInputFlipped] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -21,6 +35,9 @@ function CardCreation() {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    if (!cardData.front) return;
+
     setIsInputFlipped(true);
   };
 
@@ -28,6 +45,22 @@ function CardCreation() {
     setCardData(initialState);
     setIsCreating(!isCreating);
     setIsInputFlipped(false);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!cardData.front || !cardData.back) return;
+
+    try {
+      await dispatch(createCard({ deckId, data: cardData }));
+      setCardData(initialState);
+      setIsInputFlipped(false);
+      setIsCreating(false);
+    } catch (err: unknown) {
+      const error = err as ApiErrorResponse;
+      console.error(error);
+    }
   };
 
   return (
@@ -48,7 +81,7 @@ function CardCreation() {
             <h3 className="mt-4 text-center font-patua text-xl">Créer</h3>
             <div className="flex h-full flex-col items-center justify-center">
               <form
-                // onSubmit={handleSubmit()}
+                onSubmit={handleSubmit}
                 className="flex flex-col items-center gap-2"
               >
                 <div className={`flip-input ${isInputFlipped ? "flip" : ""}`}>
@@ -59,6 +92,7 @@ function CardCreation() {
                         type="text"
                         value={cardData.front}
                         onChange={(e) => handleChange(e)}
+                        autoComplete="off"
                         placeholder="Face avant"
                         className="h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
                       />
@@ -69,6 +103,7 @@ function CardCreation() {
                         type="text"
                         value={cardData.back}
                         onChange={(e) => handleChange(e)}
+                        autoComplete="off"
                         placeholder="Face arrière"
                         className="h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
                       />
