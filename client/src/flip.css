@@ -2,7 +2,9 @@
 .flip-box-b,
 .flip-box-b-top,
 .flip-box-b-left,
-.flip-box-b-right {
+.flip-box-b-right,
+.flip-input-a,
+.flip-input-b-top {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -68,3 +70,28 @@
   transform: rotateY(180deg);
 }
 
+/* Inputs */
+
+.flip-input-inner {
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.flip-input {
+  background-color: transparent;
+  perspective: 1000px;
+  width: 11rem;
+  height: 2.5rem;
+  position: relative;
+}
+
+.flip-input.flip .flip-input-inner {
+  transform: rotateX(180deg);
+}
+
+.flip-input-b-top {
+  transform: rotateX(180deg);
+}

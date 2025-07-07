@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { getCardsByDeckId } from "../../store/card/cardThunks";
 import { selectCardsByDeckId } from "../../store/card/cardSelector";
 import CardDetails from "./CardDetails";
+import CardCreation from "./CardCreation";
 
 function CardsList() {
   const { deckId } = useParams<{ deckId: string }>();
@@ -19,6 +20,7 @@ function CardsList() {
 
   return (
     <div className="h-full overflow-y-auto bg-primary p-12">
+      <CardCreation />
       <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-14 pb-8">
         {cards.map((card) => (
           <CardDetails key={card.id} card={card} />
