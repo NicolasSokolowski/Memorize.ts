@@ -51,14 +51,26 @@ function DeckDetails({ deck }: DeckProps) {
               </h3>
             </div>
             <div className="flex h-16 w-full justify-between">
-              <button type="button" onClick={handleModifyClick}>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleModifyClick();
+                }}
+              >
                 <img
                   src="/modification.png"
                   alt="Modification icon"
                   className="w-16"
                 />
               </button>
-              <button type="button" onClick={handleDeleteClick}>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteClick();
+                }}
+              >
                 <img src="/deletion.png" alt="Deletion icon" className="w-16" />
               </button>
             </div>
