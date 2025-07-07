@@ -117,6 +117,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                       alt="Cancelation icon"
                       className="w-20"
                       onClick={handleCancel}
+                      draggable={false}
                     />
                   </button>
                   <button
@@ -128,6 +129,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                       src="/validation.png"
                       alt="Validation icon"
                       className="w-16"
+                      draggable={false}
                     />
                   </button>
                 </div>

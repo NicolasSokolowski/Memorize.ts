@@ -24,6 +24,7 @@ function NavBar() {
                 src="/training.png"
                 alt="Training icon"
                 className="ml-3 w-20"
+                draggable={false}
               />
             </div>
           </li>
@@ -37,13 +38,19 @@ function NavBar() {
                 src="/deck.png"
                 alt="Deck icon"
                 className="w-24 translate-x-6"
+                draggable={false}
               />
             </button>
           </li>
           <li className="flex h-14 w-full items-center rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl">
             <p className="w-full">Mes cartes</p>
             <div className="flex items-center">
-              <img src="/card.png" alt="Card icon" className="ml-1 w-16" />
+              <img
+                src="/card.png"
+                alt="Card icon"
+                className="ml-1 w-16"
+                draggable={false}
+              />
             </div>
           </li>
         </ol>
@@ -55,13 +62,19 @@ function NavBar() {
                 src="/profile.png"
                 alt="Profile icon"
                 className="ml-2 w-20"
+                draggable={false}
               />
             </div>
           </li>
           <li className="flex h-14 w-full items-center rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl">
             <p className="w-full">Déconnexion</p>
             <div className="flex items-center">
-              <img src="/logout.png" alt="Logout icon" className="ml-2 w-20" />
+              <img
+                src="/logout.png"
+                alt="Logout icon"
+                className="ml-2 w-20"
+                draggable={false}
+              />
             </div>
           </li>
         </ol>
