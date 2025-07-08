@@ -18,14 +18,22 @@ interface ApiErrorResponse {
   }[];
 }
 
+const errorsInitialState = {
+  frontMessage: "",
+  backMessage: ""
+};
+
 function CardCreation({ deckId }: CardCreationProp) {
   const [cardData, setCardData] = useState(initialState);
   const [isCreating, setIsCreating] = useState(false);
   const [isInputFlipped, setIsInputFlipped] = useState(false);
+  const [error, setError] = useState(errorsInitialState);
   const dispatch = useAppDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
+
+    setError(errorsInitialState);
 
     setCardData((prev) => ({
       ...prev,
@@ -42,6 +50,7 @@ function CardCreation({ deckId }: CardCreationProp) {
   };
 
   const handleCancel = () => {
+    setError(errorsInitialState);
     setCardData(initialState);
     setIsCreating(!isCreating);
     setIsInputFlipped(false);
@@ -53,13 +62,22 @@ function CardCreation({ deckId }: CardCreationProp) {
     if (!cardData.front || !cardData.back) return;
 
     try {
-      await dispatch(createCard({ deckId, data: cardData }));
+      await dispatch(createCard({ deckId, data: cardData })).unwrap();
       setCardData(initialState);
       setIsInputFlipped(false);
       setIsCreating(false);
     } catch (err: unknown) {
       const error = err as ApiErrorResponse;
-      console.error(error);
+      if (error.errors) {
+        for (const e of error.errors) {
+          if (e.field === "front") {
+            setIsInputFlipped(false);
+            setError((prev) => ({ ...prev, frontMessage: e.message }));
+          } else if (e.field === "back") {
+            setError((prev) => ({ ...prev, backMessage: e.message }));
+          }
+        }
+      }
     }
   };
 
@@ -82,7 +100,7 @@ function CardCreation({ deckId }: CardCreationProp) {
             <div className="flex h-full flex-col items-center justify-center">
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col items-center gap-2"
+                className="flex flex-col items-center"
               >
                 <div className={`flip-input ${isInputFlipped ? "flip" : ""}`}>
                   <div className="flip-input-inner">
@@ -94,7 +112,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
                         placeholder="Face avant"
-                        className="h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+                        className="mb-2 h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
                       />
                     </div>
                     <div className="flip-input-b-top">
@@ -110,6 +128,16 @@ function CardCreation({ deckId }: CardCreationProp) {
                     </div>
                   </div>
                 </div>
+                {error.frontMessage && (
+                  <p className="mt-2 w-44 break-words pl-1 font-patua text-sm text-red-500">
+                    {error.frontMessage}
+                  </p>
+                )}
+                {error.backMessage && (
+                  <p className="mt-2 w-44 break-words pl-1 font-patua text-sm text-red-500">
+                    {error.backMessage}
+                  </p>
+                )}
                 <div className="flex w-full translate-y--2 justify-between gap-10">
                   <button type="button">
                     <img
