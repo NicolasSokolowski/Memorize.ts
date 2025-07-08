@@ -75,6 +75,8 @@ function CardDetails({ card }: CardProps) {
             {visibleFormSide === "front" && (
               <div className="flip-card-back">
                 <CardModification
+                  deckId={card.deck_id}
+                  cardId={card.id}
                   card={card}
                   side="front"
                   onCancel={() => setEditSide("none")}
@@ -127,6 +129,8 @@ function CardDetails({ card }: CardProps) {
                 {visibleFormSide === "back" && (
                   <div className="flip-face flip-face-back">
                     <CardModification
+                      deckId={card.deck_id}
+                      cardId={card.id}
                       card={card}
                       side="back"
                       onCancel={() => setEditSide("none")}
