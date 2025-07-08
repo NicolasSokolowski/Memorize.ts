@@ -66,7 +66,10 @@ export class CardController extends CoreController<
     data.deck_id = deckId;
 
     if (checkIfExists) {
-      throw new BadRequestError(`Front side already exists in this deck.`);
+      throw new BadRequestError(
+        "Front side name already exists in this deck.",
+        "name"
+      );
     }
 
     const createdItem = await this.datamapper.insert(data);
@@ -95,7 +98,8 @@ export class CardController extends CoreController<
 
     if (checkIfCardExistsInDeck && checkIfCardExistsInDeck.id !== cardId) {
       throw new BadRequestError(
-        `Front side already exists in this deck with ID ${card.deck_id}.`
+        "Front side name already exists in this deck.",
+        "name"
       );
     }
 

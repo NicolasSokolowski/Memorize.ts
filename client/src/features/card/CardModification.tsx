@@ -3,6 +3,13 @@ import { CardProps } from "./CardDetails";
 import { useAppDispatch } from "../../store/hooks";
 import { updateCard } from "../../store/card/cardThunks";
 
+interface ApiErrorResponse {
+  errors: {
+    message: string;
+    field?: string;
+  }[];
+}
+
 type CardSide = "front" | "back";
 
 const initialState = {
@@ -25,6 +32,9 @@ function CardModification({
   onCancel
 }: CardModificationProps) {
   const [cardData, setCardData] = useState(initialState);
+  const [error, setError] = useState({
+    message: ""
+  });
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -37,15 +47,30 @@ function CardModification({
     if (cardData.front === card.front && cardData.back === card.back) return;
 
     try {
-      await dispatch(updateCard({ deckId, cardId, data: cardData }));
+      await dispatch(updateCard({ deckId, cardId, data: cardData })).unwrap();
       onCancel();
     } catch (err: unknown) {
-      console.error(err);
+      const error = err as ApiErrorResponse;
+      if (error.errors) {
+        for (const e of error.errors) {
+          if (e.field === "front") {
+            setError((prev) => ({ ...prev, message: e.message }));
+          } else if (e.field === "back") {
+            setError((prev) => ({ ...prev, message: e.message }));
+          }
+        }
+      }
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+
+    setError((prev) => ({
+      ...prev,
+      message: ""
+    }));
+
     setCardData((prev) => ({
       ...prev,
       [side]: value
@@ -54,6 +79,7 @@ function CardModification({
 
   const handleCancel = () => {
     setCardData({ front: card.front, back: card.back });
+    setError({ message: "" });
     onCancel();
   };
 
@@ -78,6 +104,11 @@ function CardModification({
               placeholder={side === "front" ? "Face avant" : "Face arrière"}
               className="mt-2 h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
             />
+            {error.message && (
+              <p className="w-44 break-words pl-1 font-patua text-sm text-red-500">
+                {error.message}
+              </p>
+            )}
             <div className="flex w-full justify-between gap-10">
               <button type="button" onClick={handleCancel}>
                 <img
