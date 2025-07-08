@@ -64,6 +64,7 @@ const cardSlice = createSlice({
         state.isLoading = false;
         console.error("Failed to create card:", action.error.message);
       })
+      // Update card
       .addCase(updateCard.pending, (state) => {
         state.isLoading = true;
       })
