@@ -1,10 +1,13 @@
 .flip-box-a,
 .flip-box-b,
 .flip-box-b-top,
+.flip-box-b-bot,
 .flip-box-b-left,
 .flip-box-b-right,
 .flip-input-a,
-.flip-input-b-top {
+.flip-input-b-top,
+.flip-card-front,
+.flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -54,6 +57,14 @@
   transform: rotateY(-180deg);
 }
 
+.flip-bot .flip-box-inner {
+  transform: rotateX(-180deg);
+}
+
+.flip-top .flip-box-inner {
+  transform: rotateX(-180deg);
+}
+
 .flip-right .flip-box-inner {
   transform: rotateY(180deg);
 }
@@ -62,8 +73,12 @@
   transform: rotateX(180deg);
 }
 
+.flip-box-b-bot {
+  transform: rotateX(180deg);
+}
+
 .flip-box-b-left {
-  transform: rotateY(-180deg);
+  transform: rotateY(180deg);
 }
 
 .flip-box-b-right {
@@ -93,5 +108,71 @@
 }
 
 .flip-input-b-top {
+  transform: rotateX(180deg);
+}
+
+.flip-inner {
+  perspective: 1000px;
+  width: 100%;
+  height: 100%;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.flip-card-inner.flip-vertical {
+  transform: rotateX(180deg);
+}
+
+.flip-card-back {
+  transform: rotateX(180deg);
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.flip-inner.flip-x {
+  transform: rotateX(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+}
+
+.flip-face.flip-face-back {
+  transform: rotateX(180deg);
+}
+
+.flip-face-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  top: 0;
+  left: 0;
+}
+
+.flip-face-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  top: 0;
+  left: 0;
   transform: rotateX(180deg);
 }
