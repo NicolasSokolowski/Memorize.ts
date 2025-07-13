@@ -85,6 +85,15 @@
   transform: rotateY(180deg);
 }
 
+.flip-box-a {
+  transform: rotateY(0deg);
+}
+
+.flip-box-b {
+  transform: rotateY(180deg);
+}
+
+
 /* Inputs */
 
 .flip-input-inner {
