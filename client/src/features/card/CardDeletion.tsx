@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { deleteDeck } from "../../store/deck/deckThunk";
+import { Card } from "../../store/card/cardSlice";
+import { deleteCard } from "../../store/card/cardThunks";
 import { useAppDispatch } from "../../store/hooks";
-import { DeckProps } from "./DeckDetails";
 
-interface DeckModificationProps extends DeckProps {
+interface CardDeletionProps {
+  card: Card;
   onCancel: () => void;
 }
 
@@ -14,7 +15,7 @@ interface ApiErrorResponse {
   }[];
 }
 
-function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
+function CardDeletion({ card, onCancel }: CardDeletionProps) {
   const [error, setError] = useState({
     message: ""
   });
@@ -24,7 +25,9 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
     e.preventDefault();
 
     try {
-      await dispatch(deleteDeck(deck.id)).unwrap();
+      await dispatch(
+        deleteCard({ deckId: card.deck_id, cardId: card.id })
+      ).unwrap();
 
       onCancel();
     } catch (err: unknown) {
@@ -39,7 +42,10 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
   };
 
   return (
-    <div className="flip-box-b-right size-60 rounded-lg bg-tertiary shadow-lg">
+    <div
+      className="size-60 rounded-lg bg-tertiary shadow-lg"
+      style={{ backfaceVisibility: "visible" }}
+    >
       <div className="flex h-full flex-col justify-between">
         <h3 className="mt-4 text-center font-patua text-xl">Supprimer</h3>
         <div className="flex h-full flex-col items-center justify-center">
@@ -80,4 +86,4 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
   );
 }
 
-export default DeckDeletion;
+export default CardDeletion;

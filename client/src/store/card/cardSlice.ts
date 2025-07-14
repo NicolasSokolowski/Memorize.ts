@@ -81,13 +81,12 @@ const cardSlice = createSlice({
         state.isLoading = false;
         console.error("Failed to update card:", action.error.message);
       })
+      // Delete card
       .addCase(deleteCard.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(deleteCard.fulfilled, (state, action) => {
-        state.cards = state.cards.filter(
-          (card) => card.id !== action.payload.id
-        );
+        state.cards = state.cards.filter((card) => card.id !== action.payload);
         state.isLoading = false;
       })
       .addCase(deleteCard.rejected, (state, action) => {

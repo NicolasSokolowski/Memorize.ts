@@ -74,10 +74,23 @@ export const updateCardsStats = createAsyncThunk<Card[], Card[]>(
   }
 );
 
-export const deleteCard = createAsyncThunk<Card, Card>(
-  "DELETE_CARD",
-  async (card: Card) => {
-    const response = await axiosInstance.delete(`/cards/${card.id}`);
-    return response.data as Card;
+interface DeleteCardPayload {
+  deckId: number;
+  cardId: number;
+}
+
+export const deleteCard = createAsyncThunk<
+  number,
+  DeleteCardPayload,
+  { rejectValue: ApiErrorResponse }
+>("DELETE_DECK", async ({ deckId, cardId }, { rejectWithValue }) => {
+  try {
+    await axiosInstance.delete(`/decks/${deckId}/cards/${cardId}`);
+    return cardId;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
   }
-);
+});
