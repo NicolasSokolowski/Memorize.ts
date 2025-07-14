@@ -1,4 +1,6 @@
 import { Card } from "../../store/card/cardSlice";
+import { deleteCard } from "../../store/card/cardThunks";
+import { useAppDispatch } from "../../store/hooks";
 
 interface CardDeletionProps {
   card: Card;
@@ -6,6 +8,22 @@ interface CardDeletionProps {
 }
 
 function CardDeletion({ card, onCancel }: CardDeletionProps) {
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await dispatch(
+        deleteCard({ deckId: card.deck_id, cardId: card.id })
+      ).unwrap();
+
+      onCancel();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div
       className="size-60 rounded-lg bg-tertiary shadow-lg"
@@ -16,7 +34,7 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
         <div className="flex h-full flex-col items-center justify-center">
           <form
             className="flex flex-col items-center gap-2"
-            // onSubmit={handleSubmit()}
+            onSubmit={handleSubmit()}
           >
             <p className="w-44 pl-2 font-patua text-base text-textPrimary">
               Voulez-vous vraiment supprimer ?
