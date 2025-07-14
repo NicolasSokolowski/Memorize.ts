@@ -138,6 +138,10 @@
   transform: rotateX(180deg);
 }
 
+.flip-card-inner.flip-vertical-reverse {
+  transform: rotateX(-180deg);
+}
+
 .flip-card-back {
   transform: rotateX(180deg);
 }

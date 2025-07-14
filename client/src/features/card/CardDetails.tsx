@@ -1,32 +1,31 @@
 import { useEffect, useState } from "react";
 import { Card } from "../../store/card/cardSlice";
 import CardModification from "./CardModification";
+import CardDeletion from "./CardDeletion";
 
 export interface CardProps {
   card: Card;
 }
 
+type Action = "none" | "edit-front" | "edit-back" | "delete-front";
+
 function CardDetails({ card }: CardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [editSide, setEditSide] = useState<"none" | "front" | "back">("none");
-  const [visibleFormSide, setVisibleFormSide] = useState<
-    "none" | "front" | "back"
-  >("none");
+  const [activeAction, setActiveAction] = useState<Action>("none");
+  const [visibleAction, setVisibleAction] = useState<Action>("none");
 
-  const isEdit = editSide !== "none";
-  const isFrontEdit = editSide === "front";
-  const isBackEdit = editSide === "back";
+  const isEdit = activeAction.startsWith("edit");
 
   useEffect(() => {
-    if (editSide === "none") {
+    if (activeAction === "none") {
       const timeout = setTimeout(() => {
-        setVisibleFormSide("none");
+        setVisibleAction("none");
       }, 300);
       return () => clearTimeout(timeout);
     } else {
-      setVisibleFormSide(editSide);
+      setVisibleAction(activeAction);
     }
-  }, [editSide]);
+  }, [activeAction]);
 
   return (
     <div className={`flip-box-deck relative ${isFlipped ? "flip-left" : ""}`}>
@@ -34,7 +33,13 @@ function CardDetails({ card }: CardProps) {
         {/* Face A */}
         <div className="flip-box-a">
           <div
-            className={`flip-card-inner ${isFrontEdit ? "flip-vertical" : ""}`}
+            className={`flip-card-inner ${
+              activeAction === "edit-front"
+                ? "flip-vertical"
+                : activeAction === "delete-front"
+                  ? "flip-vertical-reverse"
+                  : ""
+            }`}
           >
             <div className="flip-card-front">
               <div
@@ -56,7 +61,7 @@ function CardDetails({ card }: CardProps) {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setEditSide("front");
+                      setActiveAction("edit-front");
                       setIsFlipped(false);
                     }}
                   >
@@ -67,19 +72,41 @@ function CardDetails({ card }: CardProps) {
                       draggable={false}
                     />
                   </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveAction("delete-front");
+                      setIsFlipped(false);
+                    }}
+                  >
+                    <img
+                      src="/deletion.png"
+                      alt="Deletion icon"
+                      className="w-16"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Formulaire A modification */}
-            {visibleFormSide === "front" && (
+            {/* Face A Deletion/Modification forms */}
+            {visibleAction === "edit-front" && (
               <div className="flip-card-back">
                 <CardModification
                   deckId={card.deck_id}
                   cardId={card.id}
                   card={card}
                   side="front"
-                  onCancel={() => setEditSide("none")}
+                  onCancel={() => setActiveAction("none")}
+                />
+              </div>
+            )}
+            {visibleAction === "delete-front" && (
+              <div className="flip-card-back">
+                <CardDeletion
+                  card={card}
+                  onCancel={() => setActiveAction("none")}
                 />
               </div>
             )}
@@ -90,7 +117,9 @@ function CardDetails({ card }: CardProps) {
         <div className="flip-box-b-left">
           <div className="flip-card-inner">
             <div className="flip-card-front">
-              <div className={`flip-inner ${isBackEdit ? "flip-x" : ""}`}>
+              <div
+                className={`flip-inner ${activeAction === "edit-back" ? "flip-x" : ""}`}
+              >
                 <div className="flip-face flip-face-front">
                   <div
                     className="relative flex size-60 flex-col items-center justify-between rounded-md bg-tertiary shadow-xl"
@@ -111,7 +140,7 @@ function CardDetails({ card }: CardProps) {
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setEditSide("back");
+                          setActiveAction("edit-back");
                         }}
                       >
                         <img
@@ -125,15 +154,15 @@ function CardDetails({ card }: CardProps) {
                   </div>
                 </div>
 
-                {/* Formulaire B modification */}
-                {visibleFormSide === "back" && (
+                {/* Face B modification form */}
+                {visibleAction === "edit-back" && (
                   <div className="flip-face flip-face-back">
                     <CardModification
                       deckId={card.deck_id}
                       cardId={card.id}
                       card={card}
                       side="back"
-                      onCancel={() => setEditSide("none")}
+                      onCancel={() => setActiveAction("none")}
                     />
                   </div>
                 )}
