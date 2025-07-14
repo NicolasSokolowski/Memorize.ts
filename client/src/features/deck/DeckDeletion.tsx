@@ -32,9 +32,7 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
 
       if (error.errors) {
         for (const e of error.errors) {
-          if (e.field === "name") {
-            setError((prev) => ({ ...prev, message: e.message }));
-          }
+          setError((prev) => ({ ...prev, message: e.message }));
         }
       }
     }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card } from "../../store/card/cardSlice";
 import { deleteCard } from "../../store/card/cardThunks";
 import { useAppDispatch } from "../../store/hooks";
@@ -7,7 +8,17 @@ interface CardDeletionProps {
   onCancel: () => void;
 }
 
+interface ApiErrorResponse {
+  errors: {
+    message: string;
+    field?: string;
+  }[];
+}
+
 function CardDeletion({ card, onCancel }: CardDeletionProps) {
+  const [error, setError] = useState({
+    message: ""
+  });
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,8 +30,14 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
       ).unwrap();
 
       onCancel();
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      const error = err as ApiErrorResponse;
+
+      if (error.errors) {
+        for (const e of error.errors) {
+          setError((prev) => ({ ...prev, message: e.message }));
+        }
+      }
     }
   };
 
@@ -39,11 +56,11 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
             <p className="w-44 pl-2 font-patua text-base text-textPrimary">
               Voulez-vous vraiment supprimer ?
             </p>
-            {/* {error.message && (
+            {error.message && (
               <p className="w-44 break-words pl-1 font-patua text-sm text-red-500">
                 {error.message}
               </p>
-            )} */}
+            )}
             <div className="flex w-full justify-between gap-10">
               <button type="button" onClick={() => onCancel()}>
                 <img
