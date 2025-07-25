@@ -17,16 +17,21 @@ function NavBar() {
       </div>
       <nav className="mt-6 flex h-full flex-col justify-between">
         <ol className="flex h-48 w-full flex-col gap-4">
-          <li className="flex h-14 w-full items-center rounded-lg bg-primary p-2 px-4 font-patua text-xl text-white shadow-xl">
-            <p className="w-full">Entraînement</p>
-            <div className="flex items-center">
-              <img
-                src="/training.png"
-                alt="Training icon"
-                className="ml-2 w-20"
-                draggable={false}
-              />
-            </div>
+          <li>
+            <button
+              onClick={() => navigate("/user/training/mode")}
+              className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
+            >
+              <p>Entraînement</p>
+              <div className="flex items-center">
+                <img
+                  src="/training.png"
+                  alt="Training icon"
+                  className="w-16 translate-x-2"
+                  draggable={false}
+                />
+              </div>
+            </button>
           </li>
           <li>
             <button
