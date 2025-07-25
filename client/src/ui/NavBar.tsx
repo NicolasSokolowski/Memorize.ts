@@ -23,7 +23,7 @@ function NavBar() {
               <img
                 src="/training.png"
                 alt="Training icon"
-                className="ml-3 w-20"
+                className="ml-2 w-20"
                 draggable={false}
               />
             </div>
