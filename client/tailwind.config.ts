@@ -32,7 +32,7 @@ export default {
         primary: "#9BC4BC",
         secondary: "#60B1DA",
         tertiary: "#F4EFE5",
-        textPrimary: "#060606"
+        textPrimary: "#060606bf"
       }
     }
   },
