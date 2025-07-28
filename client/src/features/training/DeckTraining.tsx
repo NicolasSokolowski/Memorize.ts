@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../store/hooks";
 import { useNavigate, useParams } from "react-router-dom";
