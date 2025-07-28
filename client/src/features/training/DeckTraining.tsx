@@ -214,6 +214,14 @@ function DeckTraining() {
               </div>
             </div>
           </div>
+          <div className="mb-5 flex h-32 w-full items-center justify-center gap-44">
+            <button className="h-16 w-52 rounded-full bg-secondary shadow-xl">
+              <span className="font-patua text-4xl text-tertiary">Rejouer</span>
+            </button>
+            <button className="h-16 w-52 rounded-full bg-secondary shadow-xl">
+              <span className="font-patua text-4xl text-tertiary">Quitter</span>
+            </button>
+          </div>
         </div>
       )}
     </div>
