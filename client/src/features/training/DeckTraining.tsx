@@ -47,11 +47,16 @@ function DeckTraining() {
     <div className="flex min-h-screen w-full flex-col justify-center bg-primary">
       {cardIndex < cards.length && (
         <>
-          <div className="flex h-32 w-full items-center justify-center">
-            <div className="flex h-40 w-full">
-              <span className="mx-20 font-patua text-3xl text-textPrimary">
+          <div className="flex h-32 w-full items-center">
+            <div className="mx-20 flex h-40 w-full justify-between">
+              <span className="mt-4 font-patua text-3xl text-textPrimary">
                 Cartes restantes : {cards.length - cardsToUpdate.length}
               </span>
+              <button className="h-16 w-40 rounded-full bg-tertiary shadow-xl">
+                <span className="font-patua text-3xl text-secondary">
+                  Quitter
+                </span>
+              </button>
             </div>
           </div>
 
