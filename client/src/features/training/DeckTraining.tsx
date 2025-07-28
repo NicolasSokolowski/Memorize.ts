@@ -20,7 +20,7 @@ function DeckTraining() {
   return (
     <div className="flex min-h-screen w-full flex-col justify-center bg-primary">
       {cardIndex < cards.length && (
-        <div className="flex h-full items-center justify-center">
+        <div className="flex h-full flex-col items-center justify-center">
           <div className={`flip-training ${isFlipped ? "flip" : ""}`}>
             <div className="flip-box-inner">
               <div
@@ -40,6 +40,23 @@ function DeckTraining() {
                 </span>
               </div>
             </div>
+          </div>
+          <div className="mt-10 flex h-44 w-full justify-center gap-5">
+            <button className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong">
+              <div className="relative size-36 rounded-full bg-green-500 shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)]">
+                <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
+              </div>
+            </button>
+            <button className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong">
+              <div className="relative size-36 rounded-full bg-orange-400 shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)]">
+                <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
+              </div>
+            </button>
+            <button className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong">
+              <div className="relative size-36 rounded-full bg-red-600 shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)]">
+                <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
+              </div>
+            </button>
           </div>
         </div>
       )}
