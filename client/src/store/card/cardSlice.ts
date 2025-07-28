@@ -4,7 +4,8 @@ import {
   createCard,
   deleteCard,
   updateCard,
-  updateCardsStats
+  updateCardsStats,
+  getAllCardsByUserEmail
 } from "./cardThunks";
 
 export interface Card {
@@ -112,6 +113,18 @@ const cardSlice = createSlice({
       .addCase(updateCardsStats.rejected, (state, action) => {
         state.isLoading = false;
         console.error("Failed to update cards stats:", action.error.message);
+      })
+      // Get all cards by user's email
+      .addCase(getAllCardsByUserEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllCardsByUserEmail.fulfilled, (state, action) => {
+        state.cards = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(getAllCardsByUserEmail.rejected, (state, action) => {
+        state.isLoading = false;
+        console.error("Failed to fetch cards:", action.error.message);
       });
   }
 });

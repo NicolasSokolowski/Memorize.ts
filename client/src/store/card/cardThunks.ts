@@ -94,3 +94,19 @@ export const deleteCard = createAsyncThunk<
     throw err;
   }
 });
+
+export const getAllCardsByUserEmail = createAsyncThunk<
+  Card[],
+  void,
+  { rejectValue: ApiErrorResponse }
+>("GET_CARD_BY_EMAIL", async (_, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get("/users/me/cards");
+    return response.data as Card[];
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
+  }
+});
