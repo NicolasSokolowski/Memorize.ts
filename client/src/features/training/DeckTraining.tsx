@@ -46,69 +46,77 @@ function DeckTraining() {
 
   return (
     <div className="flex min-h-screen w-full flex-col justify-center bg-primary">
-      {/* <div className="flex bg-red-500 w-full h-12 ">
-      </div> */}
       {cardIndex < cards.length && (
-        <div className="flex h-full flex-col items-center justify-center self-center">
-          <div className={`flip-training ${isFlipped ? "flip" : ""}`}>
-            <div className="flip-box-inner">
-              <div
-                className="flip-training-a flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
-                onClick={() => handleFlip()}
-              >
-                <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
-                  {cards[cardIndex].front}
-                </span>
-              </div>
-              <div
-                className="flip-training-b flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
-                onClick={() => handleFlip()}
-              >
-                <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
-                  {cards[cardIndex].back}
-                </span>
-              </div>
+        <>
+          <div className="flex h-32 w-full items-center justify-center">
+            <div className="flex h-40 w-full">
+              <span className="mx-20 font-patua text-3xl text-textPrimary">
+                Cartes restantes : {cards.length - cardsToUpdate.length}
+              </span>
             </div>
           </div>
-          <div className="mt-10 flex h-44 w-full justify-center gap-5">
-            <button
-              className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong"
-              value="easy"
-              onClick={(e) => handleNextCard(e)}
-              disabled={flipCount === 0}
-            >
-              <div
-                className={`relative size-36 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)]  disabled:cursor-not-allowed ${flipCount === 0 ? "bg-gray-300" : "bg-green-500"}`}
-              >
-                <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
+
+          <div className="flex h-full flex-col items-center justify-center">
+            <div className={`flip-training ${isFlipped ? "flip" : ""}`}>
+              <div className="flip-box-inner">
+                <div
+                  className="flip-training-a flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
+                  onClick={() => handleFlip()}
+                >
+                  <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
+                    {cards[cardIndex].front}
+                  </span>
+                </div>
+                <div
+                  className="flip-training-b flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
+                  onClick={() => handleFlip()}
+                >
+                  <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
+                    {cards[cardIndex].back}
+                  </span>
+                </div>
               </div>
-            </button>
-            <button
-              className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong"
-              value="medium"
-              onClick={(e) => handleNextCard(e)}
-              disabled={flipCount === 0}
-            >
-              <div
-                className={`relative size-36 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed ${flipCount === 0 ? "bg-gray-300" : "bg-orange-400"}`}
+            </div>
+            <div className="mt-10 flex h-44 w-full justify-center gap-5">
+              <button
+                className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong"
+                value="easy"
+                onClick={(e) => handleNextCard(e)}
+                disabled={flipCount === 0}
               >
-                <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
-              </div>
-            </button>
-            <button
-              className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong"
-              value="hard"
-              onClick={(e) => handleNextCard(e)}
-              disabled={flipCount === 0}
-            >
-              <div
-                className={`relative size-36 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed ${flipCount === 0 ? "bg-gray-300" : "bg-red-600"}`}
+                <div
+                  className={`relative size-36 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)]  disabled:cursor-not-allowed ${flipCount === 0 ? "bg-gray-300" : "bg-green-500"}`}
+                >
+                  <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
+                </div>
+              </button>
+              <button
+                className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong"
+                value="medium"
+                onClick={(e) => handleNextCard(e)}
+                disabled={flipCount === 0}
               >
-                <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
-              </div>
-            </button>
+                <div
+                  className={`relative size-36 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed ${flipCount === 0 ? "bg-gray-300" : "bg-orange-400"}`}
+                >
+                  <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
+                </div>
+              </button>
+              <button
+                className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong"
+                value="hard"
+                onClick={(e) => handleNextCard(e)}
+                disabled={flipCount === 0}
+              >
+                <div
+                  className={`relative size-36 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed ${flipCount === 0 ? "bg-gray-300" : "bg-red-600"}`}
+                >
+                  <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
+                </div>
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
