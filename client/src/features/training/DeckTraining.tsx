@@ -57,6 +57,11 @@ function DeckTraining() {
   const mediumCount = cardsToUpdate.filter(
     (card) => card.user_answer === "medium"
   ).length;
+  const hardCount = cardsToUpdate.filter(
+    (card) => card.user_answer === "hard"
+  ).length;
+
+  const newCardsCount = cards.filter((card) => card.difficulty === 0).length;
 
   const successRate =
     total > 0 ? Math.round(((easyCount + mediumCount / 2) / total) * 100) : 0;
@@ -159,10 +164,7 @@ function DeckTraining() {
                 Nombre de cartes faciles :
               </div>
               <div className="h-12 font-patua text-4xl text-textPrimary">
-                {String(
-                  cardsToUpdate.filter((card) => card.user_answer === "easy")
-                    .length
-                ).padStart(2, "0")}
+                {String(easyCount).padStart(2, "0")}
               </div>
             </div>
             <div className="flex w-4/5 justify-between">
@@ -170,10 +172,7 @@ function DeckTraining() {
                 Nombre de cartes moyennes :
               </div>
               <div className="h-12 font-patua text-4xl text-textPrimary">
-                {String(
-                  cardsToUpdate.filter((card) => card.user_answer === "medium")
-                    .length
-                ).padStart(2, "0")}
+                {String(mediumCount).padStart(2, "0")}
               </div>
             </div>
             <div className="flex w-4/5 justify-between">
@@ -181,10 +180,7 @@ function DeckTraining() {
                 Nombre de cartes difficiles :
               </div>
               <div className="h-12 font-patua text-4xl text-textPrimary">
-                {String(
-                  cardsToUpdate.filter((card) => card.user_answer === "hard")
-                    .length
-                ).padStart(2, "0")}
+                {String(hardCount).padStart(2, "0")}
               </div>
             </div>
             <div className="mt-10 flex w-4/5 justify-between">
@@ -192,9 +188,7 @@ function DeckTraining() {
                 Nombre de nouvelles cartes :
               </div>
               <div className="h-12 font-patua text-4xl text-textPrimary">
-                {String(
-                  cards.filter((card) => card.difficulty === 0).length
-                ).padStart(2, "0")}
+                {String(newCardsCount).padStart(2, "0")}
               </div>
             </div>
             <div className="flex w-4/5 justify-between">
