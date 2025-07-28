@@ -3,6 +3,7 @@ import { getDecks } from "../../store/deck/deckThunk";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import DeckPicker from "./DeckPicker";
 import { Link } from "react-router-dom";
+import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
 
 function DeckSelection() {
   const dispatch = useAppDispatch();
@@ -10,6 +11,7 @@ function DeckSelection() {
 
   useEffect(() => {
     dispatch(getDecks());
+    dispatch(getAllCardsByUserEmail());
   }, [dispatch]);
 
   return (
