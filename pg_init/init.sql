@@ -23,8 +23,7 @@ CREATE TABLE "deck" (
   "name" VARCHAR(50) NOT NULL,
   "user_id" INT NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  "updated_at" TIMESTAMPTZ,
-  UNIQUE ("name", "user_id")
+  "updated_at" TIMESTAMPTZ
 );
 
 CREATE TABLE "card" (
