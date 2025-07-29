@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import ScoreBoard from "./ScoreBoard";
 import { updateCardsStats } from "../../store/card/cardThunks";
+import { Card } from "../../store/card/cardSlice";
 
 export type UserAnswer = {
   id: number;
@@ -20,6 +21,7 @@ function DeckTraining() {
     state.card.cards.filter((card) => card.deck_id === parseInt(deckId!, 10))
   );
   const [cardsToUpdate, setCardsToUpdate] = useState<UserAnswer[]>([]);
+  const [originalCards, setOriginalCards] = useState<Card[]>([]);
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
@@ -41,6 +43,12 @@ function DeckTraining() {
   };
 
   const cardsLeft = cards.length - cardsToUpdate.length;
+
+  useEffect(() => {
+    if (cards.length > 0 && originalCards.length === 0) {
+      setOriginalCards(cards);
+    }
+  }, [cards, originalCards]);
 
   useEffect(() => {
     if (cards.length === 0) {
@@ -142,7 +150,7 @@ function DeckTraining() {
         </>
       )}
       {cardIndex >= cards.length && (
-        <ScoreBoard cards={cards} cardsToUpdate={cardsToUpdate} />
+        <ScoreBoard cards={originalCards} cardsToUpdate={cardsToUpdate} />
       )}
     </div>
   );
