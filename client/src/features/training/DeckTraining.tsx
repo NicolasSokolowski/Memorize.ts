@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import ScoreBoard from "./ScoreBoard";
+import { updateCardsStats } from "../../store/card/cardThunks";
 
 export type UserAnswer = {
   id: number;
@@ -13,6 +14,7 @@ function DeckTraining() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [flipCount, setFlipCount] = useState(0);
   const [cardIndex, setCardIndex] = useState(0);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cards = useAppSelector((state) =>
     state.card.cards.filter((card) => card.deck_id === parseInt(deckId!, 10))
@@ -38,11 +40,27 @@ function DeckTraining() {
     }, 200);
   };
 
+  const cardsLeft = cards.length - cardsToUpdate.length;
+
   useEffect(() => {
     if (cards.length === 0) {
       navigate("/user/training/mode");
     }
   }, [navigate, cards]);
+
+  useEffect(() => {
+    const submitStats = async () => {
+      try {
+        await dispatch(updateCardsStats(cardsToUpdate)).unwrap();
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (cardsLeft === 0 && cardsToUpdate.length > 0) {
+      submitStats();
+    }
+  }, [cardsLeft, cardsToUpdate, dispatch]);
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center bg-primary">
@@ -51,7 +69,7 @@ function DeckTraining() {
           <div className="flex h-32 w-full items-center">
             <div className="mx-20 flex h-40 w-full justify-between">
               <span className="mt-4 font-patua text-3xl text-textPrimary">
-                Cartes restantes : {cards.length - cardsToUpdate.length}
+                Cartes restantes : {cardsLeft}
               </span>
               <button className="h-16 w-40 rounded-full bg-tertiary shadow-xl">
                 <span className="font-patua text-3xl text-secondary">
