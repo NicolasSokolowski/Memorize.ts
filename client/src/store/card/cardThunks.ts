@@ -66,11 +66,27 @@ export const updateCard = createAsyncThunk<
   }
 });
 
-export const updateCardsStats = createAsyncThunk<Card[], Card[]>(
+interface CardsBatchUpdatePayload {
+  id: number;
+  user_answer: string;
+}
+
+export const updateCardsStats = createAsyncThunk<
+  Card[],
+  CardsBatchUpdatePayload[],
+  { rejectValue: ApiErrorResponse }
+>(
   "UPDATE_CARDS_STATS",
-  async (cards: Card[]) => {
-    const response = await axiosInstance.patch("/me/cards", cards);
-    return response.data as Card[];
+  async (cards: CardsBatchUpdatePayload[], { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.patch("/users/me/cards", cards);
+      return response.data.cards as Card[];
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.errors) {
+        return rejectWithValue(err.response.data);
+      }
+      throw err;
+    }
   }
 );
 
