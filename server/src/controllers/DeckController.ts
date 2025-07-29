@@ -42,15 +42,6 @@ export class DeckController extends CoreController<
 
     data.user_id = user.id;
 
-    const checkIfExists = await this.datamapper.findBySpecificField(
-      this.field,
-      data[this.field]
-    );
-
-    if (checkIfExists) {
-      throw new BadRequestError("Name already exists in this deck.", "name");
-    }
-
     const createdItem = await this.datamapper.insert(data);
 
     if (!createdItem) {
