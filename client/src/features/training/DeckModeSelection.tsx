@@ -1,7 +1,17 @@
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../store/hooks";
+import { useEffect } from "react";
+import { getDecks } from "../../store/deck/deckThunk";
+import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
 
 function DeckModeSelection() {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getDecks());
+    dispatch(getAllCardsByUserEmail());
+  }, [dispatch]);
 
   return (
     <div
