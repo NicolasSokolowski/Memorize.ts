@@ -7,7 +7,9 @@
 .flip-input-a,
 .flip-input-b-top,
 .flip-card-front,
-.flip-card-back {
+.flip-card-back,
+.flip-training-a,
+.flip-training-b {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -188,4 +190,22 @@
   top: 0;
   left: 0;
   transform: rotateX(180deg);
+}
+
+/* Training session */
+
+.flip-training {
+  background-color: transparent;
+  perspective: 1000px;
+  width: 28rem;
+  height: 28rem;
+  position: relative;
+}
+
+.flip-training.flip .flip-box-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-training-b {
+  transform: rotateY(180deg);
 }

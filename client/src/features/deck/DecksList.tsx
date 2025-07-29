@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getDecks } from "../../store/deck/deckThunk";
 import DeckDetails from "./DeckDetails";
 import DeckCreation from "./DeckCreation";
+import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
 
 function DecksList() {
   const dispatch = useAppDispatch();
@@ -10,6 +11,7 @@ function DecksList() {
 
   useEffect(() => {
     dispatch(getDecks());
+    dispatch(getAllCardsByUserEmail());
   }, [dispatch]);
 
   return (

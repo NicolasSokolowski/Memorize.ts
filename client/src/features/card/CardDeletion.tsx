@@ -47,7 +47,9 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
       style={{ backfaceVisibility: "visible" }}
     >
       <div className="flex h-full flex-col justify-between">
-        <h3 className="mt-4 text-center font-patua text-xl">Supprimer</h3>
+        <h3 className="mt-4 text-center font-patua text-xl text-textPrimary">
+          Supprimer
+        </h3>
         <div className="flex h-full flex-col items-center justify-center">
           <form
             className="flex flex-col items-center gap-2"

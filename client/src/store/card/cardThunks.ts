@@ -66,11 +66,27 @@ export const updateCard = createAsyncThunk<
   }
 });
 
-export const updateCardsStats = createAsyncThunk<Card[], Card[]>(
+interface CardsBatchUpdatePayload {
+  id: number;
+  user_answer: string;
+}
+
+export const updateCardsStats = createAsyncThunk<
+  Card[],
+  CardsBatchUpdatePayload[],
+  { rejectValue: ApiErrorResponse }
+>(
   "UPDATE_CARDS_STATS",
-  async (cards: Card[]) => {
-    const response = await axiosInstance.patch("/me/cards", cards);
-    return response.data as Card[];
+  async (cards: CardsBatchUpdatePayload[], { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.patch("/users/me/cards", cards);
+      return response.data.cards as Card[];
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.errors) {
+        return rejectWithValue(err.response.data);
+      }
+      throw err;
+    }
   }
 );
 
@@ -87,6 +103,22 @@ export const deleteCard = createAsyncThunk<
   try {
     await axiosInstance.delete(`/decks/${deckId}/cards/${cardId}`);
     return cardId;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
+  }
+});
+
+export const getAllCardsByUserEmail = createAsyncThunk<
+  Card[],
+  void,
+  { rejectValue: ApiErrorResponse }
+>("GET_CARD_BY_EMAIL", async (_, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get("/users/me/cards");
+    return response.data as Card[];
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
       return rejectWithValue(err.response.data);

@@ -6,6 +6,7 @@ import UserLayout from "./ui/UserLayout";
 import CardsList from "./features/card/CardsList";
 import DeckModeSelection from "./features/training/DeckModeSelection";
 import DeckSelection from "./features/training/DeckSelection";
+import DeckTraining from "./features/training/DeckTraining";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
             element: <DeckSelection />
           }
         ]
+      },
+      {
+        path: "/training/decks/:deckId",
+        element: <DeckTraining />
       }
     ]
   }

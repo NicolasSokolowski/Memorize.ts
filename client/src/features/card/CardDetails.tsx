@@ -84,6 +84,7 @@ function CardDetails({ card }: CardProps) {
                       src="/deletion.png"
                       alt="Deletion icon"
                       className="w-16"
+                      draggable={false}
                     />
                   </button>
                 </div>
