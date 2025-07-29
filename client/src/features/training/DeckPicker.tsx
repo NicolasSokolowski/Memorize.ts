@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { Deck } from "../../store/deck/deckSlice";
+import { useAppSelector } from "../../store/hooks";
 
 export interface DeckProps {
   deck: Deck;
 }
 
 function DeckPicker({ deck }: DeckProps) {
+  const cards = useAppSelector((state) =>
+    state.card.cards.filter((card) => card.deck_id === deck.id)
+  );
   const navigate = useNavigate();
 
   return (
@@ -13,14 +17,18 @@ function DeckPicker({ deck }: DeckProps) {
       <h3 className="w-full break-words text-center font-patua text-xl text-textPrimary">
         {deck.name}
       </h3>
-      <div className="flex h-16 w-full justify-center">
-        <img
-          src="/training.png"
-          alt="Training icon"
-          className="w-16"
-          draggable={false}
-          onClick={() => navigate(`/training/decks/${deck.id}`)}
-        />
+      <div className="flex h-16 w-full items-center justify-center">
+        {cards.length > 0 ? (
+          <img
+            src="/training.png"
+            alt="Training icon"
+            className="w-16"
+            draggable={false}
+            onClick={() => navigate(`/training/decks/${deck.id}`)}
+          />
+        ) : (
+          <span className="font-patua text-lg text-textPrimary">Deck vide</span>
+        )}
       </div>
     </div>
   );
