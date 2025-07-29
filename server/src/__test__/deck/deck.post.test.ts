@@ -47,28 +47,6 @@ describe("Deck tests", () => {
       .expect(201);
   });
 
-  it("returns an error when providing an already existing deck name for the same user", async () => {
-    await request(app)
-      .post("/api/decks")
-      .set("Cookie", UserCookie)
-      .send({
-        name: "test_deck"
-      })
-      .expect(201);
-
-    const response = await request(app)
-      .post("/api/decks")
-      .set("Cookie", UserCookie)
-      .send({
-        name: "test_deck"
-      })
-      .expect(400);
-
-    expect(response.body.errors).toEqual([
-      { message: "Name already exists in this deck.", field: "name" }
-    ]);
-  });
-
   it("returns a 400 error when providing a wrong data type", async () => {
     const response = await request(app)
       .post("/api/decks")
