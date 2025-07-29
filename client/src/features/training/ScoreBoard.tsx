@@ -1,12 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import { Card } from "../../store/card/cardSlice";
 import { UserAnswer } from "./DeckTraining";
 
 type ScoreBoardProps = {
   cards: Card[];
   cardsToUpdate: UserAnswer[];
+  onReplay: () => void;
 };
 
-function ScoreBoard({ cards, cardsToUpdate }: ScoreBoardProps) {
+function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
+  const navigate = useNavigate();
+
   const winningCards = cardsToUpdate.filter((updatedCard) => {
     const originalCard = cards.find((c) => c.id === updatedCard.id);
     return updatedCard.user_answer === "easy" && originalCard!.win_streak >= 1;
@@ -94,10 +98,16 @@ function ScoreBoard({ cards, cardsToUpdate }: ScoreBoardProps) {
         </div>
       </div>
       <div className="mb-5 flex h-32 w-full items-center justify-center gap-44">
-        <button className="h-16 w-52 rounded-full bg-secondary shadow-xl">
+        <button
+          className="h-16 w-52 rounded-full bg-secondary shadow-xl"
+          onClick={onReplay}
+        >
           <span className="font-patua text-4xl text-tertiary">Rejouer</span>
         </button>
-        <button className="h-16 w-52 rounded-full bg-secondary shadow-xl">
+        <button
+          className="h-16 w-52 rounded-full bg-secondary shadow-xl"
+          onClick={() => navigate("/user/training/mode")}
+        >
           <span className="font-patua text-4xl text-tertiary">Quitter</span>
         </button>
       </div>

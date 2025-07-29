@@ -49,6 +49,15 @@ function DeckTraining() {
     setCardIndex(cards.length);
   };
 
+  const handleReplay = () => {
+    setCardIndex(0);
+    setIsFlipped(false);
+    setFlipCount(0);
+    setCardsToUpdate([]);
+    setOriginalCards(cards);
+    setCardsLeft(cards.length);
+  };
+
   useEffect(() => {
     if (cards.length > 0 && originalCards.length === 0) {
       setOriginalCards(cards);
@@ -158,7 +167,11 @@ function DeckTraining() {
         </>
       )}
       {cardIndex >= cards.length && (
-        <ScoreBoard cards={originalCards} cardsToUpdate={cardsToUpdate} />
+        <ScoreBoard
+          cards={originalCards}
+          cardsToUpdate={cardsToUpdate}
+          onReplay={handleReplay}
+        />
       )}
     </div>
   );
