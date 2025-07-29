@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import ScoreBoard from "./ScoreBoard";
 import { updateCardsStats } from "../../store/card/cardThunks";
 import { Card } from "../../store/card/cardSlice";
+import { shuffleArray } from "../../helpers/shuffleArray";
 
 export type UserAnswer = {
   id: number;
@@ -23,6 +24,8 @@ function DeckTraining() {
   const [cardsToUpdate, setCardsToUpdate] = useState<UserAnswer[]>([]);
   const [originalCards, setOriginalCards] = useState<Card[]>([]);
   const [cardsLeft, setCardsLeft] = useState(cards.length);
+  const shuffledCardsRef = useRef<Card[]>([]);
+  const currentCard = shuffledCardsRef.current?.[cardIndex];
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
@@ -34,7 +37,7 @@ function DeckTraining() {
     const value = button.value;
     setCardsToUpdate((prev) => [
       ...prev,
-      { id: cards[cardIndex].id, user_answer: value }
+      { id: currentCard.id, user_answer: value }
     ]);
     setCardsLeft((prev) => prev - 1);
     setFlipCount(0);
@@ -56,7 +59,16 @@ function DeckTraining() {
     setCardsToUpdate([]);
     setOriginalCards(cards);
     setCardsLeft(cards.length);
+    shuffledCardsRef.current = shuffleArray([...cards]);
   };
+
+  useEffect(() => {
+    if (cards.length > 0 && shuffledCardsRef.current.length === 0) {
+      shuffledCardsRef.current = shuffleArray([...cards]);
+      setCardsLeft(cards.length);
+      setOriginalCards(cards);
+    }
+  }, [cards]);
 
   useEffect(() => {
     if (cards.length > 0 && originalCards.length === 0) {
@@ -106,24 +118,26 @@ function DeckTraining() {
 
           <div className="flex h-full flex-col items-center justify-center">
             <div className={`flip-training ${isFlipped ? "flip" : ""}`}>
-              <div className="flip-box-inner">
-                <div
-                  className="flip-training-a flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
-                  onClick={() => handleFlip()}
-                >
-                  <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
-                    {cards[cardIndex].front}
-                  </span>
+              {currentCard && (
+                <div className="flip-box-inner">
+                  <div
+                    className="flip-training-a flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
+                    onClick={() => handleFlip()}
+                  >
+                    <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
+                      {currentCard.front}
+                    </span>
+                  </div>
+                  <div
+                    className="flip-training-b flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
+                    onClick={() => handleFlip()}
+                  >
+                    <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
+                      {currentCard.back}
+                    </span>
+                  </div>
                 </div>
-                <div
-                  className="flip-training-b flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
-                  onClick={() => handleFlip()}
-                >
-                  <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
-                    {cards[cardIndex].back}
-                  </span>
-                </div>
-              </div>
+              )}
             </div>
             <div className="mt-10 flex h-44 w-full justify-center gap-5">
               <button
