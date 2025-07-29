@@ -22,6 +22,7 @@ function DeckTraining() {
   );
   const [cardsToUpdate, setCardsToUpdate] = useState<UserAnswer[]>([]);
   const [originalCards, setOriginalCards] = useState<Card[]>([]);
+  const [cardsLeft, setCardsLeft] = useState(cards.length);
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
@@ -35,6 +36,7 @@ function DeckTraining() {
       ...prev,
       { id: cards[cardIndex].id, user_answer: value }
     ]);
+    setCardsLeft((prev) => prev - 1);
     setFlipCount(0);
     setIsFlipped(false);
     setTimeout(() => {
@@ -42,7 +44,10 @@ function DeckTraining() {
     }, 200);
   };
 
-  const cardsLeft = cards.length - cardsToUpdate.length;
+  const handleQuit = () => {
+    setCardsLeft(0);
+    setCardIndex(cards.length);
+  };
 
   useEffect(() => {
     if (cards.length > 0 && originalCards.length === 0) {
@@ -79,7 +84,10 @@ function DeckTraining() {
               <span className="mt-4 font-patua text-3xl text-textPrimary">
                 Cartes restantes : {cardsLeft}
               </span>
-              <button className="h-16 w-40 rounded-full bg-tertiary shadow-xl">
+              <button
+                className="h-16 w-40 rounded-full bg-tertiary shadow-xl"
+                onClick={() => handleQuit()}
+              >
                 <span className="font-patua text-3xl text-secondary">
                   Quitter
                 </span>
