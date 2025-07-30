@@ -1,20 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getDecks } from "../../store/deck/deckThunk";
 import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
+import {
+  selectDailyCards,
+  selectHardCards
+} from "../../store/card/cardSelector";
 
 function DeckModeSelection() {
   const [dailyCardsLeft, setDailyCardsLeft] = useState(false);
   const [hardCardsLeft, setHardCardsLeft] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const dailyCards = useAppSelector((state) =>
-    state.card.cards.filter((card) => card.next_occurrence === 0)
-  );
-  const hardCards = useAppSelector((state) =>
-    state.card.cards.filter((card) => card.difficulty <= 15)
-  );
+
+  const memoDailyCards = useMemo(() => selectDailyCards(), []);
+  const dailyCards = useAppSelector(memoDailyCards);
+
+  const memoHardCards = useMemo(() => selectHardCards(), []);
+  const hardCards = useAppSelector(memoHardCards);
 
   useEffect(() => {
     dispatch(getDecks());
