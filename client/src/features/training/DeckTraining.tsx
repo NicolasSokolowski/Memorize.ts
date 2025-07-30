@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useAppDispatch } from "../../store/hooks";
+import { useLocation, useNavigate } from "react-router-dom";
 import ScoreBoard from "./ScoreBoard";
 import { updateCardsStats } from "../../store/card/cardThunks";
 import { Card } from "../../store/card/cardSlice";
@@ -11,16 +11,19 @@ export type UserAnswer = {
   user_answer: string;
 };
 
+interface LocationState {
+  cards: Card[];
+}
+
 function DeckTraining() {
-  const { deckId } = useParams<{ deckId: string }>();
   const [isFlipped, setIsFlipped] = useState(false);
   const [flipCount, setFlipCount] = useState(0);
   const [cardIndex, setCardIndex] = useState(0);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const cards = useAppSelector((state) =>
-    state.card.cards.filter((card) => card.deck_id === parseInt(deckId!, 10))
-  );
+  const location = useLocation();
+  const state = location.state as LocationState;
+  const cards = useMemo(() => state?.cards ?? [], [state?.cards]);
   const [cardsToUpdate, setCardsToUpdate] = useState<UserAnswer[]>([]);
   const [originalCards, setOriginalCards] = useState<Card[]>([]);
   const [cardsLeft, setCardsLeft] = useState(cards.length);
@@ -71,16 +74,10 @@ function DeckTraining() {
   }, [cards]);
 
   useEffect(() => {
-    if (cards.length > 0 && originalCards.length === 0) {
-      setOriginalCards(cards);
-    }
-  }, [cards, originalCards]);
-
-  useEffect(() => {
-    if (cards.length === 0) {
+    if (!cards || cards.length === 0) {
       navigate("/user/training/mode");
     }
-  }, [navigate, cards]);
+  }, [cards, navigate]);
 
   useEffect(() => {
     const submitStats = async () => {

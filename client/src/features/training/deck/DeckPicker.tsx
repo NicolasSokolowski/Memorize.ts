@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { Deck } from "../../store/deck/deckSlice";
-import { useAppSelector } from "../../store/hooks";
+import { Deck } from "../../../store/deck/deckSlice";
+import { useAppSelector } from "../../../store/hooks";
 
 export interface DeckProps {
   deck: Deck;
@@ -24,7 +24,7 @@ function DeckPicker({ deck }: DeckProps) {
             alt="Training icon"
             className="w-16"
             draggable={false}
-            onClick={() => navigate(`/training/decks/${deck.id}`)}
+            onClick={() => navigate("/training", { state: { cards } })}
           />
         ) : (
           <span className="font-patua text-lg text-textPrimary">Deck vide</span>
