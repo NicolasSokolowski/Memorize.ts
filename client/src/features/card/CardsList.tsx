@@ -15,10 +15,15 @@ function CardsList() {
     [deckIdNumber]
   );
   const cards = useAppSelector(selectDeckCards);
+  const hasBeenFetchedOnce = useAppSelector(
+    (state) => state.deck.hasBeenFetchedOnce
+  );
 
   useEffect(() => {
-    dispatch(getCardsByDeckId(deckIdNumber));
-  }, [dispatch, deckIdNumber]);
+    if (!hasBeenFetchedOnce) {
+      dispatch(getCardsByDeckId(deckIdNumber));
+    }
+  }, [dispatch, deckIdNumber, hasBeenFetchedOnce]);
 
   return (
     <div className="h-full overflow-y-auto bg-primary p-12">
