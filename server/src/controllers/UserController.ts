@@ -1,7 +1,4 @@
-import {
-  cardDatamapper,
-  roleDatamapper
-} from "../datamappers/index.datamappers";
+import { roleDatamapper } from "../datamappers/index.datamappers";
 import { UserData } from "../datamappers/interfaces/UserDatamapperReq";
 import {
   BadRequestError,
@@ -113,62 +110,7 @@ export class UserController extends CoreController<
     const default_role = await roleController.datamapper.findByPk(2);
     const role = default_role.name;
 
-    const userPayload = {
-      email: user.email,
-      role
-    };
-
-    let shouldUpdateOccurrences = false;
-    let diffInDays = 0;
-
-    if (user.last_login) {
-      const today = new Date();
-      const lastLogin = new Date(user.last_login);
-
-      const todayDate = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate()
-      );
-      const lastLoginDate = new Date(
-        lastLogin.getFullYear(),
-        lastLogin.getMonth(),
-        lastLogin.getDate()
-      );
-
-      const diff = todayDate.getTime() - lastLoginDate.getTime();
-      diffInDays = diff > 0 ? Math.floor(diff / (1000 * 3600 * 24)) : 0;
-
-      shouldUpdateOccurrences = diffInDays > 0;
-    }
-
-    if (shouldUpdateOccurrences) {
-      const cards = await cardDatamapper.findAllCardsByUserEmail(user.email);
-
-      if (cards.length > 0) {
-        for (const card of cards) {
-          if (card.next_occurrence > 0) {
-            card.next_occurrence = Math.max(
-              0,
-              card.next_occurrence - diffInDays
-            );
-          }
-
-          if (card.next_occurrence === 0) {
-            card.max_early = card.difficulty + 3;
-          }
-        }
-
-        const updatedCards = await cardDatamapper.updateCardsOccurrence(cards);
-
-        if (!updatedCards) {
-          throw new DatabaseConnectionError();
-        }
-      }
-    }
-
     // Update user last login date
-
     user.last_login = new Date();
     const updatedUser = await this.datamapper.updateLastLogin(
       user.last_login.toISOString(),
@@ -178,6 +120,11 @@ export class UserController extends CoreController<
     if (!updatedUser) {
       throw new DatabaseConnectionError();
     }
+
+    const userPayload = {
+      email: user.email,
+      role
+    };
 
     // Generate tokens
 
