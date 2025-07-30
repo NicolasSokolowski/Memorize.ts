@@ -1,15 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { Deck } from "../../../store/deck/deckSlice";
 import { useAppSelector } from "../../../store/hooks";
+import { useMemo } from "react";
+import { selectCardsByDeckId } from "../../../store/card/cardSelector";
 
 export interface DeckProps {
   deck: Deck;
 }
 
 function DeckPicker({ deck }: DeckProps) {
-  const cards = useAppSelector((state) =>
-    state.card.cards.filter((card) => card.deck_id === deck.id)
+  const selectDeckCards = useMemo(
+    () => selectCardsByDeckId(deck.id),
+    [deck.id]
   );
+  const cards = useAppSelector(selectDeckCards);
   const navigate = useNavigate();
 
   return (
