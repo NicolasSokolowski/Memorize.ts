@@ -19,6 +19,14 @@ export class UserDatamapper
     return result.rows[0];
   };
 
+  updateLastLogin = async (date: string, email: string): Promise<UserData> => {
+    const result = await this.pool.query(
+      `UPDATE "${this.tableName}" SET last_login = $1 WHERE email = $2 RETURNING *`,
+      [date, email]
+    );
+    return result.rows[0];
+  };
+
   updatePassword = async (
     newPassword: string,
     emailCookie: string
