@@ -11,11 +11,13 @@ export interface Deck {
 export interface DeckState {
   decks: Deck[];
   isLoading: boolean;
+  hasBeenFetchedOnce: boolean;
 }
 
 const initialState: DeckState = {
   decks: [],
-  isLoading: false
+  isLoading: false,
+  hasBeenFetchedOnce: false
 };
 
 const deckSlice = createSlice({
@@ -30,6 +32,7 @@ const deckSlice = createSlice({
       })
       .addCase(getDecks.fulfilled, (state, action) => {
         state.decks = action.payload;
+        state.hasBeenFetchedOnce = true;
         state.isLoading = false;
       })
       .addCase(getDecks.rejected, (state) => {

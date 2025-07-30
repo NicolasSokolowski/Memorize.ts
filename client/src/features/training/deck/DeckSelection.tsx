@@ -1,9 +1,23 @@
-import { useAppSelector } from "../../../store/hooks";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import DeckPicker from "./DeckPicker";
 import { Link } from "react-router-dom";
+import { getDecks } from "../../../store/deck/deckThunk";
+import { getAllCardsByUserEmail } from "../../../store/card/cardThunks";
 
 function DeckSelection() {
+  const dispatch = useAppDispatch();
   const decks = useAppSelector((state) => state.deck.decks);
+  const hasBeenFetchedOnce = useAppSelector(
+    (state) => state.deck.hasBeenFetchedOnce
+  );
+
+  useEffect(() => {
+    if (!hasBeenFetchedOnce) {
+      dispatch(getDecks());
+      dispatch(getAllCardsByUserEmail());
+    }
+  }, [dispatch, hasBeenFetchedOnce]);
 
   return (
     <div className="h-full overflow-y-auto bg-primary p-12">

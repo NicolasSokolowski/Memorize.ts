@@ -20,10 +20,16 @@ function DeckModeSelection() {
   const memoHardCards = useMemo(() => selectHardCards(), []);
   const hardCards = useAppSelector(memoHardCards);
 
+  const hasBeenFetchedOnce = useAppSelector(
+    (state) => state.deck.hasBeenFetchedOnce
+  );
+
   useEffect(() => {
-    dispatch(getDecks());
-    dispatch(getAllCardsByUserEmail());
-  }, [dispatch]);
+    if (!hasBeenFetchedOnce) {
+      dispatch(getDecks());
+      dispatch(getAllCardsByUserEmail());
+    }
+  }, [dispatch, hasBeenFetchedOnce]);
 
   useEffect(() => {
     const interval = setInterval(() => {
