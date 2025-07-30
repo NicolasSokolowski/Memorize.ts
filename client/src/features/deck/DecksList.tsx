@@ -8,11 +8,16 @@ import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
 function DecksList() {
   const dispatch = useAppDispatch();
   const decks = useAppSelector((state) => state.deck.decks);
+  const hasBeenFetchedOnce = useAppSelector(
+    (state) => state.deck.hasBeenFetchedOnce
+  );
 
   useEffect(() => {
-    dispatch(getDecks());
-    dispatch(getAllCardsByUserEmail());
-  }, [dispatch]);
+    if (!hasBeenFetchedOnce) {
+      dispatch(getDecks());
+      dispatch(getAllCardsByUserEmail());
+    }
+  }, [dispatch, hasBeenFetchedOnce]);
 
   return (
     <div className="h-full overflow-y-auto bg-primary p-12">
