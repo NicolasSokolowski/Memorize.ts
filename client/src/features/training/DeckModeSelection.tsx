@@ -6,10 +6,14 @@ import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
 
 function DeckModeSelection() {
   const [dailyCardsLeft, setDailyCardsLeft] = useState(false);
+  const [hardCardsLeft, setHardCardsLeft] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const dailyCards = useAppSelector((state) =>
     state.card.cards.filter((card) => card.next_occurrence === 0)
+  );
+  const hardCards = useAppSelector((state) =>
+    state.card.cards.filter((card) => card.difficulty <= 15)
   );
 
   useEffect(() => {
@@ -20,7 +24,8 @@ function DeckModeSelection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setDailyCardsLeft((prev) => !prev);
-    }, 2000);
+      setHardCardsLeft((prev) => !prev);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -55,6 +60,39 @@ function DeckModeSelection() {
                   draggable={false}
                   onClick={() =>
                     navigate("/training", { state: { cards: dailyCards } })
+                  }
+                />
+              )
+            ) : (
+              <span className="font-patua text-xl text-textPrimary">
+                Terminé !
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl">
+          <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
+            Cartes difficiles
+          </div>
+          <div className="flex h-16 w-full items-center justify-center">
+            {hardCards.length > 0 ? (
+              hardCardsLeft ? (
+                <span
+                  className="font-patua text-xl text-textPrimary"
+                  onClick={() =>
+                    navigate("/training", { state: { cards: hardCards } })
+                  }
+                >
+                  {hardCards.length} carte{hardCards.length > 1 ? "s" : ""}
+                </span>
+              ) : (
+                <img
+                  src="/training.png"
+                  alt="Training icon"
+                  className="w-16 cursor-pointer"
+                  draggable={false}
+                  onClick={() =>
+                    navigate("/training", { state: { cards: hardCards } })
                   }
                 />
               )
