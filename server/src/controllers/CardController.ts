@@ -46,9 +46,70 @@ export class CardController extends CoreController<
     const userEmail = req.user?.email;
 
     const cards = await this.datamapper.findAllCardsByUserEmail(userEmail);
+    const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!cards) {
       throw new NotFoundError();
+    }
+
+    // Update cards last update field
+    let shouldUpdateOccurrences = false;
+    let diffInDays = 0;
+
+    if (user.last_cards_update) {
+      const today = new Date();
+      const lastCardsUpdate = new Date(user.last_cards_update);
+
+      const todayDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      );
+      const lastCardsUpdateDate = new Date(
+        lastCardsUpdate.getFullYear(),
+        lastCardsUpdate.getMonth(),
+        lastCardsUpdate.getDate()
+      );
+
+      const diff = todayDate.getTime() - lastCardsUpdateDate.getTime();
+      diffInDays = diff > 0 ? Math.floor(diff / (1000 * 3600 * 24)) : 0;
+
+      shouldUpdateOccurrences = diffInDays > 0;
+    }
+
+    if (shouldUpdateOccurrences) {
+      const cards = await this.datamapper.findAllCardsByUserEmail(user.email);
+
+      if (cards.length > 0) {
+        for (const card of cards) {
+          if (card.next_occurrence > 0) {
+            card.next_occurrence = Math.max(
+              0,
+              card.next_occurrence - diffInDays
+            );
+          }
+
+          if (card.next_occurrence === 0) {
+            card.max_early = card.difficulty + 3;
+          }
+        }
+
+        const updatedCards = await this.datamapper.updateCardsOccurrence(cards);
+
+        if (!updatedCards) {
+          throw new DatabaseConnectionError();
+        }
+      }
+    }
+
+    user.last_cards_update = new Date();
+    const updatedUser = await userDatamapper.updateLastCardsUpdate(
+      user.last_cards_update.toISOString(),
+      user.email
+    );
+
+    if (!updatedUser) {
+      throw new DatabaseConnectionError();
     }
 
     res.status(200).send(cards);
