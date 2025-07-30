@@ -27,7 +27,7 @@ function DeckPicker({ deck }: DeckProps) {
             onClick={() => navigate("/training", { state: { cards } })}
           />
         ) : (
-          <span className="font-patua text-lg text-textPrimary">Deck vide</span>
+          <span className="font-patua text-xl text-textPrimary">Deck vide</span>
         )}
       </div>
     </div>
