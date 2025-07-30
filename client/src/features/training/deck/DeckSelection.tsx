@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../store/hooks";
+import { useAppSelector } from "../../../store/hooks";
 import DeckPicker from "./DeckPicker";
 import { Link } from "react-router-dom";
 
