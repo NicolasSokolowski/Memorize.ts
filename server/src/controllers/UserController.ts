@@ -118,41 +118,62 @@ export class UserController extends CoreController<
       role
     };
 
-    // Update cards next_occurrence based on last login date
-    const date: Date = new Date();
-    const lastLoginDate: Date = user.last_login;
-    let diffInDays: number;
+    let shouldUpdateOccurrences = false;
+    let diffInDays = 0;
 
-    if (!lastLoginDate) {
-      diffInDays = 0;
-    } else {
-      const diff = Math.abs(date.getTime() - new Date(lastLoginDate).getTime());
-      diffInDays = Math.floor(diff / (1000 * 3600 * 24));
+    if (user.last_login) {
+      const today = new Date();
+      const lastLogin = new Date(user.last_login);
+
+      const todayDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      );
+      const lastLoginDate = new Date(
+        lastLogin.getFullYear(),
+        lastLogin.getMonth(),
+        lastLogin.getDate()
+      );
+
+      const diff = todayDate.getTime() - lastLoginDate.getTime();
+      diffInDays = diff > 0 ? Math.floor(diff / (1000 * 3600 * 24)) : 0;
+
+      shouldUpdateOccurrences = diffInDays > 0;
     }
 
-    const cards = await cardDatamapper.findAllCardsByUserEmail(user.email);
+    if (shouldUpdateOccurrences) {
+      const cards = await cardDatamapper.findAllCardsByUserEmail(user.email);
 
-    // Decrease next_occurrence by number of days since last login
-    for (const card of cards) {
-      if (card.next_occurrence > 0) {
-        card.next_occurrence = Math.max(0, card.next_occurrence - diffInDays);
+      if (cards.length > 0) {
+        for (const card of cards) {
+          if (card.next_occurrence > 0) {
+            card.next_occurrence = Math.max(
+              0,
+              card.next_occurrence - diffInDays
+            );
+          }
+
+          if (card.next_occurrence === 0) {
+            card.max_early = card.difficulty + 3;
+          }
+        }
+
+        const updatedCards = await cardDatamapper.updateCardsOccurrence(cards);
+
+        if (!updatedCards) {
+          throw new DatabaseConnectionError();
+        }
       }
-
-      if (card.next_occurrence === 0) {
-        card.max_early = card.difficulty + 3;
-      }
-    }
-
-    const updatedCards = await cardDatamapper.updateCardsOccurrence(cards);
-
-    if (!updatedCards) {
-      throw new DatabaseConnectionError();
     }
 
     // Update user last login date
 
     user.last_login = new Date();
-    const updatedUser = await this.datamapper.update(user, user.email);
+    const updatedUser = await this.datamapper.updateLastLogin(
+      user.last_login.toISOString(),
+      user.email
+    );
 
     if (!updatedUser) {
       throw new DatabaseConnectionError();
