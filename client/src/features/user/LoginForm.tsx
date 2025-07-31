@@ -19,8 +19,7 @@ interface ApiErrorResponse {
 function LoginForm() {
   const [userInfo, setUserInfo] = useState(initialState);
   const [error, setError] = useState({
-    email: "",
-    password: ""
+    message: ""
   });
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
@@ -33,15 +32,11 @@ function LoginForm() {
 
       setUserInfo(initialState);
     } catch (err: unknown) {
-      const axiosError = err as AxiosError<ApiErrorResponse>;
+      const error = err as ApiErrorResponse;
 
-      if (axiosError.response?.data.errors) {
-        for (const error of axiosError.response.data.errors) {
-          if (error.field === "email") {
-            setError((prev) => ({ ...prev, email: error.message }));
-          } else if (error.field === "password") {
-            setError((prev) => ({ ...prev, password: error.message }));
-          }
+      if (error.errors) {
+        for (const e of error.errors) {
+          setError((prev) => ({ ...prev, message: e.message }));
         }
       }
     }
@@ -60,7 +55,7 @@ function LoginForm() {
 
     setError((prev) => ({
       ...prev,
-      [field]: ""
+      message: ""
     }));
 
     setUserInfo((prev) => ({
@@ -73,8 +68,7 @@ function LoginForm() {
     e.preventDefault();
 
     setError({
-      email: "",
-      password: ""
+      message: ""
     });
 
     setUserInfo(initialState);
@@ -84,13 +78,18 @@ function LoginForm() {
 
   return (
     <section className="h-full min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-white shadow-xl">
-      <h2 className="m-5 text-center font-patua text-4xl">Connexion</h2>
+      <h2 className="m-5 text-center font-patua text-4xl text-textPrimary">
+        Connexion
+      </h2>
       <form
         className="flex h-112 flex-col items-center justify-center gap-6 p-5"
         onSubmit={handleSubmit()}
       >
         <div className="flex flex-col items-start gap-2">
-          <label className="font-patua text-xl" htmlFor="email-log">
+          <label
+            className="font-patua text-xl text-textPrimary"
+            htmlFor="email-log"
+          >
             E-mail
           </label>
           <input
@@ -99,16 +98,14 @@ function LoginForm() {
             value={userInfo.email}
             onChange={(e) => handleChange(e)}
             placeholder="Adresse e-mail"
-            className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+            className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
           />
-          {error.email && (
-            <p className="max-w-full break-words font-patua text-sm text-red-500">
-              {error.email}
-            </p>
-          )}
         </div>
         <div className="flex w-80 flex-col items-start gap-2">
-          <label className="font-patua text-xl " htmlFor="password-log">
+          <label
+            className="font-patua text-xl text-textPrimary"
+            htmlFor="password-log"
+          >
             Mot de passe
           </label>
           <input
@@ -119,10 +116,12 @@ function LoginForm() {
             placeholder="Mot de passe"
             className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
           />
-          {error.password && (
-            <p className="max-w-full break-words font-patua text-sm text-red-500">
-              {error.password}
+          {error.message ? (
+            <p className="mt-1 h-2 max-w-full break-words font-patua text-red-500">
+              {error.message}
             </p>
+          ) : (
+            <p className="mt-1 h-2" />
           )}
         </div>
         <div className="flex w-80 flex-col gap-3">
