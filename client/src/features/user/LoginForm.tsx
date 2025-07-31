@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { AxiosError } from "axios";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { login } from "../../store/user/userThunk";
 import { setHasAccount } from "../../store/user/userSlice";
