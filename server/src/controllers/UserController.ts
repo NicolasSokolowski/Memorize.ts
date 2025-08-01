@@ -92,7 +92,7 @@ export class UserController extends CoreController<
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new BadRequestError("Please provide an email and a password");
+      throw new BadRequestError("Incorrect password or email.");
     }
 
     const user = await this.datamapper.findBySpecificField("email", email);
@@ -104,7 +104,7 @@ export class UserController extends CoreController<
     const isPasswordValid = await Password.compare(user.password, password);
 
     if (!isPasswordValid) {
-      throw new BadRequestError("Incorrect password");
+      throw new BadRequestError("Incorrect password or email.");
     }
 
     const default_role = await roleController.datamapper.findByPk(2);
