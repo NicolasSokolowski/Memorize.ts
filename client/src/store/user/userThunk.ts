@@ -14,7 +14,23 @@ export const login = createAsyncThunk<
       email,
       password
     });
-    return response.data as User;
+    return response.data.user as User;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
+  }
+});
+
+export const getProfile = createAsyncThunk<
+  User,
+  void,
+  { rejectValue: ApiErrorResponse }
+>("GET_PROFILE", async (_, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get("/profile");
+    return response.data.user as User;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
       return rejectWithValue(err.response.data);

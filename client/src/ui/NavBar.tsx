@@ -59,7 +59,7 @@ function NavBar() {
             </div>
           </li>
         </ol>
-        <div className="mb-4 flex h-36 w-full items-end">
+        <div className="mb-5 flex h-36 w-full items-end">
           <button
             onClick={() => navigate("/user/profile")}
             className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"

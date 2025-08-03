@@ -1,20 +1,40 @@
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { getProfile } from "../../store/user/userThunk";
+
 function UserProfile() {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
+  const hasBeenFetchedOnce = useAppSelector(
+    (state) => state.user.hasBeenFetchedOnce
+  );
+
+  useEffect(() => {
+    if (!hasBeenFetchedOnce) {
+      dispatch(getProfile());
+    }
+  }, [dispatch, hasBeenFetchedOnce]);
+
   return (
-    <div className="h-full">
+    <div className="min-h-screen">
       <div className="flex h-96 items-center justify-center">
         <div className="flex size-80 items-center justify-center rounded-full bg-tertiary shadow-xl">
           <img className="size-64 rounded-full bg-white shadow-inner-strong" />
         </div>
       </div>
-      <div className="mx-20 mt-5 h-32">
+      <div className="mx-20 mt-4 h-32 font-patua text-2xl">
         <div className="h-16">
-          <div className="ml-52 h-full w-112"></div>
+          <span className="ml-52 text-textPrimary">
+            Nom d'utilisateur : <span>{user?.username}</span>
+          </span>
         </div>
         <div className="h-16">
-          <div className="ml-52 h-full w-112"></div>
+          <span className="ml-52 text-textPrimary">
+            Adresse e-mail : <span>{user?.email}</span>
+          </span>
         </div>
       </div>
-      <div className="mx-20 mt-5 flex h-2/5 justify-center gap-32">
+      <div className="mx-20 flex h-96 justify-center gap-32">
         <div className="m-5 flex w-112 flex-col gap-4">
           <button className="h-16 w-full rounded-md bg-secondary shadow-md">
             Button 1
@@ -32,7 +52,7 @@ function UserProfile() {
             Button 5
           </button>
         </div>
-        <div className="m-5 w-1/4 rounded-lg bg-tertiary shadow-lg"></div>
+        <div className="m-4 w-1/4 rounded-lg bg-tertiary shadow-lg"></div>
       </div>
     </div>
   );
