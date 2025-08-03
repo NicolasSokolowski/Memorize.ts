@@ -22,7 +22,7 @@ function NavBar() {
               onClick={() => navigate("/user/training/mode")}
               className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
             >
-              <p>Entraînement</p>
+              <span>Entraînement</span>
               <div className="flex items-center">
                 <img
                   src="/training.png"
@@ -38,7 +38,7 @@ function NavBar() {
               onClick={() => navigate("/user/decks")}
               className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
             >
-              <p>Mes decks</p>
+              <span>Mes decks</span>
               <img
                 src="/deck.png"
                 alt="Deck icon"
@@ -48,7 +48,7 @@ function NavBar() {
             </button>
           </li>
           <li className="flex h-14 w-full items-center rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl">
-            <p className="w-full">Mes cartes</p>
+            <span className="w-full">Mes cartes</span>
             <div className="flex items-center">
               <img
                 src="/card.png"
@@ -59,30 +59,20 @@ function NavBar() {
             </div>
           </li>
         </ol>
-        <ol className="flex h-36 w-full flex-col gap-4">
-          <li className="flex h-14 w-full items-center rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl">
-            <p className="w-full">Mon profil</p>
-            <div className="flex items-center">
-              <img
-                src="/profile.png"
-                alt="Profile icon"
-                className="ml-2 w-20"
-                draggable={false}
-              />
-            </div>
-          </li>
-          <li className="flex h-14 w-full items-center rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl">
-            <p className="w-full">Déconnexion</p>
-            <div className="flex items-center">
-              <img
-                src="/logout.png"
-                alt="Logout icon"
-                className="ml-2 w-20"
-                draggable={false}
-              />
-            </div>
-          </li>
-        </ol>
+        <div className="mb-4 flex h-36 w-full items-end">
+          <button
+            onClick={() => navigate("/user/profile")}
+            className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
+          >
+            <span>Mon profil</span>
+            <img
+              src="/deck.png"
+              alt="Deck icon"
+              className="w-24 translate-x-6"
+              draggable={false}
+            />
+          </button>
+        </div>
       </nav>
     </div>
   );
