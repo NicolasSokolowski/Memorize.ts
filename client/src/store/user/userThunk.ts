@@ -14,7 +14,7 @@ export const login = createAsyncThunk<
       email,
       password
     });
-    return response.data as User;
+    return response.data.user as User;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
       return rejectWithValue(err.response.data);
