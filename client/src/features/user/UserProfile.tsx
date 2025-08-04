@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getProfile } from "../../store/user/userThunk";
+import UsernameForm from "./UsernameForm";
 
 type UserModification = "none" | `edit-${EditActions}`;
 type EditActions = "username";
 
 function UserProfile() {
-  const [isEditing, setIsEditing] = useState<UserModification>("none");
+  const [visibleForm, setVisibleForm] = useState<UserModification>("none");
+  const [isEditing, setIsEditing] = useState(false);
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
   const hasBeenFetchedOnce = useAppSelector(
@@ -21,11 +23,16 @@ function UserProfile() {
 
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     const value = e.currentTarget.value as EditActions;
+    const nextForm = `edit-${value}` as UserModification;
 
-    if (isEditing === "none") {
-      setIsEditing(`edit-${value}`);
+    if (visibleForm === nextForm) {
+      setIsEditing(false);
+      setTimeout(() => {
+        setVisibleForm("none");
+      }, 1000);
     } else {
-      setIsEditing("none");
+      setVisibleForm(nextForm);
+      setIsEditing(true);
     }
   };
 
@@ -49,9 +56,9 @@ function UserProfile() {
         </div>
       </div>
       <div className="mx-20 flex h-96 justify-center gap-32">
-        <div className="m-5 flex w-112 flex-col gap-4">
+        <div className="m-4 flex w-112 flex-col gap-4">
           <button
-            className={`h-16 w-full rounded-md shadow-md ${isEditing === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="username"
             onClick={(e) => handleEdit(e)}
           >
@@ -72,7 +79,21 @@ function UserProfile() {
             Button 5
           </button>
         </div>
-        <div className="m-4 w-1/4 rounded-lg bg-tertiary shadow-lg"></div>
+        <div className={`flip-profile m-4 ${isEditing ? "flip" : ""}`}>
+          <div className="flip-box-inner">
+            <div className="flip-box-profile-a"></div>
+            <div className="flip-box-profile-edit flex flex-col justify-start rounded-lg bg-tertiary shadow-lg">
+              {visibleForm === "edit-username" && (
+                <UsernameForm
+                  onCancel={() => {
+                    setIsEditing(false);
+                    setTimeout(() => setVisibleForm("none"), 800);
+                  }}
+                />
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
