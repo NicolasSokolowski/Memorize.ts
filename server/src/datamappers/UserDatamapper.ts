@@ -11,10 +11,10 @@ export class UserDatamapper
   pool = pool;
 
   update = async (data: UserData, emailCookie: string): Promise<UserData> => {
-    const { email, password, username } = data;
+    const { email, username } = data;
     const result = await this.pool.query(
-      `UPDATE "${this.tableName}" SET email = $1, password = $2, username = $3 WHERE email = $4 RETURNING *`,
-      [email, password, username, emailCookie]
+      `UPDATE "${this.tableName}" SET email = $1, username = $2 WHERE email = $3 RETURNING *`,
+      [email, username, emailCookie]
     );
     return result.rows[0];
   };
