@@ -68,7 +68,6 @@ const userSlice = createSlice({
       })
       .addCase(updateUserInfos.rejected, (state) => {
         state.isLoading = false;
-        state.user = null;
       });
   }
 });
