@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProfile, login } from "./userThunk";
+import { getProfile, login, updateUserInfos } from "./userThunk";
 
 export interface User {
   email: string;
@@ -56,6 +56,17 @@ const userSlice = createSlice({
         state.hasBeenFetchedOnce = true;
       })
       .addCase(getProfile.rejected, (state) => {
+        state.isLoading = false;
+        state.user = null;
+      })
+      .addCase(updateUserInfos.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserInfos.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(updateUserInfos.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
       });
