@@ -29,7 +29,12 @@ function UsernameForm({ onCancel }: UsernameFormProps) {
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (username === usernameEdited || !usernameEdited) return;
+    if (!usernameEdited) return;
+
+    if (username === usernameEdited) {
+      setError({ message: "Le nom est identique au précédent." });
+      return;
+    }
 
     try {
       await dispatch(updateUserInfos({ username: usernameEdited })).unwrap();
