@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { updateUserInfos } from "../../store/user/userThunk";
 
 type UsernameFormProps = {
   onCancel: () => void;
@@ -8,6 +9,7 @@ type UsernameFormProps = {
 function UsernameForm({ onCancel }: UsernameFormProps) {
   const [usernameEdited, setUsernameEdited] = useState("");
   const username = useAppSelector((state) => state.user.user?.username);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (username) {
@@ -15,12 +17,28 @@ function UsernameForm({ onCancel }: UsernameFormProps) {
     }
   }, [username]);
 
+  const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (username === usernameEdited || !usernameEdited) return;
+
+    try {
+      await dispatch(updateUserInfos({ username: usernameEdited }));
+      onCancel();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
         Modifier mon nom
       </h3>
-      <div className="mx-12 flex flex-1 flex-col justify-center">
+      <form
+        onSubmit={handleSubmit()}
+        className="mx-12 flex flex-1 flex-col justify-center"
+      >
         <label
           htmlFor="username"
           className="ml-1 font-patua text-xl text-textPrimary"
@@ -28,10 +46,12 @@ function UsernameForm({ onCancel }: UsernameFormProps) {
           Nom d'utilisateur
         </label>
         <input
+          id="username"
           type="text"
           className="my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
           value={usernameEdited}
           onChange={(e) => setUsernameEdited(e.target.value)}
+          autoComplete="off"
         />
         <div className="mt-5 flex w-full justify-center gap-20">
           <button type="button">
@@ -52,7 +72,7 @@ function UsernameForm({ onCancel }: UsernameFormProps) {
             />
           </button>
         </div>
-      </div>
+      </form>
     </>
   );
 }
