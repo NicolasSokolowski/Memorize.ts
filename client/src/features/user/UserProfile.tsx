@@ -1,8 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getProfile } from "../../store/user/userThunk";
 
+type UserModification = "none" | `edit-${EditActions}`;
+type EditActions = "username";
+
 function UserProfile() {
+  const [isEditing, setIsEditing] = useState<UserModification>("none");
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
   const hasBeenFetchedOnce = useAppSelector(
@@ -14,6 +18,16 @@ function UserProfile() {
       dispatch(getProfile());
     }
   }, [dispatch, hasBeenFetchedOnce]);
+
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const value = e.currentTarget.value as EditActions;
+
+    if (isEditing === "none") {
+      setIsEditing(`edit-${value}`);
+    } else {
+      setIsEditing("none");
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -36,8 +50,14 @@ function UserProfile() {
       </div>
       <div className="mx-20 flex h-96 justify-center gap-32">
         <div className="m-5 flex w-112 flex-col gap-4">
-          <button className="h-16 w-full rounded-md bg-secondary shadow-md">
-            Button 1
+          <button
+            className={`h-16 w-full rounded-md shadow-md ${isEditing === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            value="username"
+            onClick={(e) => handleEdit(e)}
+          >
+            <span className="font-patua text-xl">
+              Modifier mon nom d'utilisateur
+            </span>
           </button>
           <button className="h-16 w-full rounded-md bg-secondary shadow-md">
             Button 2
