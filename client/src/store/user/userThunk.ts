@@ -38,3 +38,19 @@ export const getProfile = createAsyncThunk<
     throw err;
   }
 });
+
+export const updateUserInfos = createAsyncThunk<
+  User,
+  Partial<User>,
+  { rejectValue: ApiErrorResponse }
+>("UPDATE_USER", async (userInfo: Partial<User>, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.patch("/profile", userInfo);
+    return response.data.user as User;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
+  }
+});

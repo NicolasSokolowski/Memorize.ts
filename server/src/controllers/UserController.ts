@@ -185,17 +185,6 @@ export class UserController extends CoreController<
     const userEmail = req.user?.email;
     const data = req.body;
 
-    const checkIfEmailExists = await this.datamapper.findBySpecificField(
-      this.field,
-      data.email
-    );
-
-    if (checkIfEmailExists) {
-      throw new BadRequestError(
-        `Provided email is already in use. Please choose another one.`
-      );
-    }
-
     const user = await this.datamapper.findBySpecificField(
       this.field,
       userEmail
@@ -203,6 +192,21 @@ export class UserController extends CoreController<
 
     if (!user) {
       throw new NotFoundError();
+    }
+
+    if (data.email) {
+      const checkIfEmailExists = await this.datamapper.findBySpecificField(
+        this.field,
+        data.email
+      );
+
+      if (checkIfEmailExists) {
+        throw new BadRequestError(
+          `Provided email is already in use. Please choose another one.`
+        );
+      }
+    } else {
+      data.email = user.email;
     }
 
     data.password = user.password; // Preserve the existing password
