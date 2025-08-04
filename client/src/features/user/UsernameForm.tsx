@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { updateUserInfos } from "../../store/user/userThunk";
+import { ApiErrorResponse } from "../../helpers/interfaces";
 
 type UsernameFormProps = {
   onCancel: () => void;
@@ -8,6 +9,9 @@ type UsernameFormProps = {
 
 function UsernameForm({ onCancel }: UsernameFormProps) {
   const [usernameEdited, setUsernameEdited] = useState("");
+  const [error, setError] = useState({
+    message: ""
+  });
   const username = useAppSelector((state) => state.user.user?.username);
   const dispatch = useAppDispatch();
 
@@ -17,16 +21,27 @@ function UsernameForm({ onCancel }: UsernameFormProps) {
     }
   }, [username]);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError({ message: "" });
+    setUsernameEdited(e.target.value);
+  };
+
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (username === usernameEdited || !usernameEdited) return;
 
     try {
-      await dispatch(updateUserInfos({ username: usernameEdited }));
+      await dispatch(updateUserInfos({ username: usernameEdited })).unwrap();
       onCancel();
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      const error = err as ApiErrorResponse;
+
+      if (error.errors) {
+        for (const e of error.errors) {
+          setError((prev) => ({ ...prev, message: e.message }));
+        }
+      }
     }
   };
 
@@ -50,9 +65,14 @@ function UsernameForm({ onCancel }: UsernameFormProps) {
           type="text"
           className="my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
           value={usernameEdited}
-          onChange={(e) => setUsernameEdited(e.target.value)}
+          onChange={(e) => handleChange(e)}
           autoComplete="off"
         />
+        {error.message && (
+          <p className="break-words pl-2 font-patua text-red-500">
+            {error.message}
+          </p>
+        )}
         <div className="mt-5 flex w-full justify-center gap-20">
           <button type="button">
             <img
