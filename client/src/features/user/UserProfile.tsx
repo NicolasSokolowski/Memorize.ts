@@ -86,10 +86,10 @@ function UserProfile() {
             Button 5
           </button>
         </div>
-        <div className={`flip-profile m-4 ${isEditing ? "flip" : ""}`}>
+        <div className={`flip-profile ${isEditing ? "flip" : ""}`}>
           <div className="flip-box-inner">
             <div className="flip-box-profile-a"></div>
-            <div className="flip-box-profile-edit flex flex-col justify-start rounded-lg bg-tertiary shadow-lg">
+            <div className="flip-box-profile-edit">
               {visibleForm === "edit-username" && (
                 <UsernameForm
                   onCancel={() => {
