@@ -158,7 +158,7 @@ function PasswordForm({ onCancel }: PasswordFormProps) {
       </div>
       {passwordHasBeenChanged && (
         <div className="flip-card-back">
-          <div className="m-4 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-lg">
+          <div className="mt-4 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-lg">
             <h3 className="m-4 text-center text-2xl">
               Modifier mon mot de passe
             </h3>

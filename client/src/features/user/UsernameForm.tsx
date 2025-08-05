@@ -51,7 +51,7 @@ function UsernameForm({ onCancel }: UsernameFormProps) {
   };
 
   return (
-    <div className="m-4 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-lg">
+    <div className="mt-4 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-lg">
       <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
         Modifier mon nom
       </h3>
