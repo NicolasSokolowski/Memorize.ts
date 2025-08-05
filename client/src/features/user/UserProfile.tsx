@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getProfile } from "../../store/user/userThunk";
 import UsernameForm from "./UsernameForm";
+import PasswordForm from "./PasswordForm";
 
 type UserModification = "none" | `edit-${EditActions}`;
-type EditActions = "username";
+type EditActions = "username" | "password";
 
 function UserProfile() {
   const [visibleForm, setVisibleForm] = useState<UserModification>("none");
@@ -69,8 +70,14 @@ function UserProfile() {
           <button className="h-16 w-full rounded-md bg-secondary shadow-md">
             Button 2
           </button>
-          <button className="h-16 w-full rounded-md bg-secondary shadow-md">
-            Button 3
+          <button
+            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-password" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            value="password"
+            onClick={(e) => handleEdit(e)}
+          >
+            <span className="font-patua text-xl">
+              Modifier mon mot de passe
+            </span>
           </button>
           <button className="h-16 w-full rounded-md bg-secondary shadow-md">
             Button 4
@@ -85,6 +92,14 @@ function UserProfile() {
             <div className="flip-box-profile-edit flex flex-col justify-start rounded-lg bg-tertiary shadow-lg">
               {visibleForm === "edit-username" && (
                 <UsernameForm
+                  onCancel={() => {
+                    setIsEditing(false);
+                    setTimeout(() => setVisibleForm("none"), 800);
+                  }}
+                />
+              )}
+              {visibleForm === "edit-password" && (
+                <PasswordForm
                   onCancel={() => {
                     setIsEditing(false);
                     setTimeout(() => setVisibleForm("none"), 800);
