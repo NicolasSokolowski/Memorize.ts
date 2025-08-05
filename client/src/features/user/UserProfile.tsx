@@ -88,7 +88,7 @@ function UserProfile() {
         </div>
         <div className={`flip-profile ${isEditing ? "flip" : ""}`}>
           <div className="flip-box-inner">
-            <div className="flip-box-profile-a"></div>
+            <div className="flip-box-profile-a" />
             <div className="flip-box-profile-edit">
               {visibleForm === "edit-username" && (
                 <UsernameForm
