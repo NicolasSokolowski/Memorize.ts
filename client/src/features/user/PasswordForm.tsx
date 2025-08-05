@@ -78,7 +78,7 @@ function PasswordForm({ onCancel }: PasswordFormProps) {
       className={`flip-card-inner ${passwordHasBeenChanged ? "flip-vertical" : ""}`}
     >
       <div className="flip-card-front">
-        <div className="m-4 flex size-full flex-col rounded-lg bg-tertiary shadow-lg">
+        <div className="mt-4 flex size-full flex-col rounded-lg bg-tertiary shadow-lg">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
             Modifier mon mot de passe
           </h3>
@@ -158,8 +158,10 @@ function PasswordForm({ onCancel }: PasswordFormProps) {
       </div>
       {passwordHasBeenChanged && (
         <div className="flip-card-back">
-          <div className="m-4 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-lg">
-            <h3 className="m-4 text-center text-2xl">Modifier mon nom</h3>
+          <div className="mt-4 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-lg">
+            <h3 className="m-4 text-center text-2xl">
+              Modifier mon mot de passe
+            </h3>
             <span className="mt-2 text-center text-xl">Succès !</span>
             <p className="mx-12 my-8 break-words">
               Votre mot de passe a été modifié !
