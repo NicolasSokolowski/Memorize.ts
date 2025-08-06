@@ -3,9 +3,10 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getProfile } from "../../store/user/userThunk";
 import UsernameForm from "./UsernameForm";
 import PasswordForm from "./PasswordForm";
+import LogoutForm from "./LogoutForm";
 
 type UserModification = "none" | `edit-${EditActions}`;
-type EditActions = "username" | "password";
+type EditActions = "username" | "password" | "logout";
 
 function UserProfile() {
   const [visibleForm, setVisibleForm] = useState<UserModification>("none");
@@ -79,8 +80,12 @@ function UserProfile() {
               Modifier mon mot de passe
             </span>
           </button>
-          <button className="h-16 w-full rounded-md bg-secondary shadow-md">
-            Button 4
+          <button
+            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-logout" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            value="logout"
+            onClick={(e) => handleEdit(e)}
+          >
+            <span className="font-patua text-xl">Me déconnecter</span>
           </button>
           <button className="h-16 w-full rounded-md bg-secondary shadow-md">
             Button 5
@@ -100,6 +105,14 @@ function UserProfile() {
               )}
               {visibleForm === "edit-password" && (
                 <PasswordForm
+                  onCancel={() => {
+                    setIsEditing(false);
+                    setTimeout(() => setVisibleForm("none"), 800);
+                  }}
+                />
+              )}
+              {visibleForm === "edit-logout" && (
+                <LogoutForm
                   onCancel={() => {
                     setIsEditing(false);
                     setTimeout(() => setVisibleForm("none"), 800);

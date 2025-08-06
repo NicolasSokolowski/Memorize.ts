@@ -299,6 +299,16 @@ export class UserController extends CoreController<
     res.status(200).send({ user: userWithoutPassword });
   };
 
+  logout = async (req: Request, res: Response): Promise<void> => {
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict"
+    });
+
+    res.sendStatus(204);
+  };
+
   deleteAccount = async (req: Request, res: Response): Promise<void> => {
     const userEmail = req.user?.email;
 
