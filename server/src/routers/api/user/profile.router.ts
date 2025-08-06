@@ -46,4 +46,6 @@ profileRouter
     errorCatcher(userController.changePassword)
   );
 
+profileRouter.route("/logout").post(errorCatcher(userController.logout));
+
 export default profileRouter;
