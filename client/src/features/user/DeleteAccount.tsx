@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { deleteAccount } from "../../store/user/userThunk";
 import { setUserNull } from "../../store/user/userSlice";
+import axios from "axios";
 
 type DeleteFormProps = {
   onCancel: () => void;
@@ -11,6 +12,9 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
   const [firstConfirmationCheck, setFirstConfirmationCheck] = useState(false);
   const [userHasBeenDeleted, setUserHasBeenDeleted] = useState(false);
   const [disconnectTimer, setDisconnectTimer] = useState(10);
+  const [error, setError] = useState({
+    message: ""
+  });
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -34,8 +38,10 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
     try {
       await dispatch(deleteAccount());
       setUserHasBeenDeleted(true);
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response?.data?.errors) {
+        setError({ message: err.response.data.errors[0].message });
+      }
     }
   };
 
@@ -92,25 +98,31 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
                   <br />
                   Êtes-vous vraiment sûr ?
                 </p>
-                <div className="mt-5 flex w-full justify-center gap-20">
-                  <button type="button">
-                    <img
-                      src="/cancelation.png"
-                      alt="Cancelation icon"
-                      onClick={onCancel}
-                      className="w-20"
-                      draggable={false}
-                    />
-                  </button>
-                  <button type="submit" className="mr-2">
-                    <img
-                      src="/validation.png"
-                      alt="Validation icon"
-                      className="w-16"
-                      draggable={false}
-                    />
-                  </button>
-                </div>
+                {error.message ? (
+                  <p className="break-words pl-2 font-patua text-red-500">
+                    {error.message}
+                  </p>
+                ) : (
+                  <div className="mt-5 flex w-full justify-center gap-20">
+                    <button type="button">
+                      <img
+                        src="/cancelation.png"
+                        alt="Cancelation icon"
+                        onClick={onCancel}
+                        className="w-20"
+                        draggable={false}
+                      />
+                    </button>
+                    <button type="submit" className="mr-2">
+                      <img
+                        src="/validation.png"
+                        alt="Validation icon"
+                        className="w-16"
+                        draggable={false}
+                      />
+                    </button>
+                  </div>
+                )}
               </form>
             </div>
             <div className="flip-card-back-of-back">
