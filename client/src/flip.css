@@ -11,7 +11,9 @@
 .flip-training-a,
 .flip-training-b,
 .flip-box-profile-a,
-.flip-box-profile-edit {
+.flip-box-profile-edit,
+.flip-card-back-face,
+.flip-card-back-of-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -228,4 +230,20 @@
 
 .flip-box-profile-edit {
   transform: rotateY(180deg);
+}
+
+.flip-card-inner--inner {
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.flip-card-inner--inner.flip-vertical {
+  transform: rotateX(180deg);
+}
+
+.flip-card-back-of-back {
+  transform: rotateX(180deg);
 }

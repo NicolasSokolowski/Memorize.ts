@@ -37,6 +37,9 @@ const userSlice = createSlice({
   reducers: {
     setHasAccount: (state, action) => {
       state.hasAccount = action.payload;
+    },
+    setUserNull: (state) => {
+      state.user = null;
     }
   },
   extraReducers: (builder) => {
@@ -90,7 +93,6 @@ const userSlice = createSlice({
       })
       .addCase(deleteAccount.fulfilled, (state) => {
         state.isLoading = false;
-        // state.user = null;
       })
       .addCase(deleteAccount.rejected, (state) => {
         state.isLoading = false;
@@ -98,6 +100,6 @@ const userSlice = createSlice({
   }
 });
 
-export const { setHasAccount } = userSlice.actions;
+export const { setHasAccount, setUserNull } = userSlice.actions;
 
 export default userSlice.reducer;
