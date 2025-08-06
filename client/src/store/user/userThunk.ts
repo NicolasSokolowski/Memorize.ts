@@ -54,3 +54,17 @@ export const updateUserInfos = createAsyncThunk<
     throw err;
   }
 });
+
+export const logout = createAsyncThunk(
+  "USER_LOGOUT",
+  async (_, { rejectWithValue }) => {
+    try {
+      await axiosInstance.post("/profile/logout", {});
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.errors) {
+        return rejectWithValue(err.response.data);
+      }
+      throw err;
+    }
+  }
+);

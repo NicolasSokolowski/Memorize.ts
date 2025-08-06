@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProfile, login, updateUserInfos } from "./userThunk";
+import { getProfile, login, logout, updateUserInfos } from "./userThunk";
 
 export interface User {
   email: string;
@@ -67,6 +67,16 @@ const userSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(updateUserInfos.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isLoading = false;
+        state.user = null;
+      })
+      .addCase(logout.rejected, (state) => {
         state.isLoading = false;
       });
   }
