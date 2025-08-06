@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProfile, login, logout, updateUserInfos } from "./userThunk";
+import {
+  deleteAccount,
+  getProfile,
+  login,
+  logout,
+  updateUserInfos
+} from "./userThunk";
 
 export interface User {
   email: string;
@@ -31,6 +37,9 @@ const userSlice = createSlice({
   reducers: {
     setHasAccount: (state, action) => {
       state.hasAccount = action.payload;
+    },
+    setUserNull: (state) => {
+      state.user = null;
     }
   },
   extraReducers: (builder) => {
@@ -78,10 +87,19 @@ const userSlice = createSlice({
       })
       .addCase(logout.rejected, (state) => {
         state.isLoading = false;
+      })
+      .addCase(deleteAccount.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteAccount.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteAccount.rejected, (state) => {
+        state.isLoading = false;
       });
   }
 });
 
-export const { setHasAccount } = userSlice.actions;
+export const { setHasAccount, setUserNull } = userSlice.actions;
 
 export default userSlice.reducer;

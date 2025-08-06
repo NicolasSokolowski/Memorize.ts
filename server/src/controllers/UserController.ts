@@ -327,6 +327,12 @@ export class UserController extends CoreController<
       throw new DatabaseConnectionError();
     }
 
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict"
+    });
+
     res.status(200).send({ message: "Account deleted successfully" });
   };
 }

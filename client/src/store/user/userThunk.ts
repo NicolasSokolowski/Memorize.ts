@@ -55,16 +55,32 @@ export const updateUserInfos = createAsyncThunk<
   }
 });
 
-export const logout = createAsyncThunk(
-  "USER_LOGOUT",
-  async (_, { rejectWithValue }) => {
-    try {
-      await axiosInstance.post("/profile/logout", {});
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.data?.errors) {
-        return rejectWithValue(err.response.data);
-      }
-      throw err;
+export const logout = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: ApiErrorResponse }
+>("USER_LOGOUT", async (_, { rejectWithValue }) => {
+  try {
+    await axiosInstance.post("/profile/logout", {});
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
     }
+    throw err;
   }
-);
+});
+
+export const deleteAccount = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: ApiErrorResponse }
+>("DELETE_USER", async (_, { rejectWithValue }) => {
+  try {
+    await axiosInstance.delete("/profile");
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
+  }
+});

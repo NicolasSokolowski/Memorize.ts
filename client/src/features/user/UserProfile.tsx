@@ -4,9 +4,10 @@ import { getProfile } from "../../store/user/userThunk";
 import UsernameForm from "./UsernameForm";
 import PasswordForm from "./PasswordForm";
 import LogoutForm from "./LogoutForm";
+import DeleteAccount from "./DeleteAccount";
 
-type UserModification = "none" | `edit-${EditActions}`;
-type EditActions = "username" | "password" | "logout";
+type UserModification = "none" | EditActions;
+type EditActions = "edit-username" | "edit-password" | "logout" | "delete-user";
 
 function UserProfile() {
   const [visibleForm, setVisibleForm] = useState<UserModification>("none");
@@ -25,7 +26,7 @@ function UserProfile() {
 
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     const value = e.currentTarget.value as EditActions;
-    const nextForm = `edit-${value}` as UserModification;
+    const nextForm = `${value}` as UserModification;
 
     if (visibleForm === nextForm) {
       setIsEditing(false);
@@ -61,7 +62,7 @@ function UserProfile() {
         <div className="m-4 flex w-112 flex-col gap-4">
           <button
             className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
-            value="username"
+            value="edit-username"
             onClick={(e) => handleEdit(e)}
           >
             <span className="font-patua text-xl">
@@ -73,7 +74,7 @@ function UserProfile() {
           </button>
           <button
             className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-password" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
-            value="password"
+            value="edit-password"
             onClick={(e) => handleEdit(e)}
           >
             <span className="font-patua text-xl">
@@ -81,14 +82,18 @@ function UserProfile() {
             </span>
           </button>
           <button
-            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-logout" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "logout" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="logout"
             onClick={(e) => handleEdit(e)}
           >
             <span className="font-patua text-xl">Me déconnecter</span>
           </button>
-          <button className="h-16 w-full rounded-md bg-secondary shadow-md">
-            Button 5
+          <button
+            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "delete-user" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            value="delete-user"
+            onClick={(e) => handleEdit(e)}
+          >
+            <span className="font-patua text-xl">Supprimer mon compte</span>
           </button>
         </div>
         <div className={`flip-profile ${isEditing ? "flip" : ""}`}>
@@ -111,8 +116,16 @@ function UserProfile() {
                   }}
                 />
               )}
-              {visibleForm === "edit-logout" && (
+              {visibleForm === "logout" && (
                 <LogoutForm
+                  onCancel={() => {
+                    setIsEditing(false);
+                    setTimeout(() => setVisibleForm("none"), 800);
+                  }}
+                />
+              )}
+              {visibleForm === "delete-user" && (
+                <DeleteAccount
                   onCancel={() => {
                     setIsEditing(false);
                     setTimeout(() => setVisibleForm("none"), 800);
