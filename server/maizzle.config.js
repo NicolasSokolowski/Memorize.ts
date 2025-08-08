@@ -7,6 +7,6 @@ module.exports = {
     }
   },
   tailwind: {
-    config: "./tailwind.config.js" // Important, bien pointer vers ton fichier Tailwind
+    config: "./tailwind.config.js"
   }
 };
