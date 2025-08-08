@@ -34,8 +34,10 @@ export class EmailService {
       __dirname,
       "..",
       "templates",
-      "SMTPs",
-      `${template}.ejs`
+      "build_emails",
+      "src",
+      "emails",
+      `${template}.html`
     );
     const content = await readFile(filePath, "utf-8");
     return ejs.render(content, context);
