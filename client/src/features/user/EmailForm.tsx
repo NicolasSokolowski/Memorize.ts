@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { checkIfEmailIsAvailable } from "../../store/user/userThunk";
 
@@ -9,9 +9,32 @@ type EditEmailProps = {
 function EmailForm({ onCancel }: EditEmailProps) {
   const [isNewEmailAvailable, setIsNewEmailAvailable] = useState(false);
   const [newEmail, setNewEmail] = useState("");
+  const [code, setCode] = useState(["", "", "", ""]);
+  const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const [error, setError] = useState("");
   const [isCodeValid, setIsCodeValid] = useState(false);
   const dispatch = useAppDispatch();
+
+  const handleCodeChange = (index: number, value: string) => {
+    const newChar = value.slice(-1);
+    setCode((prev) => {
+      const updated = [...prev];
+      updated[index] = newChar;
+      return updated;
+    });
+    if (newChar && index < code.length - 1) {
+      inputsRef.current[index + 1]?.focus();
+    }
+  };
+
+  const handleCodeKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Backspace" && !code[index] && index > 0) {
+      inputsRef.current[index - 1]?.focus();
+    }
+  };
 
   const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,7 +118,63 @@ function EmailForm({ onCancel }: EditEmailProps) {
           <div
             className={`flip-card-inner--inner ${isCodeValid ? "flip-vertical" : ""}`}
           >
-            <div className="flip-card-back-face"></div>
+            <div className="flip-card-back-face">
+              <div className="mt-4 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-lg">
+                <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
+                  Modifier mon adresse e-mail
+                </h3>
+                <form
+                  className="mx-12 flex flex-1 flex-col justify-center"
+                  onSubmit={handleEmailSubmit}
+                >
+                  <div className="ml-1 font-patua text-xl text-center text-textPrimary">
+                    Veuillez saisir le code reçu sur votre e-mail actuel :
+                  </div>
+                  <div className="mt-4 flex gap-2 justify-center font-patua">
+                    {code.map((digit, index) => (
+                      <input
+                        key={index}
+                        ref={(el) => (inputsRef.current[index] = el)}
+                        type="text"
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) =>
+                          handleCodeChange(index, e.target.value)
+                        }
+                        onKeyDown={(e) => handleCodeKeyDown(index, e)}
+                        className="h-16 w-12 rounded-lg border border-black text-center text-4xl text-textPrimary shadow-inner-strong"
+                      />
+                    ))}
+                  </div>
+                  <div className="mt-5 flex w-full flex-col justify-center ">
+                    {error && (
+                      <div className="pl-3 font-patua text-red-500">
+                        {error}
+                      </div>
+                    )}
+                    <div className="flex w-full justify-center gap-20">
+                      <button type="button">
+                        <img
+                          src="/cancelation.png"
+                          alt="Cancelation icon"
+                          onClick={onCancel}
+                          className="w-24"
+                          draggable={false}
+                        />
+                      </button>
+                      <button type="submit" className="mr-2">
+                        <img
+                          src="/validation.png"
+                          alt="Validation icon"
+                          className="w-20"
+                          draggable={false}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
             <div className="flip-card-back-of-back">
               <div className="mt-4 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-lg">
                 <h3 className="m-4 text-center text-2xl">
