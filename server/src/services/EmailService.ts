@@ -13,20 +13,16 @@ type EmailData = {
 };
 
 export class EmailService {
-  private transporter: Transporter;
+  private static transporter: Transporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: Number(SMTP_PORT),
+    auth: {
+      user: SMTP_USER,
+      pass: SMTP_PASSWORD
+    }
+  });
 
-  constructor() {
-    this.transporter = nodemailer.createTransport({
-      service: SMTP_HOST,
-      port: Number(SMTP_PORT),
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASSWORD
-      }
-    });
-  }
-
-  private async renderTemplate(
+  private static async renderTemplate(
     template: string,
     context: Record<string, string>
   ) {
@@ -43,14 +39,19 @@ export class EmailService {
     return ejs.render(content, context);
   }
 
-  async sendEmail({ to, subject, template, context }: EmailData) {
-    const html = await this.renderTemplate(template, context);
+  static async sendEmail({ to, subject, template, context }: EmailData) {
+    try {
+      const html = await this.renderTemplate(template, context);
 
-    await this.transporter.sendMail({
-      from: `"Memorize" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      html
-    });
+      await this.transporter.sendMail({
+        from: `"Memorize" <${process.env.EMAIL_USER}>`,
+        to,
+        subject,
+        html
+      });
+    } catch (err) {
+      console.error("Error while trying to send email: ", err);
+      throw err;
+    }
   }
 }
