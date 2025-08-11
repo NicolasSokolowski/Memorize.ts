@@ -10,6 +10,7 @@ import userUpdateSchema from "./schemas/user/user.update.schema";
 import passwordUpdateSchema from "./schemas/user/password.update.schema";
 import cardsArraySchema from "./schemas/card/cards.update.schema";
 import sendCodeSchema from "./schemas/code/code.sendCode.schema";
+import checkEmailSchema from "./schemas/user/checkEmail.post.schema";
 
 export {
   roleCreateSchema,
@@ -23,5 +24,6 @@ export {
   userUpdateSchema,
   passwordUpdateSchema,
   cardsArraySchema,
-  sendCodeSchema
+  sendCodeSchema,
+  checkEmailSchema
 };
