@@ -68,7 +68,7 @@ function UsernameForm({ onCancel }: UsernameFormProps) {
         <input
           id="username"
           type="text"
-          className="my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
+          className="mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
           value={usernameEdited}
           onChange={(e) => handleChange(e)}
           autoComplete="off"

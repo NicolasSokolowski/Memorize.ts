@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  checkIfEmailIsAvailable,
   deleteAccount,
   getProfile,
   login,
   logout,
+  sendVerificationCode,
   updateUserInfos
 } from "./userThunk";
 
@@ -95,6 +97,24 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(deleteAccount.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(checkIfEmailIsAvailable.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkIfEmailIsAvailable.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(checkIfEmailIsAvailable.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(sendVerificationCode.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sendVerificationCode.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(sendVerificationCode.rejected, (state) => {
         state.isLoading = false;
       });
   }

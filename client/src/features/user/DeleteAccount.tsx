@@ -54,28 +54,30 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
             Supprimer mon compte
           </h3>
-          <p className="mx-12 mt-12 text-center font-patua text-xl text-textPrimary">
-            Êtes-vous sûr de vouloir supprimer votre compte ?
-          </p>
-          <div className="mt-5 flex w-full justify-center gap-20">
-            <button type="button">
-              <img
-                src="/cancelation.png"
-                alt="Cancelation icon"
-                onClick={onCancel}
-                className="w-20"
-                draggable={false}
-              />
-            </button>
-            <button className="mr-2">
-              <img
-                src="/validation.png"
-                alt="Validation icon"
-                onClick={() => setFirstConfirmationCheck(true)}
-                className="w-16"
-                draggable={false}
-              />
-            </button>
+          <div className="mx-12 flex flex-1 flex-col justify-center">
+            <p className="text-center font-patua text-xl text-textPrimary">
+              Êtes-vous sûr de vouloir supprimer votre compte ?
+            </p>
+            <div className="mt-5 flex w-full justify-center gap-20">
+              <button type="button">
+                <img
+                  src="/cancelation.png"
+                  alt="Cancelation icon"
+                  onClick={onCancel}
+                  className="w-24"
+                  draggable={false}
+                />
+              </button>
+              <button className="mr-2">
+                <img
+                  src="/validation.png"
+                  alt="Validation icon"
+                  className="w-20"
+                  onClick={() => setFirstConfirmationCheck(true)}
+                  draggable={false}
+                />
+              </button>
+            </div>
           </div>
         </div>
       </div>
