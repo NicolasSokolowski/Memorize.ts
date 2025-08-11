@@ -32,6 +32,7 @@ export class EmailService {
       "templates",
       "build_emails",
       "src",
+      "templates",
       "emails",
       `${template}.html`
     );
