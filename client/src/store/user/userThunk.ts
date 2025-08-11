@@ -106,3 +106,23 @@ export const checkIfEmailIsAvailable = createAsyncThunk<
     throw err;
   }
 });
+
+interface RequestCodeData {
+  requestType: string;
+  subject: string;
+}
+
+export const sendVerificationCode = createAsyncThunk<
+  void,
+  RequestCodeData,
+  { rejectValue: ApiErrorResponse }
+>("SEND_CODE", async ({ requestType, subject }, { rejectWithValue }) => {
+  try {
+    await axiosInstance.post("/auth/code/send", { requestType, subject });
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
+  }
+});
