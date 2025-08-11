@@ -41,6 +41,16 @@ CREATE TABLE "card" (
   UNIQUE ("front", "deck_id")
 );
 
+CREATE TABLE "verification_code" (
+  "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  "code" CHAR(4) NOT NULL,
+  "user_id" INT NOT NULL REFERENCES "user"("id"),
+  "request_type" VARCHAR(50) NOT NULL,
+  "expiration" TIMESTAMPTZ NOT NULL,
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE ("user_id", "request_type")
+);
+
 INSERT INTO "role" ("name") VALUES
 ('admin'),
 ('user');
