@@ -84,3 +84,25 @@ export const deleteAccount = createAsyncThunk<
     throw err;
   }
 });
+
+interface CheckEmail {
+  newEmail: string;
+}
+
+export const checkIfEmailIsAvailable = createAsyncThunk<
+  boolean,
+  CheckEmail,
+  { rejectValue: ApiErrorResponse }
+>("CHECK_EMAIL", async ({ newEmail }, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosInstance.post("/users/email/check", {
+      newEmail
+    });
+    return data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
+    }
+    throw err;
+  }
+});
