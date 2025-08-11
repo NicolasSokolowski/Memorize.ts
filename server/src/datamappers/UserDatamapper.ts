@@ -56,4 +56,12 @@ export class UserDatamapper
     );
     return result.rows[0];
   };
+
+  checkIfEmailIsAvailable = async (email: string): Promise<boolean> => {
+    const result = await this.pool.query(
+      `SELECT 1 FROM "${this.tableName}" WHERE "email" = $1`,
+      [email]
+    );
+    return result.rowCount === 0;
+  };
 }
