@@ -4,7 +4,7 @@ import { CoreDatamapper } from "./CoreDatamapper";
 import { CardData, CardDatamapperReq } from "./interfaces/CardDatamapperReq";
 
 export class CardDatamapper
-  extends CoreDatamapper<CardDatamapperReq>
+  extends CoreDatamapper<CardData>
   implements CardDatamapperReq
 {
   readonly tableName = TableNames.Card;
