@@ -1,6 +1,9 @@
 import { useRef, useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
-import { checkIfEmailIsAvailable } from "../../store/user/userThunk";
+import {
+  checkIfEmailIsAvailable,
+  sendVerificationCode
+} from "../../store/user/userThunk";
 
 type EditEmailProps = {
   onCancel: () => void;
@@ -47,6 +50,12 @@ function EmailForm({ onCancel }: EditEmailProps) {
       ).unwrap();
       if (response) {
         setIsNewEmailAvailable(true);
+        await dispatch(
+          sendVerificationCode({
+            requestType: "email_modification",
+            subject: "Modification de votre adresse e-mail"
+          })
+        );
       } else {
         setError("L'adresse est déjà utilisée.");
       }
