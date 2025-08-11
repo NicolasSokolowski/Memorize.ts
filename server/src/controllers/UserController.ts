@@ -335,4 +335,16 @@ export class UserController extends CoreController<
 
     res.status(200).send({ message: "Account deleted successfully" });
   };
+
+  checkIfEmailIsAvailable = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const { newEmail } = req.body;
+
+    const isEmailAvailable =
+      await this.datamapper.checkIfEmailIsAvailable(newEmail);
+
+    res.status(200).json(isEmailAvailable);
+  };
 }

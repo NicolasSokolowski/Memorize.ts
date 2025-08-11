@@ -23,4 +23,5 @@ export interface UserDatamapperReq extends EntityDatamapperReq {
   update(data: UserData, email: string): Promise<UserData>;
   updateLastLogin(date: string, email: string): Promise<UserData>;
   updateLastCardsUpdate(date: string, email: string): Promise<UserData>;
+  checkIfEmailIsAvailable(email: string): Promise<boolean>;
 }
