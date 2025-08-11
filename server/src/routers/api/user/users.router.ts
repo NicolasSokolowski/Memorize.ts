@@ -12,7 +12,8 @@ import {
 } from "../../../middlewares/index.middlewares";
 import {
   cardsArraySchema,
-  userCreateSchema
+  userCreateSchema,
+  checkEmailSchema
 } from "../../../validation/index.validation";
 import userRouter from "./user.router";
 
@@ -42,6 +43,15 @@ usersRouter
     errorCatcher(checkPermissions(["admin", "user"])),
     errorCatcher(validateRequest("body", cardsArraySchema)),
     errorCatcher(cardController.updateCardsDifficulty)
+  );
+
+usersRouter
+  .route("/email/check")
+  .post(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"])),
+    errorCatcher(validateRequest("body", checkEmailSchema)),
+    errorCatcher(userController.checkIfEmailIsAvailable)
   );
 
 usersRouter.use("/:user_id", userRouter);
