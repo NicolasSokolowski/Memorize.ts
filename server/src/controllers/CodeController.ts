@@ -85,7 +85,7 @@ export class CodeController extends CoreController<
 
       await this.datamapper.pool.query("COMMIT");
 
-      res.status(201).json(createdCode);
+      res.status(201).json({ success: true });
     } catch (err) {
       console.error(err);
       await this.datamapper.pool.query("ROLLBACK");
@@ -97,7 +97,7 @@ export class CodeController extends CoreController<
 
   verifyCodeValidity = async (req: Request, res: Response): Promise<void> => {
     const userEmail = req.user.email;
-    const { requestType, code } = req.body;
+    const { requestType, code, newEmail, subject } = req.body;
 
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
@@ -130,10 +130,42 @@ export class CodeController extends CoreController<
       throw new BadRequestError("Invalid code.");
     }
 
-    const deletedCode = await this.datamapper.delete(storedCode.id);
+    try {
+      await this.datamapper.pool.query("BEGIN");
 
-    if (!deletedCode) {
-      throw new DatabaseConnectionError();
+      const deletedCode = await this.datamapper.delete(storedCode.id);
+
+      if (!deletedCode) {
+        throw new DatabaseConnectionError();
+      }
+
+      const userData = {
+        ...user,
+        email: newEmail
+      };
+
+      const updatedUser = await userDatamapper.update(userData, userEmail);
+
+      if (!updatedUser) {
+        throw new DatabaseConnectionError();
+      }
+
+      await EmailService.sendEmail({
+        to: newEmail,
+        subject,
+        template: "emailModification",
+        context: {
+          username: user.username
+        }
+      });
+
+      await this.datamapper.pool.query("COMMIT");
+    } catch (err) {
+      console.error(err);
+      await this.datamapper.pool.query("ROLLBACK");
+      throw new BadRequestError(
+        "Error while trying to send email modification's confirmation email."
+      );
     }
 
     res.status(200).json({ success: true });
