@@ -29,7 +29,7 @@ export class CodeController extends CoreController<
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found");
     }
 
     const checkIfRequestAlreadyExists = await this.datamapper.checkCompositeKey(
@@ -38,9 +38,13 @@ export class CodeController extends CoreController<
     );
 
     if (checkIfRequestAlreadyExists) {
-      throw new BadRequestError(
-        "A verification code has already been created for this request."
+      const deletedCode = await this.datamapper.delete(
+        checkIfRequestAlreadyExists.id
       );
+
+      if (!deletedCode) {
+        throw new DatabaseConnectionError();
+      }
     }
 
     try {
