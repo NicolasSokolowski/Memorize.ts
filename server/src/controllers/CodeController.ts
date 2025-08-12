@@ -10,6 +10,16 @@ import {
 import { userDatamapper } from "../datamappers/index.datamappers";
 import { EmailService } from "../services/EmailService";
 import crypto from "crypto";
+import { UserData } from "../datamappers/interfaces/UserDatamapperReq";
+
+interface EmailChangePayload {
+  newEmail: string;
+  subject: string;
+}
+
+type RequestPayloads = {
+  EMAIL_CHANGE: EmailChangePayload;
+};
 
 export class CodeController extends CoreController<
   CodeControllerReq,
@@ -96,8 +106,32 @@ export class CodeController extends CoreController<
   };
 
   verifyCodeValidity = async (req: Request, res: Response): Promise<void> => {
+    const { requestType } = req.body;
+
+    try {
+      await this.datamapper.pool.query("BEGIN");
+
+      const { user } = await this.verifyCode(req);
+
+      const handler = this.actionMap[requestType];
+
+      if (!handler) {
+        throw new BadRequestError("Unknown request type");
+      }
+
+      await handler(user, req.body);
+
+      await this.datamapper.pool.query("COMMIT");
+      res.status(200).json({ success: true });
+    } catch (err) {
+      await this.datamapper.pool.query("ROLLBACK");
+      throw err;
+    }
+  };
+
+  private verifyCode = async (req: Request) => {
     const userEmail = req.user.email;
-    const { requestType, code, newEmail, subject } = req.body;
+    const { requestType, code } = req.body;
 
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
@@ -114,9 +148,7 @@ export class CodeController extends CoreController<
       throw new NotFoundError("Code not found");
     }
 
-    const date = new Date();
-
-    if (date > storedCode.expiration) {
+    if (new Date() > storedCode.expiration) {
       throw new BadRequestError("Code has expired.");
     }
 
@@ -130,44 +162,29 @@ export class CodeController extends CoreController<
       throw new BadRequestError("Invalid code.");
     }
 
-    try {
-      await this.datamapper.pool.query("BEGIN");
+    const deletedCode = await this.datamapper.delete(storedCode.id);
 
-      const deletedCode = await this.datamapper.delete(storedCode.id);
+    if (!deletedCode) {
+      throw new DatabaseConnectionError();
+    }
 
-      if (!deletedCode) {
-        throw new DatabaseConnectionError();
-      }
+    return { user };
+  };
 
-      const userData = {
-        ...user,
-        email: newEmail
-      };
-
-      const updatedUser = await userDatamapper.update(userData, userEmail);
-
-      if (!updatedUser) {
-        throw new DatabaseConnectionError();
-      }
-
+  private actionMap: {
+    [K in keyof RequestPayloads]: (
+      user: UserData,
+      body: RequestPayloads[K]
+    ) => Promise<void>;
+  } = {
+    EMAIL_CHANGE: async (user, { newEmail, subject }) => {
+      await userDatamapper.update({ ...user, email: newEmail }, user.email);
       await EmailService.sendEmail({
         to: newEmail,
         subject,
         template: "emailModification",
-        context: {
-          username: user.username
-        }
+        context: { username: user.username }
       });
-
-      await this.datamapper.pool.query("COMMIT");
-    } catch (err) {
-      console.error(err);
-      await this.datamapper.pool.query("ROLLBACK");
-      throw new BadRequestError(
-        "Error while trying to send email modification's confirmation email."
-      );
     }
-
-    res.status(200).json({ success: true });
   };
 }
