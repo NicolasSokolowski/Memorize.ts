@@ -11,6 +11,7 @@ import passwordUpdateSchema from "./schemas/user/password.update.schema";
 import cardsArraySchema from "./schemas/card/cards.update.schema";
 import sendCodeSchema from "./schemas/code/code.sendCode.schema";
 import checkEmailSchema from "./schemas/user/checkEmail.post.schema";
+import verifyCodeSchema from "./schemas/code/code.verifyCode.schema";
 
 export {
   roleCreateSchema,
@@ -25,5 +26,6 @@ export {
   passwordUpdateSchema,
   cardsArraySchema,
   sendCodeSchema,
-  checkEmailSchema
+  checkEmailSchema,
+  verifyCodeSchema
 };

@@ -9,7 +9,10 @@ import {
   validateRequest,
   requireAuth
 } from "../../../middlewares/index.middlewares";
-import codeSendCodeSchema from "../../../validation/schemas/code/code.sendCode.schema";
+import {
+  verifyCodeSchema,
+  sendCodeSchema
+} from "../../../validation/index.validation";
 
 const authRouter = express.Router();
 
@@ -21,8 +24,17 @@ authRouter
   .post(
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin", "user"])),
-    errorCatcher(validateRequest("body", codeSendCodeSchema)),
+    errorCatcher(validateRequest("body", sendCodeSchema)),
     errorCatcher(codeController.sendVerificationCode)
+  );
+
+authRouter
+  .route("/code/check")
+  .post(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"])),
+    errorCatcher(validateRequest("body", verifyCodeSchema)),
+    errorCatcher(codeController.verifyCodeValidity)
   );
 
 export default authRouter;

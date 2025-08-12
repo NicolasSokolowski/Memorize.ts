@@ -136,10 +136,10 @@ function EmailForm({ onCancel }: EditEmailProps) {
                   className="mx-12 flex flex-1 flex-col justify-center"
                   onSubmit={handleEmailSubmit}
                 >
-                  <div className="ml-1 font-patua text-xl text-center text-textPrimary">
+                  <div className="ml-1 text-center font-patua text-xl text-textPrimary">
                     Veuillez saisir le code reçu sur votre e-mail actuel :
                   </div>
-                  <div className="mt-4 flex gap-2 justify-center font-patua">
+                  <div className="mt-4 flex justify-center gap-2 font-patua">
                     {code.map((digit, index) => (
                       <input
                         key={index}

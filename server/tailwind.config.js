@@ -4,7 +4,8 @@ module.exports = {
   content: ["./src/templates/emails/**/*.html"],
   theme: {
     fontFamily: {
-      patua: ['"Patua One"', "cursive"]
+      patua: ['"Patua One"', "cursive"],
+      arial: ["Arial", "Helvetica", "sans-serif"]
     },
     fontSize: {
       xs: "12px",
