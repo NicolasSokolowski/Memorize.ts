@@ -6,7 +6,8 @@ import {
   login,
   logout,
   sendVerificationCode,
-  updateUserInfos
+  updateUserInfos,
+  verifyCodeValidity
 } from "./userThunk";
 
 export interface User {
@@ -115,6 +116,15 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(sendVerificationCode.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(verifyCodeValidity.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(verifyCodeValidity.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(verifyCodeValidity.rejected, (state) => {
         state.isLoading = false;
       });
   }
