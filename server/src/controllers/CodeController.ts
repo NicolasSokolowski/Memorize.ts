@@ -9,6 +9,7 @@ import {
 } from "../errors/index.errors";
 import { userDatamapper } from "../datamappers/index.datamappers";
 import { EmailService } from "../services/EmailService";
+import crypto from "crypto";
 
 export class CodeController extends CoreController<
   CodeControllerReq,
@@ -88,5 +89,49 @@ export class CodeController extends CoreController<
         "Error while trying to send verification code."
       );
     }
+  };
+
+  verifyCodeValidity = async (req: Request, res: Response): Promise<void> => {
+    const userEmail = req.user.email;
+    const { requestType, code } = req.body;
+
+    const user = await userDatamapper.findBySpecificField("email", userEmail);
+
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    const storedCode = await this.datamapper.checkCompositeKey(
+      requestType,
+      user.id
+    );
+
+    if (!storedCode) {
+      throw new NotFoundError("Code not found");
+    }
+
+    const date = new Date();
+
+    if (date > storedCode.expiration) {
+      throw new BadRequestError("Code has expired.");
+    }
+
+    const providedBuffer = Buffer.from(code);
+    const storedBuffer = Buffer.from(storedCode.code);
+
+    if (
+      providedBuffer.length !== storedBuffer.length ||
+      !crypto.timingSafeEqual(providedBuffer, storedBuffer)
+    ) {
+      throw new BadRequestError("Invalid code.");
+    }
+
+    const deletedCode = await this.datamapper.delete(storedCode.id);
+
+    if (!deletedCode) {
+      throw new DatabaseConnectionError();
+    }
+
+    res.status(200).json({ success: true });
   };
 }
