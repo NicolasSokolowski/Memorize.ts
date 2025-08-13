@@ -121,8 +121,9 @@ const userSlice = createSlice({
       .addCase(verifyCodeValidity.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(verifyCodeValidity.fulfilled, (state) => {
+      .addCase(verifyCodeValidity.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.user!.email = action.payload;
       })
       .addCase(verifyCodeValidity.rejected, (state) => {
         state.isLoading = false;

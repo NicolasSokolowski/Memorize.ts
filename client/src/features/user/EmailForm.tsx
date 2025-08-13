@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import {
+  ApiErrorResponse,
   checkIfEmailIsAvailable,
   sendVerificationCode
 } from "../../store/user/userThunk";
@@ -34,12 +35,13 @@ function EmailForm({ onCancel }: EditEmailProps) {
             subject: "Modification de votre adresse e-mail"
           })
         );
-      } else {
-        setError("L'adresse est déjà utilisée.");
       }
       setIsNewEmailAvailable(response);
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      const apiError = err as ApiErrorResponse;
+      if (apiError?.errors?.length) {
+        setError(apiError.errors[0].message);
+      }
     }
   };
 

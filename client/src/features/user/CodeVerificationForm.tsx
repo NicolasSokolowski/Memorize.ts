@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { verifyCodeValidity } from "../../store/user/userThunk";
+import { ApiErrorResponse } from "../../helpers/interfaces";
 
 type CodeVerificationProps = {
   onCancel: () => void;
@@ -19,6 +20,7 @@ function CodeVerificationForm({
   const dispatch = useAppDispatch();
 
   const handleCodeChange = (index: number, value: string) => {
+    setError("");
     const newChar = value.slice(-1);
     setCode((prev) => {
       const updated = [...prev];
@@ -52,10 +54,14 @@ function CodeVerificationForm({
           code: jointCode,
           newEmail
         })
-      );
+      ).unwrap();
+
       setIsCodeValid(true);
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      const apiError = err as ApiErrorResponse;
+      if (apiError?.errors?.length) {
+        setError(apiError.errors[0].message);
+      }
     }
   };
 
@@ -85,7 +91,7 @@ function CodeVerificationForm({
             />
           ))}
         </div>
-        <div className="mt-5 flex w-full flex-col justify-center ">
+        <div className="mt-5 flex w-full flex-col justify-center text-center ">
           {error && <div className="pl-3 font-patua text-red-500">{error}</div>}
           <div className="flex w-full justify-center gap-20">
             <button type="button">
