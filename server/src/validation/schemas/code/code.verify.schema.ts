@@ -1,34 +1,16 @@
 import Joi from "joi";
 
-export const baseSchema = Joi.object({
-  requestType: Joi.string().max(50).required().messages({
-    "string.base": "Front must be a string",
-    "string.empty": "Front cannot be empty",
-    "string.max": "Front must be at most 50 characters long"
-  }),
-  code: Joi.string().min(4).max(4).required().messages({
-    "string.base": "Back must be a string",
-    "string.empty": "Back cannot be empty",
-    "string.max": "Back must be 4 characters long"
-  })
-});
+export const verifyCodeSchema = Joi.object({
+  requestType: Joi.string().max(50).required(),
+  code: Joi.string().length(4).required(),
 
-export const emailUpdateSchema = baseSchema.keys({
-  newEmail: Joi.string().email().required().messages({
-    "string.base": "Email must be a string",
-    "string.email": "Email must be a valid email address",
-    "string.empty": "Email cannot be empty"
-  }),
-  subject: Joi.string().max(50).required().messages({
-    "string.base": "Back must be a string",
-    "string.empty": "Back cannot be empty",
-    "string.max": "Back must be at most 50 characters long"
-  })
-});
-
-export const verifyCodeSchema = Joi.alternatives().conditional("requestType", {
-  switch: [{ is: "EMAIL_CHANGE", then: emailUpdateSchema }],
-  otherwise: Joi.forbidden().messages({
-    "any.unknown": "Invalid requestType"
+  newEmail: Joi.when("requestType", {
+    is: "EMAIL_CHANGE",
+    then: Joi.string().email().required().messages({
+      "string.base": "Email must be a string",
+      "string.email": "Email must be a valid email address",
+      "string.empty": "Email cannot be empty"
+    }),
+    otherwise: Joi.forbidden()
   })
 });
