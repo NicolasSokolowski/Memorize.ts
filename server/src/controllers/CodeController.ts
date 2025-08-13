@@ -7,10 +7,14 @@ import {
   DatabaseConnectionError,
   NotFoundError
 } from "../errors/index.errors";
-import { userDatamapper } from "../datamappers/index.datamappers";
+import {
+  roleDatamapper,
+  userDatamapper
+} from "../datamappers/index.datamappers";
 import { EmailService } from "../services/EmailService";
 import crypto from "crypto";
 import { UserData } from "../datamappers/interfaces/UserDatamapperReq";
+import { Token } from "../helpers/Token";
 
 interface EmailChangePayload {
   newEmail: string;
@@ -118,13 +122,18 @@ export class CodeController extends CoreController<
         throw new BadRequestError("Unknown request type");
       }
 
-      await handler(user, req.body);
+      await handler(user, req.body, res);
 
       await this.datamapper.pool.query("COMMIT");
-      res.status(200).json({ success: true });
+
+      const updatedUser = await userDatamapper.findByPk(user.id);
+
+      res.status(200).json({ success: true, updatedUser });
     } catch (err) {
       await this.datamapper.pool.query("ROLLBACK");
-      throw err;
+      res
+        .status(400)
+        .json({ success: false, errors: [{ message: err.message }] });
     }
   };
 
@@ -173,16 +182,33 @@ export class CodeController extends CoreController<
   private actionMap: {
     [K in keyof RequestPayloads]: (
       user: UserData,
-      body: RequestPayloads[K]
+      body: RequestPayloads[K],
+      res?: Response
     ) => Promise<void>;
   } = {
-    EMAIL_CHANGE: async (user, { newEmail }) => {
-      await userDatamapper.update({ ...user, email: newEmail }, user.email);
+    EMAIL_CHANGE: async (user, { newEmail }, res) => {
+      const updatedUser = await userDatamapper.update(
+        { ...user, email: newEmail },
+        user.email
+      );
       await EmailService.sendEmail({
         to: newEmail,
         subject: "Modification de votre adresse e-mail",
         template: "emailModification",
         context: { username: user.username }
+      });
+      const userRole = await roleDatamapper.findByPk(user.role_id);
+      const userPayload = {
+        email: updatedUser.email,
+        role: userRole.name
+      };
+
+      const accessToken = await Token.generateAccessToken(userPayload);
+
+      res.cookie("access_token", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
       });
     }
   };
