@@ -5,11 +5,13 @@ import { verifyCodeValidity } from "../../store/user/userThunk";
 type CodeVerificationProps = {
   onCancel: () => void;
   setIsCodeValid: (valid: boolean) => void;
+  newEmail: string;
 };
 
 function CodeVerificationForm({
   onCancel,
-  setIsCodeValid
+  setIsCodeValid,
+  newEmail
 }: CodeVerificationProps) {
   const [code, setCode] = useState(["", "", "", ""]);
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
@@ -46,8 +48,9 @@ function CodeVerificationForm({
       const jointCode = code.join("");
       await dispatch(
         verifyCodeValidity({
-          requestType: "email_modification",
-          code: jointCode
+          requestType: "EMAIL_CHANGE",
+          code: jointCode,
+          newEmail
         })
       );
       setIsCodeValid(true);

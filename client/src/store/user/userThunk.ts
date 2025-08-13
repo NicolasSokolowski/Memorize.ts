@@ -130,23 +130,28 @@ export const sendVerificationCode = createAsyncThunk<
 interface VerifyCodeData {
   requestType: string;
   code: string;
+  newEmail: string;
 }
 
 export const verifyCodeValidity = createAsyncThunk<
   boolean,
   VerifyCodeData,
   { rejectValue: ApiErrorResponse }
->("VERIFY_CODE", async ({ requestType, code }, { rejectWithValue }) => {
-  try {
-    const response = await axiosInstance.post("auth/code/check", {
-      requestType,
-      code
-    });
-    return response.data.success;
-  } catch (err) {
-    if (axios.isAxiosError(err) && err.response?.data?.errors) {
-      return rejectWithValue(err.response.data);
+>(
+  "VERIFY_CODE",
+  async ({ requestType, code, newEmail }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/auth/code/check", {
+        requestType,
+        code,
+        newEmail
+      });
+      return response.data.success;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.errors) {
+        return rejectWithValue(err.response.data);
+      }
+      throw err;
     }
-    throw err;
   }
-});
+);

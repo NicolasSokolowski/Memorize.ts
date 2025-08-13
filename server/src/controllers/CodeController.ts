@@ -14,7 +14,6 @@ import { UserData } from "../datamappers/interfaces/UserDatamapperReq";
 
 interface EmailChangePayload {
   newEmail: string;
-  subject: string;
 }
 
 type RequestPayloads = {
@@ -177,11 +176,11 @@ export class CodeController extends CoreController<
       body: RequestPayloads[K]
     ) => Promise<void>;
   } = {
-    EMAIL_CHANGE: async (user, { newEmail, subject }) => {
+    EMAIL_CHANGE: async (user, { newEmail }) => {
       await userDatamapper.update({ ...user, email: newEmail }, user.email);
       await EmailService.sendEmail({
         to: newEmail,
-        subject,
+        subject: "Modification de votre adresse e-mail",
         template: "emailModification",
         context: { username: user.username }
       });
