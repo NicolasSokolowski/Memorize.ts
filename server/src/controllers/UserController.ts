@@ -342,9 +342,15 @@ export class UserController extends CoreController<
   ): Promise<void> => {
     const { newEmail } = req.body;
 
-    const isEmailAvailable =
-      await this.datamapper.checkIfEmailIsAvailable(newEmail);
+    const checkIfEmailExists = await this.datamapper.findBySpecificField(
+      "email",
+      newEmail
+    );
 
-    res.status(200).json(isEmailAvailable);
+    if (checkIfEmailExists) {
+      throw new BadRequestError("Email already used.");
+    }
+
+    res.status(200).json({ success: true });
   };
 }
