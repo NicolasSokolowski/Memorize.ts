@@ -1,8 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../services/axios.instance";
 import { User } from "./userSlice";
-import { ApiErrorResponse } from "../../helpers/interfaces";
 import axios from "axios";
+
+export type ApiError = {
+  message: string;
+};
+
+export type ApiErrorResponse = {
+  success: false;
+  errors: ApiError[];
+};
 
 export const login = createAsyncThunk<
   User,
@@ -95,10 +103,10 @@ export const checkIfEmailIsAvailable = createAsyncThunk<
   { rejectValue: ApiErrorResponse }
 >("CHECK_EMAIL", async ({ newEmail }, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.post("/users/email/check", {
+    const response = await axiosInstance.post("/users/email/check", {
       newEmail
     });
-    return data;
+    return response.data.success;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
       return rejectWithValue(err.response.data);
@@ -134,7 +142,7 @@ interface VerifyCodeData {
 }
 
 export const verifyCodeValidity = createAsyncThunk<
-  boolean,
+  string,
   VerifyCodeData,
   { rejectValue: ApiErrorResponse }
 >(
@@ -146,7 +154,8 @@ export const verifyCodeValidity = createAsyncThunk<
         code,
         newEmail
       });
-      return response.data.success;
+
+      return response.data.updatedUser.email;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.data?.errors) {
         return rejectWithValue(err.response.data);
