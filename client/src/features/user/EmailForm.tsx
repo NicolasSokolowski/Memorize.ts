@@ -30,7 +30,7 @@ function EmailForm({ onCancel }: EditEmailProps) {
         setIsNewEmailAvailable(true);
         await dispatch(
           sendVerificationCode({
-            requestType: "email_modification",
+            requestType: "EMAIL_CHANGE",
             subject: "Modification de votre adresse e-mail"
           })
         );
@@ -117,6 +117,7 @@ function EmailForm({ onCancel }: EditEmailProps) {
               <CodeVerificationForm
                 onCancel={onCancel}
                 setIsCodeValid={setIsCodeValid}
+                newEmail={newEmail}
               />
             </div>
             <div className="flip-card-back-of-back">
