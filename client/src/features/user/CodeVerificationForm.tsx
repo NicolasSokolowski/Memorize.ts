@@ -6,21 +6,23 @@ import { ApiErrorResponse } from "../../helpers/interfaces";
 type CodeVerificationProps = {
   onCancel: () => void;
   setIsCodeValid: (valid: boolean) => void;
-} & {
-  requestType: "EMAIL_CHANGE";
-  data: { newEmail: string };
-};
+} & (
+  | {
+      requestType: "EMAIL_CHANGE";
+      data: { newEmail: string };
+    }
+  | {
+      requestType: "ACCOUNT_DELETE";
+    }
+);
 
-function CodeVerificationForm({
-  onCancel,
-  setIsCodeValid,
-  requestType,
-  data
-}: CodeVerificationProps) {
+function CodeVerificationForm(props: CodeVerificationProps) {
   const [code, setCode] = useState(["", "", "", ""]);
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const [error, setError] = useState("");
   const dispatch = useAppDispatch();
+  const { onCancel, setIsCodeValid, requestType } = props;
+  const data = "data" in props ? props.data : undefined;
 
   const handleCodeChange = (index: number, value: string) => {
     setError("");
@@ -51,13 +53,22 @@ function CodeVerificationForm({
 
     try {
       const jointCode = code.join("");
-      await dispatch(
-        verifyCodeValidity({
-          requestType,
-          code: jointCode,
-          data
-        })
-      ).unwrap();
+      if (requestType === "EMAIL_CHANGE" && data) {
+        await dispatch(
+          verifyCodeValidity({
+            requestType,
+            code: jointCode,
+            data
+          })
+        ).unwrap();
+      } else if (requestType === "ACCOUNT_DELETE") {
+        await dispatch(
+          verifyCodeValidity({
+            requestType,
+            code: jointCode
+          })
+        ).unwrap();
+      }
 
       setIsCodeValid(true);
     } catch (err: unknown) {
