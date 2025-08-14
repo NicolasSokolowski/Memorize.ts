@@ -218,7 +218,7 @@ export class CodeController extends CoreController<
       await EmailService.sendEmail({
         to: user.email,
         subject: "Suppression de votre adresse e-mail",
-        template: "emailDeletion",
+        template: "accountDeletion",
         context: { username: user.username }
       });
 
