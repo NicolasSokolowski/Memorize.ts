@@ -49,6 +49,7 @@ function EmailForm({ onCancel }: EditEmailProps) {
     if (isCodeValid) {
       setTimeout(() => {
         onCancel();
+        setIsCodeValid(false);
       }, 5000);
     }
   });

@@ -24,6 +24,7 @@ interface EmailChangePayload {
 
 type RequestPayloads = {
   EMAIL_CHANGE: EmailChangePayload;
+  ACCOUNT_DELETE: null;
 };
 
 export class CodeController extends CoreController<
@@ -124,13 +125,11 @@ export class CodeController extends CoreController<
         throw new BadRequestError("Unknown request type");
       }
 
-      await handler(user, req.body, res);
+      const result = await handler(user, req.body, res);
 
       await this.datamapper.pool.query("COMMIT");
 
-      const updatedUser = await userDatamapper.findByPk(user.id);
-
-      res.status(200).json({ success: true, updatedUser });
+      res.status(200).json({ ...result });
     } catch (err) {
       await this.datamapper.pool.query("ROLLBACK");
       res
@@ -186,7 +185,7 @@ export class CodeController extends CoreController<
       user: UserData,
       body: RequestPayloads[K],
       res?: Response
-    ) => Promise<void>;
+    ) => Promise<Partial<{ email: string; success: boolean }>>;
   } = {
     EMAIL_CHANGE: async (user, { data }, res) => {
       const updatedUser = await userDatamapper.update(
@@ -212,6 +211,23 @@ export class CodeController extends CoreController<
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict"
       });
+      return { email: updatedUser.email };
+    },
+    ACCOUNT_DELETE: async (user, _, res) => {
+      await userDatamapper.delete(user.id);
+      await EmailService.sendEmail({
+        to: user.email,
+        subject: "Suppression de votre adresse e-mail",
+        template: "emailDeletion",
+        context: { username: user.username }
+      });
+
+      res.clearCookie("access_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
+      });
+      return { success: true };
     }
   };
 }
