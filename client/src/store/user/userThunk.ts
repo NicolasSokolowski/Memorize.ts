@@ -135,14 +135,23 @@ export const sendVerificationCode = createAsyncThunk<
   }
 });
 
-export type VerifyCodeData = {
-  requestType: "EMAIL_CHANGE";
-  code: string;
-  data: { newEmail: string };
-};
+export type VerifyCodeData =
+  | {
+      requestType: "EMAIL_CHANGE";
+      code: string;
+      data: { newEmail: string };
+    }
+  | {
+      requestType: "ACCOUNT_DELETE";
+      code: string;
+      // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+      data?: {};
+    };
+
+type VerifyCodeResponse = { email: string } | { success: true };
 
 export const verifyCodeValidity = createAsyncThunk<
-  string,
+  VerifyCodeResponse,
   VerifyCodeData,
   { rejectValue: ApiErrorResponse }
 >("VERIFY_CODE", async ({ requestType, code, data }, { rejectWithValue }) => {
@@ -153,7 +162,7 @@ export const verifyCodeValidity = createAsyncThunk<
       data
     });
 
-    return response.data.updatedUser.email ?? "";
+    return response.data;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
       return rejectWithValue(err.response.data);

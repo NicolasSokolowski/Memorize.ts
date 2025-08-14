@@ -123,7 +123,10 @@ const userSlice = createSlice({
       })
       .addCase(verifyCodeValidity.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user!.email = action.payload;
+        if ("email" in action.payload) {
+          // EMAIL_CHANGE
+          state.user!.email = action.payload.email;
+        }
       })
       .addCase(verifyCodeValidity.rejected, (state) => {
         state.isLoading = false;
