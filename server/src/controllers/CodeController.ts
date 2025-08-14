@@ -195,8 +195,8 @@ export class CodeController extends CoreController<
       await EmailService.sendEmail({
         to: data.newEmail,
         subject: "Modification de votre adresse e-mail",
-        template: "emailModification",
-        context: { username: user.username }
+        template: "userModification",
+        context: { username: user.username, object: "adresse e-mail" }
       });
       const userRole = await roleDatamapper.findByPk(user.role_id);
       const userPayload = {

@@ -37,7 +37,7 @@
                         </tr>
                         <tr>
                           <td style="padding-top: 20px">
-                            Votre adresse e-mail a correctement été modifiée.
+                            Votre <%= object %> a correctement été modifi<%= ["adresse"].some((word) => object.toLowerCase().includes(word)) ? "ée" : "é" %>.
                           </td>
                         </tr>
                         <tr>
