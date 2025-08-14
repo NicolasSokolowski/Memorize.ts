@@ -116,11 +116,17 @@ function EmailForm({ onCancel }: EditEmailProps) {
             className={`flip-card-inner--inner ${isCodeValid ? "flip-vertical" : ""}`}
           >
             <div className="flip-card-back-face">
-              <CodeVerificationForm
-                onCancel={onCancel}
-                setIsCodeValid={setIsCodeValid}
-                newEmail={newEmail}
-              />
+              <div className="mt-4 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-lg">
+                <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
+                  Modifier mon adresse e-mail
+                </h3>
+                <CodeVerificationForm
+                  onCancel={onCancel}
+                  setIsCodeValid={setIsCodeValid}
+                  requestType="EMAIL_CHANGE"
+                  data={{ newEmail }}
+                />
+              </div>
             </div>
             <div className="flip-card-back-of-back">
               <div className="mt-4 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-lg">

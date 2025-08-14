@@ -135,32 +135,29 @@ export const sendVerificationCode = createAsyncThunk<
   }
 });
 
-interface VerifyCodeData {
-  requestType: string;
+export type VerifyCodeData = {
+  requestType: "EMAIL_CHANGE";
   code: string;
-  newEmail: string;
-}
+  data: { newEmail: string };
+};
 
 export const verifyCodeValidity = createAsyncThunk<
   string,
   VerifyCodeData,
   { rejectValue: ApiErrorResponse }
->(
-  "VERIFY_CODE",
-  async ({ requestType, code, newEmail }, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.post("/auth/code/check", {
-        requestType,
-        code,
-        newEmail
-      });
+>("VERIFY_CODE", async ({ requestType, code, data }, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post("/auth/code/check", {
+      requestType,
+      code,
+      data
+    });
 
-      return response.data.updatedUser.email;
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.data?.errors) {
-        return rejectWithValue(err.response.data);
-      }
-      throw err;
+    return response.data.updatedUser.email ?? "";
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.data?.errors) {
+      return rejectWithValue(err.response.data);
     }
+    throw err;
   }
-);
+});
