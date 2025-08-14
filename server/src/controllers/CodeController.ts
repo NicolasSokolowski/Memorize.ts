@@ -217,7 +217,7 @@ export class CodeController extends CoreController<
       await userDatamapper.delete(user.id);
       await EmailService.sendEmail({
         to: user.email,
-        subject: "Suppression de votre adresse e-mail",
+        subject: "Suppression de votre compte",
         template: "accountDeletion",
         context: { username: user.username }
       });
