@@ -8,6 +8,7 @@ import {
 } from "../errors/index.errors";
 import { Password } from "../helpers/Password";
 import { Token } from "../helpers/Token";
+import { EmailService } from "../services/EmailService";
 import { CoreController } from "./CoreController";
 import { roleController } from "./index.controllers";
 import { UserControllerReq } from "./interfaces/UserControllerReq";
@@ -259,7 +260,13 @@ export class UserController extends CoreController<
 
   changePassword = async (req: Request, res: Response): Promise<void> => {
     const userEmail = req.user?.email;
-    const { currentPassword, newPassword } = req.body;
+    const { currentPassword, newPassword, confirmNewPassword } = req.body;
+
+    if (newPassword !== confirmNewPassword) {
+      throw new BadRequestError(
+        "New password and confirmation password are different."
+      );
+    }
 
     const user = await this.datamapper.findBySpecificField(
       this.field,
@@ -267,36 +274,115 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found.");
     }
 
-    const isCurrentPasswordValid = await Password.compare(
-      user.password,
-      currentPassword
-    );
+    try {
+      await this.datamapper.pool.query("BEGIN");
 
-    if (!isCurrentPasswordValid) {
-      throw new BadRequestError("Current password is incorrect");
+      const isCurrentPasswordValid = await Password.compare(
+        user.password,
+        currentPassword
+      );
+
+      if (!isCurrentPasswordValid) {
+        throw new BadRequestError("Current password is incorrect");
+      }
+
+      const hashedNewPassword = await Password.toHash(newPassword);
+
+      if (!hashedNewPassword) {
+        throw new BadRequestError("The new password could not be hashed");
+      }
+
+      const updatedPassword = await this.datamapper.updatePassword(
+        hashedNewPassword,
+        userEmail
+      );
+
+      if (!updatedPassword) {
+        throw new DatabaseConnectionError();
+      }
+
+      await EmailService.sendEmail({
+        to: user.email,
+        subject: "Modification de votre mot de passe",
+        template: "userModification",
+        context: { username: user.username, object: "mot de passe" }
+      });
+      await this.datamapper.pool.query("COMMIT");
+      const { password, ...userWithoutPassword } = updatedPassword;
+
+      res.status(200).send({ user: userWithoutPassword });
+    } catch (err) {
+      console.error(err);
+      await this.datamapper.pool.query("ROLLBACK");
+      res
+        .status(400)
+        .json({ success: false, errors: [{ message: err.message }] });
+    }
+  };
+
+  resetPassword = async (req: Request, res: Response): Promise<void> => {
+    const userEmail = req.user?.email;
+    const { newPassword, passwordConfirmation } = req.body;
+
+    if (newPassword !== passwordConfirmation) {
+      throw new BadRequestError(
+        "New password and confirmation password are different."
+      );
     }
 
-    const hashedNewPassword = await Password.toHash(newPassword);
-
-    if (!hashedNewPassword) {
-      throw new BadRequestError("The new password could not be hashed");
-    }
-
-    const updatedPassword = await this.datamapper.updatePassword(
-      hashedNewPassword,
+    const user = await this.datamapper.findBySpecificField(
+      this.field,
       userEmail
     );
 
-    if (!updatedPassword) {
-      throw new DatabaseConnectionError();
+    if (!user) {
+      throw new NotFoundError("User not found.");
     }
 
-    const { password, ...userWithoutPassword } = updatedPassword;
+    try {
+      await this.datamapper.pool.query("BEGIN");
+      const hashedNewPassword = await Password.toHash(newPassword);
 
-    res.status(200).send({ user: userWithoutPassword });
+      if (!hashedNewPassword) {
+        throw new BadRequestError("The new password could not be hashed");
+      }
+
+      const updatedPassword = await this.datamapper.updatePassword(
+        hashedNewPassword,
+        userEmail
+      );
+
+      if (!updatedPassword) {
+        throw new DatabaseConnectionError();
+      }
+
+      await EmailService.sendEmail({
+        to: user.email,
+        subject: "Modification de votre mot de passe",
+        template: "userModification",
+        context: { username: user.username, object: "mot de passe" }
+      });
+      await this.datamapper.pool.query("COMMIT");
+
+      const { password, ...userWithoutPassword } = updatedPassword;
+
+      res.clearCookie("access_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
+      });
+
+      res.status(200).send({ user: userWithoutPassword });
+    } catch (err) {
+      console.error(err);
+      await this.datamapper.pool.query("ROLLBACK");
+      res
+        .status(400)
+        .json({ success: false, errors: [{ message: err.message }] });
+    }
   };
 
   logout = async (req: Request, res: Response): Promise<void> => {

@@ -4,7 +4,8 @@ import { errorCatcher } from "../../../helpers/errorCatcher.helper";
 import {
   userUpdateSchema,
   passwordUpdateSchema,
-  userSigninSchema
+  userSigninSchema,
+  passwordResetSchema
 } from "../../../validation/index.validation";
 import {
   checkPermissions,
@@ -44,6 +45,15 @@ profileRouter
     errorCatcher(checkPermissions(["admin", "user"])),
     errorCatcher(validateRequest("body", passwordUpdateSchema)),
     errorCatcher(userController.changePassword)
+  );
+
+profileRouter
+  .route("/resetpw")
+  .patch(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"])),
+    errorCatcher(validateRequest("body", passwordResetSchema)),
+    errorCatcher(userController.resetPassword)
   );
 
 profileRouter.route("/logout").post(errorCatcher(userController.logout));

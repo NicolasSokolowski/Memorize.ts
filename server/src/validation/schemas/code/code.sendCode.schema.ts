@@ -10,5 +10,15 @@ export default Joi.object({
     "string.base": "Back must be a string",
     "string.empty": "Back cannot be empty",
     "string.max": "Back must be at most 50 characters long"
-  })
+  }),
+
+  email: Joi.when("requestType", {
+    is: "PASSWORD_RESET",
+    then: Joi.string().email().required().messages({
+      "string.base": "Email must be a string",
+      "string.email": "Email must be a valid email address",
+      "string.empty": "Email cannot be empty"
+    })
+  }),
+  otherwise: Joi.forbidden()
 });
