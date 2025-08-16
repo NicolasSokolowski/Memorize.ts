@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { login } from "../../store/user/userThunk";
 import { setHasAccount } from "../../store/user/userSlice";
+import PasswordReset from "./PasswordReset";
 
 const initialState = {
   email: "",
@@ -17,11 +18,30 @@ interface ApiErrorResponse {
 
 function LoginForm() {
   const [userInfo, setUserInfo] = useState(initialState);
+  const [activeAction, setActiveAction] = useState<Action>("none");
+  const [visibleAction, setVisibleAction] = useState<Action>("none");
   const [error, setError] = useState({
     message: ""
   });
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
+
+  const onCancel = () => {
+    setActiveAction("none");
+  };
+
+  type Action = "none" | "reset-password";
+
+  useEffect(() => {
+    if (activeAction === "none") {
+      const timeout = setTimeout(() => {
+        setVisibleAction("none");
+      }, 300);
+      return () => clearTimeout(timeout);
+    } else {
+      setVisibleAction(activeAction);
+    }
+  }, [activeAction]);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -76,76 +96,95 @@ function LoginForm() {
   };
 
   return (
-    <section className="h-full min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-white shadow-xl">
-      <h2 className="m-5 text-center font-patua text-4xl text-textPrimary">
-        Connexion
-      </h2>
-      <form
-        className="flex h-112 flex-col items-center justify-center gap-6 p-5"
-        onSubmit={handleSubmit()}
-      >
-        <div className="flex flex-col items-start gap-2">
-          <label
-            className="font-patua text-xl text-textPrimary"
-            htmlFor="email-log"
+    <div
+      className={`flip-card-inner ${activeAction === "reset-password" ? "flip-vertical-reverse" : ""}`}
+    >
+      <div className="flip-card-front">
+        <section className="h-full min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-xl">
+          <h2 className="m-5 text-center font-patua text-4xl text-textPrimary">
+            Connexion
+          </h2>
+          <form
+            className="flex h-112 flex-col items-center justify-center gap-6 p-5"
+            onSubmit={handleSubmit()}
           >
-            E-mail
-          </label>
-          <input
-            id="email-log"
-            type="text"
-            value={userInfo.email}
-            onChange={(e) => handleChange(e)}
-            placeholder="Adresse e-mail"
-            className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
-          />
+            <div className="flex flex-col items-start gap-2">
+              <label
+                className="ml-2 font-patua text-xl text-textPrimary"
+                htmlFor="email-log"
+              >
+                E-mail
+              </label>
+              <input
+                id="email-log"
+                type="text"
+                value={userInfo.email}
+                onChange={(e) => handleChange(e)}
+                placeholder="Adresse e-mail"
+                className="h-12 w-80 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+              />
+            </div>
+            <div className="flex w-80 flex-col items-start gap-2">
+              <label
+                className="ml-2 font-patua text-xl text-textPrimary"
+                htmlFor="password-log"
+              >
+                Mot de passe
+              </label>
+              <input
+                id="password-log"
+                type="password"
+                value={userInfo.password}
+                onChange={(e) => handleChange(e)}
+                placeholder="Mot de passe"
+                className="h-12 w-80 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+              />
+              {error.message ? (
+                <p className="mt-1 h-2 max-w-full break-words font-patua text-red-500">
+                  {error.message}
+                </p>
+              ) : (
+                <p className="mt-1 h-2" />
+              )}
+            </div>
+            <div className="flex w-80 flex-col gap-3">
+              <button
+                type="submit"
+                className="mt-5 w-80 rounded-md bg-secondary p-3 shadow-xl"
+              >
+                <span className="rounded-md font-patua text-3xl text-white">
+                  Connexion
+                </span>
+              </button>
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  className="font-patua text-sm text-secondary underline underline-offset-2"
+                  onClick={onClick}
+                >
+                  Je n'ai pas de compte
+                </button>
+                <button
+                  type="button"
+                  className="font-patua text-sm text-secondary underline underline-offset-2"
+                  onClick={() => {
+                    setActiveAction("reset-password");
+                    setUserInfo(initialState);
+                  }}
+                >
+                  Mot de passe oublié ?
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+      {visibleAction === "reset-password" && (
+        <div className="flip-card-back">
+          <PasswordReset onCancel={onCancel} />
         </div>
-        <div className="flex w-80 flex-col items-start gap-2">
-          <label
-            className="font-patua text-xl text-textPrimary"
-            htmlFor="password-log"
-          >
-            Mot de passe
-          </label>
-          <input
-            id="password-log"
-            type="password"
-            value={userInfo.password}
-            onChange={(e) => handleChange(e)}
-            placeholder="Mot de passe"
-            className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
-          />
-          {error.message ? (
-            <p className="mt-1 h-2 max-w-full break-words font-patua text-red-500">
-              {error.message}
-            </p>
-          ) : (
-            <p className="mt-1 h-2" />
-          )}
-        </div>
-        <div className="flex w-80 flex-col gap-3">
-          <button
-            type="submit"
-            className="mt-5 w-80 rounded-md bg-secondary p-3 shadow-xl"
-          >
-            <span className="rounded-md font-patua text-3xl text-white">
-              Connexion
-            </span>
-          </button>
-          <div className="flex justify-between">
-            <button
-              className="font-patua text-sm text-secondary underline underline-offset-2"
-              onClick={onClick}
-            >
-              Je n'ai pas de compte
-            </button>
-            <button className="font-patua text-sm text-secondary underline underline-offset-2">
-              Mot de passe oublié ?
-            </button>
-          </div>
-        </div>
-      </form>
-    </section>
+      )}
+    </div>
   );
 }
 

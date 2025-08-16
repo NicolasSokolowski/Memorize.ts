@@ -115,18 +115,47 @@ export const checkIfEmailIsAvailable = createAsyncThunk<
   }
 });
 
-interface RequestCodeData {
-  requestType: string;
-  subject: string;
+export type RequestCodeData =
+  | {
+      requestType: "PASSWORD_RESET";
+      subject: string;
+      data: { email: string };
+    }
+  | {
+      requestType: string;
+      subject: string;
+    };
+
+function isPasswordReset(
+  payload: RequestCodeData
+): payload is Extract<RequestCodeData, { requestType: "PASSWORD_RESET" }> {
+  return payload.requestType === "PASSWORD_RESET";
 }
 
 export const sendVerificationCode = createAsyncThunk<
   void,
   RequestCodeData,
   { rejectValue: ApiErrorResponse }
->("SEND_CODE", async ({ requestType, subject }, { rejectWithValue }) => {
+>("SEND_CODE", async (payload, { rejectWithValue }) => {
   try {
-    await axiosInstance.post("/auth/code/send", { requestType, subject });
+    let data: { requestType: string; subject: string; email?: string };
+    const path =
+      payload.requestType === "PASSWORD_RESET" ? "send/reset" : "send";
+
+    if (isPasswordReset(payload)) {
+      data = {
+        requestType: payload.requestType,
+        subject: payload.subject,
+        email: payload.data.email
+      };
+    } else {
+      data = {
+        requestType: payload.requestType,
+        subject: payload.subject
+      };
+    }
+
+    await axiosInstance.post(`/auth/code/${path}`, data);
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
       return rejectWithValue(err.response.data);
@@ -146,6 +175,11 @@ export type VerifyCodeData =
       code: string;
       // eslint-disable-next-line @typescript-eslint/no-empty-object-type
       data?: {};
+    }
+  | {
+      requestType: "PASSWORD_RESET";
+      code: string;
+      data: { email: string };
     };
 
 type VerifyCodeResponse = { email: string } | { success: true };

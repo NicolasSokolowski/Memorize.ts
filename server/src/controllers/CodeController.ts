@@ -5,6 +5,7 @@ import { CodeControllerReq } from "./interfaces/CodeControllerReq";
 import {
   BadRequestError,
   DatabaseConnectionError,
+  NotAuthorizedError,
   NotFoundError
 } from "../errors/index.errors";
 import {
@@ -25,6 +26,7 @@ interface EmailChangePayload {
 type RequestPayloads = {
   EMAIL_CHANGE: EmailChangePayload;
   ACCOUNT_DELETE: null;
+  PASSWORD_RESET: null;
 };
 
 export class CodeController extends CoreController<
@@ -39,13 +41,24 @@ export class CodeController extends CoreController<
   }
 
   sendVerificationCode = async (req: Request, res: Response): Promise<void> => {
-    const userEmail = req.user?.email;
-    const { requestType, subject } = req.body;
+    const { requestType, subject, email } = req.body;
+    let userEmail: string | undefined;
+
+    if (req.user) {
+      userEmail = req.user.email;
+    } else if (requestType === "PASSWORD_RESET") {
+      userEmail = email;
+    } else {
+      throw new NotAuthorizedError();
+    }
 
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      res
+        .status(201)
+        .json({ message: "If an account exists, a code has been sent." });
+      return;
     }
 
     const checkIfRequestAlreadyExists = await this.datamapper.checkCompositeKey(
@@ -139,8 +152,17 @@ export class CodeController extends CoreController<
   };
 
   private verifyCode = async (req: Request) => {
-    const userEmail = req.user.email;
-    const { requestType, code } = req.body;
+    const { requestType, code, data } = req.body;
+
+    let userEmail: string | undefined;
+
+    if (req.user) {
+      userEmail = req.user.email;
+    } else if (requestType === "PASSWORD_RESET") {
+      userEmail = data.email;
+    } else {
+      throw new NotAuthorizedError();
+    }
 
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
@@ -195,8 +217,8 @@ export class CodeController extends CoreController<
       await EmailService.sendEmail({
         to: data.newEmail,
         subject: "Modification de votre adresse e-mail",
-        template: "emailModification",
-        context: { username: user.username }
+        template: "userModification",
+        context: { username: user.username, object: "adresse e-mail" }
       });
       const userRole = await roleDatamapper.findByPk(user.role_id);
       const userPayload = {
@@ -217,8 +239,8 @@ export class CodeController extends CoreController<
       await userDatamapper.delete(user.id);
       await EmailService.sendEmail({
         to: user.email,
-        subject: "Suppression de votre adresse e-mail",
-        template: "emailDeletion",
+        subject: "Suppression de votre compte",
+        template: "accountDeletion",
         context: { username: user.username }
       });
 
@@ -226,6 +248,23 @@ export class CodeController extends CoreController<
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict"
+      });
+      return { success: true };
+    },
+    PASSWORD_RESET: async (user, _, res) => {
+      const userRole = await roleDatamapper.findByPk(user.role_id);
+      const userPayload = {
+        email: user.email,
+        role: userRole.name
+      };
+
+      const accessToken = await Token.generateAccessToken(userPayload);
+
+      res.cookie("access_token", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 15 * 60 * 1000
       });
       return { success: true };
     }

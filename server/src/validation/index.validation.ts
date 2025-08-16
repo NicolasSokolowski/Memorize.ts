@@ -8,6 +8,7 @@ import cardCreateSchema from "./schemas/card/card.create.schema";
 import cardUpdateSchema from "./schemas/card/card.update.schema";
 import userUpdateSchema from "./schemas/user/user.update.schema";
 import passwordUpdateSchema from "./schemas/user/password.update.schema";
+import passwordResetSchema from "./schemas/user/password.reset.schema";
 import cardsArraySchema from "./schemas/card/cards.update.schema";
 import sendCodeSchema from "./schemas/code/code.sendCode.schema";
 import checkEmailSchema from "./schemas/user/checkEmail.post.schema";
@@ -24,6 +25,7 @@ export {
   cardCreateSchema,
   userUpdateSchema,
   passwordUpdateSchema,
+  passwordResetSchema,
   cardsArraySchema,
   sendCodeSchema,
   checkEmailSchema,

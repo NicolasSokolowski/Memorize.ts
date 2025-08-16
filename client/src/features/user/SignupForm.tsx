@@ -84,14 +84,14 @@ function SignupForm() {
   };
 
   return (
-    <section className="min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-white shadow-xl transition-all duration-300">
+    <section className="min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-xl transition-all duration-300">
       <h2 className="m-5 text-center font-patua text-4xl">Inscription</h2>
       <form
         className="flex flex-col items-center justify-center gap-6 p-5"
         onSubmit={handleSubmit()}
       >
         <div className="flex flex-col items-start gap-2">
-          <label className="font-patua text-xl" htmlFor="email">
+          <label className="ml-2 font-patua text-xl" htmlFor="email">
             E-mail
           </label>
           <input
@@ -100,7 +100,7 @@ function SignupForm() {
             value={userInfo.email}
             onChange={(e) => handleChange(e)}
             placeholder="Adresse e-mail"
-            className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+            className="h-12 w-80 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
           />
           {error.email && (
             <p className="max-w-full break-words font-patua text-sm text-red-500">
@@ -109,7 +109,7 @@ function SignupForm() {
           )}
         </div>
         <div className="flex w-80 flex-col items-start gap-2">
-          <label className="font-patua text-xl " htmlFor="password">
+          <label className="ml-2 font-patua text-xl " htmlFor="password">
             Mot de passe
           </label>
           <input
@@ -118,7 +118,7 @@ function SignupForm() {
             value={userInfo.password}
             onChange={(e) => handleChange(e)}
             placeholder="Mot de passe"
-            className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+            className="h-12 w-80 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
           />
           {error.password && (
             <p className="max-w-full break-words font-patua text-sm text-red-500">
@@ -127,7 +127,7 @@ function SignupForm() {
           )}
         </div>
         <div className="flex flex-col items-start gap-2">
-          <label className="font-patua text-xl" htmlFor="username">
+          <label className="ml-2 font-patua text-xl" htmlFor="username">
             Nom d'utilisateur
           </label>
           <input
@@ -136,7 +136,7 @@ function SignupForm() {
             value={userInfo.username}
             onChange={(e) => handleChange(e)}
             placeholder="Nom d'utilisateur"
-            className="h-12 w-80 rounded-md border-gray-300 bg-tertiary p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+            className="h-12 w-80 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
           />
           {error.username && (
             <p className="max-w-full break-words font-patua text-sm text-red-500">

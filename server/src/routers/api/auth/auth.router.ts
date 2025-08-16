@@ -29,6 +29,13 @@ authRouter
   );
 
 authRouter
+  .route("/code/send/reset")
+  .post(
+    errorCatcher(validateRequest("body", sendCodeSchema)),
+    errorCatcher(codeController.sendVerificationCode)
+  );
+
+authRouter
   .route("/code/check")
   .post(
     errorCatcher(requireAuth),

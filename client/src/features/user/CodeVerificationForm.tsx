@@ -14,6 +14,10 @@ type CodeVerificationProps = {
   | {
       requestType: "ACCOUNT_DELETE";
     }
+  | {
+      requestType: "PASSWORD_RESET";
+      data: { email: string };
+    }
 );
 
 function CodeVerificationForm(props: CodeVerificationProps) {
@@ -58,7 +62,7 @@ function CodeVerificationForm(props: CodeVerificationProps) {
           verifyCodeValidity({
             requestType,
             code: jointCode,
-            data
+            data: props.data
           })
         ).unwrap();
       } else if (requestType === "ACCOUNT_DELETE") {
@@ -66,6 +70,14 @@ function CodeVerificationForm(props: CodeVerificationProps) {
           verifyCodeValidity({
             requestType,
             code: jointCode
+          })
+        ).unwrap();
+      } else if (requestType === "PASSWORD_RESET") {
+        await dispatch(
+          verifyCodeValidity({
+            requestType,
+            code: jointCode,
+            data: props.data
           })
         ).unwrap();
       }

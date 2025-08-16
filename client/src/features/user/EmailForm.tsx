@@ -141,7 +141,7 @@ function EmailForm({ onCancel }: EditEmailProps) {
                     <br />
                     <br />
                     Vous allez recevoir un e-mail de confirmation de
-                    suppression.
+                    modification.
                   </p>
                 </div>
               </div>
