@@ -65,12 +65,15 @@ function PasswordReset({ onCancel }: PasswordResetProps) {
           </div>
         ) : (
           <div className="flex h-96 items-center justify-center">
-            <CodeVerificationForm
-              onCancel={onCancel}
-              setIsCodeValid={setIsCodeValid}
-              requestType="EMAIL_CHANGE"
-              data={{ newEmail: email }}
-            />
+            {!isCodeValid ? (
+              <CodeVerificationForm
+                onCancel={onCancel}
+                setIsCodeValid={setIsCodeValid}
+                requestType="PASSWORD_RESET"
+              />
+            ) : (
+              <p>Hello</p>
+            )}
           </div>
         )}
       </form>

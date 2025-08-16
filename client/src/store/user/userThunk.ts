@@ -146,6 +146,12 @@ export type VerifyCodeData =
       code: string;
       // eslint-disable-next-line @typescript-eslint/no-empty-object-type
       data?: {};
+    }
+  | {
+      requestType: "PASSWORD_RESET";
+      code: string;
+      // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+      data?: {};
     };
 
 type VerifyCodeResponse = { email: string } | { success: true };

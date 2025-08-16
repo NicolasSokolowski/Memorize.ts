@@ -14,6 +14,9 @@ type CodeVerificationProps = {
   | {
       requestType: "ACCOUNT_DELETE";
     }
+  | {
+      requestType: "PASSWORD_RESET";
+    }
 );
 
 function CodeVerificationForm(props: CodeVerificationProps) {

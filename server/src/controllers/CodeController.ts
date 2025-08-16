@@ -25,6 +25,7 @@ interface EmailChangePayload {
 type RequestPayloads = {
   EMAIL_CHANGE: EmailChangePayload;
   ACCOUNT_DELETE: null;
+  PASSWORD_RESET: null;
 };
 
 export class CodeController extends CoreController<
@@ -227,6 +228,9 @@ export class CodeController extends CoreController<
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict"
       });
+      return { success: true };
+    },
+    PASSWORD_RESET: async (_, __, ___) => {
       return { success: true };
     }
   };
