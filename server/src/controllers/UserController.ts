@@ -54,39 +54,59 @@ export class UserController extends CoreController<
       throw new BadRequestError("Provided email is already in use.", "email");
     }
 
-    const hashedPassword = await Password.toHash(password);
+    try {
+      await this.datamapper.pool.query("BEGIN");
+      const hashedPassword = await Password.toHash(password);
 
-    if (!hashedPassword) {
-      throw new BadRequestError("The password could not be hashed", "password");
+      if (!hashedPassword) {
+        throw new BadRequestError(
+          "The password could not be hashed",
+          "password"
+        );
+      }
+
+      const default_role = await roleDatamapper.findByPk(2);
+
+      if (!default_role) {
+        throw new NotFoundError();
+      }
+
+      const newUserData = {
+        email,
+        password: hashedPassword,
+        username,
+        role_id: default_role.id
+      };
+
+      const newUser = await this.datamapper.insert(newUserData);
+
+      if (!newUser) {
+        throw new DatabaseConnectionError();
+      }
+
+      await EmailService.sendEmail({
+        to: newUser.email,
+        subject: "Création de compte",
+        template: "accountCreation",
+        context: { username: newUser.username }
+      });
+
+      const {
+        password: returnedPassword,
+        created_at,
+        updated_at,
+        ...user
+      } = newUser;
+
+      await this.datamapper.pool.query("COMMIT");
+      res.status(201).send({ user: user });
+    } catch (err) {
+      console.error(err);
+      await this.datamapper.pool.query("ROLLBACK");
+      res
+        .status(400)
+        .json({ success: false, errors: [{ message: err.message }] });
     }
-
-    const default_role = await roleDatamapper.findByPk(2);
-
-    if (!default_role) {
-      throw new NotFoundError();
-    }
-
-    const newUserData = {
-      email,
-      password: hashedPassword,
-      username,
-      role_id: default_role.id
-    };
-
-    const newUser = await this.datamapper.insert(newUserData);
-
-    if (!newUser) {
-      throw new DatabaseConnectionError();
-    }
-
-    const {
-      password: returnedPassword,
-      created_at,
-      updated_at,
-      ...user
-    } = newUser;
-
-    res.status(201).send({ user: user });
   };
 
   signin = async (req: Request, res: Response) => {
