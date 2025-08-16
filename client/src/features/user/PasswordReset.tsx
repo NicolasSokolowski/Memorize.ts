@@ -18,6 +18,13 @@ function PasswordReset({ onCancel }: PasswordResetProps) {
   const dispatch = useAppDispatch();
   const [error, setError] = useState("");
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError("");
+    setEmail(e.target.value);
+    setEmailHasBeenSent(false);
+    setIsCodeValid(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -55,10 +62,7 @@ function PasswordReset({ onCancel }: PasswordResetProps) {
           type="text"
           className="mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
           value={email}
-          onChange={(e) => {
-            setError("");
-            setEmail(e.target.value);
-          }}
+          onChange={(e) => handleChange(e)}
           autoComplete="off"
         />
         {!emailHasBeenSent ? (
