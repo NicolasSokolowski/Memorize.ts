@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { getProfile } from "../../store/user/userThunk";
+import { useState } from "react";
+import { useAppSelector } from "../../store/hooks";
 import UsernameForm from "./UsernameForm";
 import PasswordForm from "./PasswordForm";
 import LogoutForm from "./LogoutForm";
@@ -18,17 +17,7 @@ type EditActions =
 function UserProfile() {
   const [visibleForm, setVisibleForm] = useState<UserModification>("none");
   const [isEditing, setIsEditing] = useState(false);
-  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
-  const hasBeenFetchedOnce = useAppSelector(
-    (state) => state.user.hasBeenFetchedOnce
-  );
-
-  useEffect(() => {
-    if (!hasBeenFetchedOnce) {
-      dispatch(getProfile());
-    }
-  }, [dispatch, hasBeenFetchedOnce]);
 
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     const value = e.currentTarget.value as EditActions;
