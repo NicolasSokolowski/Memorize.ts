@@ -1,4 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  isPending,
+  isFulfilled,
+  isRejected
+} from "@reduxjs/toolkit";
 import {
   checkIfEmailIsAvailable,
   deleteAccount,
@@ -47,91 +52,78 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
       })
       .addCase(login.rejected, (state) => {
-        state.isLoading = false;
         state.user = null;
       })
-      .addCase(getProfile.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(getProfile.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
       })
       .addCase(getProfile.rejected, (state) => {
-        state.isLoading = false;
         state.user = null;
       })
-      .addCase(updateUserInfos.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(updateUserInfos.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.user = action.payload;
       })
-      .addCase(updateUserInfos.rejected, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(logout.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(logout.fulfilled, (state) => {
-        state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
       })
-      .addCase(logout.rejected, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(deleteAccount.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deleteAccount.fulfilled, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(deleteAccount.rejected, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(checkIfEmailIsAvailable.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(checkIfEmailIsAvailable.fulfilled, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(checkIfEmailIsAvailable.rejected, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(sendVerificationCode.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(sendVerificationCode.fulfilled, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(sendVerificationCode.rejected, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(verifyCodeValidity.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(verifyCodeValidity.fulfilled, (state, action) => {
-        state.isLoading = false;
         if ("email" in action.payload) {
           // EMAIL_CHANGE
           state.user!.email = action.payload.email;
         }
       })
-      .addCase(verifyCodeValidity.rejected, (state) => {
-        state.isLoading = false;
-      });
+      .addMatcher(
+        isPending(
+          login,
+          getProfile,
+          updateUserInfos,
+          logout,
+          deleteAccount,
+          checkIfEmailIsAvailable,
+          sendVerificationCode,
+          verifyCodeValidity
+        ),
+        (state) => {
+          state.isLoading = true;
+        }
+      )
+      .addMatcher(
+        isFulfilled(
+          login,
+          getProfile,
+          updateUserInfos,
+          logout,
+          deleteAccount,
+          checkIfEmailIsAvailable,
+          sendVerificationCode,
+          verifyCodeValidity
+        ),
+        (state) => {
+          state.isLoading = false;
+        }
+      )
+      .addMatcher(
+        isRejected(
+          login,
+          getProfile,
+          updateUserInfos,
+          logout,
+          deleteAccount,
+          checkIfEmailIsAvailable,
+          sendVerificationCode,
+          verifyCodeValidity
+        ),
+        (state) => {
+          state.isLoading = false;
+        }
+      );
   }
 });
 

@@ -25,7 +25,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
       await dispatch(
         sendVerificationCode({
           requestType: "ACCOUNT_DELETE",
-          subject: "Suppression de votre adresse e-mail"
+          subject: "Suppression de votre compte"
         })
       ).unwrap();
       setFirstConfirmationCheck(true);
