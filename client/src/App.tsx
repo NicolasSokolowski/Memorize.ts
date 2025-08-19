@@ -8,6 +8,8 @@ import DeckModeSelection from "./features/training/DeckModeSelection";
 import DeckSelection from "./features/training/deck/DeckSelection";
 import DeckTraining from "./features/training/DeckTraining";
 import UserProfile from "./features/user/UserProfile";
+import ProtectedRoute from "./ui/ProtectedRoute";
+import AppInit from "./AppInit";
 
 const router = createBrowserRouter([
   {
@@ -19,33 +21,43 @@ const router = createBrowserRouter([
       },
       {
         path: "user",
-        element: <UserLayout />,
+        element: <ProtectedRoute allowedRoles={[1, 2]} />,
         children: [
           {
-            path: "/user/decks",
-            element: <DecksList />
-          },
-          {
-            path: "/user/decks/:deckId/cards",
-            element: <CardsList />
-          },
-          {
-            path: "/user/training/mode",
-            element: <DeckModeSelection />
-          },
-          {
-            path: "/user/training/decks",
-            element: <DeckSelection />
-          },
-          {
-            path: "/user/profile",
-            element: <UserProfile />
+            element: <UserLayout />,
+            children: [
+              {
+                path: "decks",
+                element: <DecksList />
+              },
+              {
+                path: "decks/:deckId/cards",
+                element: <CardsList />
+              },
+              {
+                path: "training/mode",
+                element: <DeckModeSelection />
+              },
+              {
+                path: "training/decks",
+                element: <DeckSelection />
+              },
+              {
+                path: "profile",
+                element: <UserProfile />
+              }
+            ]
           }
         ]
       },
       {
         path: "/training",
-        element: <DeckTraining />
+        element: <ProtectedRoute allowedRoles={[1, 2]} />,
+        children: [
+          {
+            element: <DeckTraining />
+          }
+        ]
       }
     ]
   }
@@ -53,9 +65,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <AppInit>
       <RouterProvider router={router} />
-    </>
+    </AppInit>
   );
 }
 
