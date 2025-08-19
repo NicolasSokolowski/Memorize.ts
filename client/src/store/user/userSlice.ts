@@ -24,14 +24,14 @@ interface UserState {
   user: User | null;
   isLoading: boolean;
   hasAccount?: boolean;
-  hasBeenFetchedOnce: boolean;
+  isAuthenticated: boolean;
 }
 
 const initialState: UserState = {
   user: null,
-  isLoading: false,
+  isLoading: true,
   hasAccount: false,
-  hasBeenFetchedOnce: false
+  isAuthenticated: false
 };
 
 const userSlice = createSlice({
@@ -53,7 +53,7 @@ const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;
-        state.hasBeenFetchedOnce = true;
+        state.isAuthenticated = true;
       })
       .addCase(login.rejected, (state) => {
         state.isLoading = false;
@@ -65,7 +65,7 @@ const userSlice = createSlice({
       .addCase(getProfile.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;
-        state.hasBeenFetchedOnce = true;
+        state.isAuthenticated = true;
       })
       .addCase(getProfile.rejected, (state) => {
         state.isLoading = false;
@@ -87,6 +87,7 @@ const userSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.isLoading = false;
         state.user = null;
+        state.isAuthenticated = false;
       })
       .addCase(logout.rejected, (state) => {
         state.isLoading = false;
