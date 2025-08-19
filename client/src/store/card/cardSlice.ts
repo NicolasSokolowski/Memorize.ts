@@ -1,4 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  isPending,
+  isFulfilled,
+  isRejected
+} from "@reduxjs/toolkit";
 import {
   getCardsByDeckId,
   createCard,
@@ -38,9 +43,6 @@ const cardSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // GET CARDS
-      .addCase(getCardsByDeckId.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(getCardsByDeckId.fulfilled, (state, action) => {
         // Retrieve deck id sent as a parameter in the thunk
         const deckId = action.meta.arg;
@@ -50,25 +52,12 @@ const cardSlice = createSlice({
           ...state.cards.filter((card) => card.deck_id !== deckId),
           ...action.payload
         ];
-
-        state.isLoading = false;
       })
       // Create card
-      .addCase(createCard.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(createCard.fulfilled, (state, action) => {
         state.cards.push(action.payload);
-        state.isLoading = false;
-      })
-      .addCase(createCard.rejected, (state, action) => {
-        state.isLoading = false;
-        console.error("Failed to create card:", action.error.message);
       })
       // Update card
-      .addCase(updateCard.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(updateCard.fulfilled, (state, action) => {
         const index = state.cards.findIndex(
           (card) => card.id === action.payload.id
@@ -76,26 +65,10 @@ const cardSlice = createSlice({
         if (index !== -1) {
           state.cards[index] = action.payload;
         }
-        state.isLoading = false;
-      })
-      .addCase(updateCard.rejected, (state, action) => {
-        state.isLoading = false;
-        console.error("Failed to update card:", action.error.message);
       })
       // Delete card
-      .addCase(deleteCard.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(deleteCard.fulfilled, (state, action) => {
         state.cards = state.cards.filter((card) => card.id !== action.payload);
-        state.isLoading = false;
-      })
-      .addCase(deleteCard.rejected, (state, action) => {
-        state.isLoading = false;
-        console.error("Failed to delete card:", action.error.message);
-      })
-      .addCase(updateCardsStats.pending, (state) => {
-        state.isLoading = true;
       })
       .addCase(updateCardsStats.fulfilled, (state, action) => {
         action.payload.forEach((updatedCard) => {
@@ -108,24 +81,50 @@ const cardSlice = createSlice({
             state.cards.push(updatedCard);
           }
         });
-        state.isLoading = false;
-      })
-      .addCase(updateCardsStats.rejected, (state, action) => {
-        state.isLoading = false;
-        console.error("Failed to update cards stats:", action.error.message);
       })
       // Get all cards by user's email
-      .addCase(getAllCardsByUserEmail.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(getAllCardsByUserEmail.fulfilled, (state, action) => {
         state.cards = action.payload;
-        state.isLoading = false;
       })
-      .addCase(getAllCardsByUserEmail.rejected, (state, action) => {
-        state.isLoading = false;
-        console.error("Failed to fetch cards:", action.error.message);
-      });
+      .addMatcher(
+        isPending(
+          getCardsByDeckId,
+          createCard,
+          updateCard,
+          deleteCard,
+          updateCardsStats,
+          getAllCardsByUserEmail
+        ),
+        (state) => {
+          state.isLoading = true;
+        }
+      )
+      .addMatcher(
+        isFulfilled(
+          getCardsByDeckId,
+          createCard,
+          updateCard,
+          deleteCard,
+          updateCardsStats,
+          getAllCardsByUserEmail
+        ),
+        (state) => {
+          state.isLoading = false;
+        }
+      )
+      .addMatcher(
+        isRejected(
+          getCardsByDeckId,
+          createCard,
+          updateCard,
+          deleteCard,
+          updateCardsStats,
+          getAllCardsByUserEmail
+        ),
+        (state) => {
+          state.isLoading = false;
+        }
+      );
   }
 });
 
