@@ -55,6 +55,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute allowedRoles={[1, 2]} />,
         children: [
           {
+            path: "",
             element: <DeckTraining />
           }
         ]
