@@ -29,7 +29,7 @@ export abstract class CoreController<T extends EntityControllerReq<D>, D> {
     const searchedItem = await this.datamapper.findByPk(id);
 
     if (!searchedItem) {
-      throw new NotFoundError("Item not found");
+      throw new NotFoundError("Item not found", "NOT_FOUND");
     }
 
     res.status(200).send(searchedItem);
@@ -39,7 +39,7 @@ export abstract class CoreController<T extends EntityControllerReq<D>, D> {
     const itemsList = await this.datamapper.findAll();
 
     if (!itemsList) {
-      throw new NotFoundError("Items not found");
+      throw new NotFoundError("Items not found", "NOT_FOUND");
     }
 
     res.status(200).send(itemsList);
@@ -49,7 +49,7 @@ export abstract class CoreController<T extends EntityControllerReq<D>, D> {
     const item = await this.datamapper.findBySpecificField(field, value);
 
     if (!item) {
-      throw new NotFoundError("Item not found");
+      throw new NotFoundError("Item not found", "NOT_FOUND");
     }
 
     return item;
@@ -93,7 +93,7 @@ export abstract class CoreController<T extends EntityControllerReq<D>, D> {
     const itemToDelete = await this.datamapper.findByPk(id);
 
     if (!itemToDelete) {
-      throw new NotFoundError("Item not found");
+      throw new NotFoundError("Item not found", "NOT_FOUND");
     }
 
     const deletedItem = await this.datamapper.delete(id);

@@ -33,7 +33,7 @@ export class CardController extends CoreController<
     const cards = await this.datamapper.findAllCardsByDeckId(deckId);
 
     if (!cards) {
-      throw new NotFoundError("Cards not found");
+      throw new NotFoundError("Cards not found", "CARDS_NOT_FOUND");
     }
 
     res.status(200).send(cards);
@@ -49,7 +49,7 @@ export class CardController extends CoreController<
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!cards) {
-      throw new NotFoundError("Cards not found");
+      throw new NotFoundError("Cards not found", "CARDS_NOT_FOUND");
     }
 
     // Update cards last update field
@@ -156,7 +156,7 @@ export class CardController extends CoreController<
     const card = await this.datamapper.findByPk(cardId);
 
     if (!card) {
-      throw new NotFoundError("Card not found");
+      throw new NotFoundError("Card not found", "CARD_NOT_FOUND");
     }
 
     const checkIfCardExistsInDeck = await this.datamapper.checkCompositeKey(
@@ -214,7 +214,7 @@ export class CardController extends CoreController<
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     // Check if all cards belong to the user and return them if all of them do

@@ -168,7 +168,7 @@ export class CodeController extends CoreController<
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const storedCode = await this.datamapper.checkCompositeKey(
@@ -177,7 +177,7 @@ export class CodeController extends CoreController<
     );
 
     if (!storedCode) {
-      throw new NotFoundError("Code not found");
+      throw new NotFoundError("Code not found", "CODE_NOT_FOUND");
     }
 
     if (new Date() > storedCode.expiration) {

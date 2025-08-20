@@ -24,7 +24,7 @@ export class DeckController extends CoreController<
     const decks = await this.datamapper.findAllDecksByUserEmail(userEmail);
 
     if (!decks) {
-      throw new NotFoundError("Deck not found");
+      throw new NotFoundError("Deck not found", "DECK_NOT_FOUND");
     }
 
     res.status(200).send(decks);
@@ -37,7 +37,7 @@ export class DeckController extends CoreController<
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     data.user_id = user.id;
@@ -65,7 +65,7 @@ export class DeckController extends CoreController<
     const deck = await this.datamapper.findByPk(deck_id);
 
     if (!deck) {
-      throw new NotFoundError("Deck not found");
+      throw new NotFoundError("Deck not found", "DECK_NOT_FOUND");
     }
 
     const checkIfExists = await this.datamapper.findBySpecificField(

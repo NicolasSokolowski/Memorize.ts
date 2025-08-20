@@ -34,7 +34,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const { password, created_at, updated_at, ...userWithoutPassword } = user;
@@ -71,7 +71,7 @@ export class UserController extends CoreController<
       const default_role = await roleDatamapper.findByPk(2);
 
       if (!default_role) {
-        throw new NotFoundError("Role not found");
+        throw new NotFoundError("Role not found", "ROLE_NOT_FOUND");
       }
 
       const newUserData = {
@@ -125,7 +125,7 @@ export class UserController extends CoreController<
     const user = await this.datamapper.findBySpecificField("email", email);
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const isPasswordValid = await Password.compare(user.password, password);
@@ -221,7 +221,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     if (data.email) {
@@ -268,7 +268,7 @@ export class UserController extends CoreController<
     const user = await this.datamapper.findByPk(userId);
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const role = await roleController.datamapper.findBySpecificField(
@@ -277,7 +277,7 @@ export class UserController extends CoreController<
     );
 
     if (!role) {
-      throw new NotFoundError("Role not found");
+      throw new NotFoundError("Role not found", "USER_NOT_FOUND");
     }
 
     const updatedUser = await this.datamapper.updateRole(userId, role.id);
@@ -301,7 +301,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     try {
@@ -373,7 +373,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     try {
@@ -441,7 +441,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const deletedUser = await this.datamapper.delete(user.id);
