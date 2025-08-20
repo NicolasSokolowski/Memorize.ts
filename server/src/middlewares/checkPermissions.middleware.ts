@@ -28,7 +28,7 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     if (!entity) {
@@ -41,17 +41,20 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           const deck_id = req.params.deck_id;
 
           if (!deck_id || isNaN(parseInt(deck_id, 10))) {
-            throw new BadRequestError("Invalid deck ID provided.");
+            throw new BadRequestError(
+              "Invalid deck ID provided.",
+              "INVALID_PARAMETER"
+            );
           }
 
           const deck = await deckDatamapper.findByPk(parseInt(deck_id, 10));
 
           if (!deck) {
-            throw new NotFoundError();
+            throw new NotFoundError("Deck not found", "DECK_NOT_FOUND");
           }
 
           if (deck.user_id !== user.id) {
-            throw new AccessDeniedError("You do not own this deck.");
+            throw new AccessDeniedError("You do not own this deck");
           }
           break;
 
@@ -59,23 +62,29 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           const deckId = req.params.deck_id;
 
           if (!deckId || isNaN(parseInt(deckId, 10))) {
-            throw new BadRequestError("Invalid deck ID provided.");
+            throw new BadRequestError(
+              "Invalid deck ID provided.",
+              "INVALID_ID"
+            );
           }
 
           const cardDeck = await deckDatamapper.findByPk(parseInt(deckId, 10));
 
           if (!cardDeck) {
-            throw new NotFoundError();
+            throw new NotFoundError("Deck not found", "DECK_NOT_FOUND");
           }
 
           if (user.id !== cardDeck.user_id) {
-            throw new AccessDeniedError("You do not own this deck.");
+            throw new AccessDeniedError("You do not own this deck");
           }
 
           const card_id = req.params.card_id;
 
           if (!card_id || isNaN(parseInt(card_id, 10))) {
-            throw new BadRequestError("Invalid card ID provided.");
+            throw new BadRequestError(
+              "Invalid card ID provided",
+              "INVALID_PARAMETER"
+            );
           }
 
           const cardUser = await cardDatamapper.findCardUserByCardId(
@@ -83,11 +92,11 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           );
 
           if (!cardUser) {
-            throw new NotFoundError();
+            throw new NotFoundError("Cards not found", "CARDS_NOT_FOUND");
           }
 
           if (cardUser.email !== userEmail) {
-            throw new AccessDeniedError("You do not own this card.");
+            throw new AccessDeniedError("You do not own this card");
           }
           break;
 

@@ -57,7 +57,7 @@ export class CodeController extends CoreController<
     if (!user) {
       res
         .status(201)
-        .json({ message: "If an account exists, a code has been sent." });
+        .json({ message: "If an account exists, a code has been sent" });
       return;
     }
 
@@ -119,7 +119,8 @@ export class CodeController extends CoreController<
       console.error(err);
       await this.datamapper.pool.query("ROLLBACK");
       throw new BadRequestError(
-        "Error while trying to send verification code."
+        "Error while trying to send verification code",
+        "VERIFICATION_CODE_SEND_FAILED"
       );
     }
   };
@@ -135,7 +136,7 @@ export class CodeController extends CoreController<
       const handler = this.actionMap[requestType];
 
       if (!handler) {
-        throw new BadRequestError("Unknown request type");
+        throw new BadRequestError("Unknown request type", "UNKNOWN");
       }
 
       const result = await handler(user, req.body, res);
@@ -167,7 +168,7 @@ export class CodeController extends CoreController<
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const storedCode = await this.datamapper.checkCompositeKey(
@@ -176,11 +177,11 @@ export class CodeController extends CoreController<
     );
 
     if (!storedCode) {
-      throw new NotFoundError("Code not found");
+      throw new NotFoundError("Code not found", "CODE_NOT_FOUND");
     }
 
     if (new Date() > storedCode.expiration) {
-      throw new BadRequestError("Code has expired.");
+      throw new BadRequestError("Code has expired", "EXPIRED_CODE");
     }
 
     const providedBuffer = Buffer.from(code);
@@ -190,7 +191,7 @@ export class CodeController extends CoreController<
       providedBuffer.length !== storedBuffer.length ||
       !crypto.timingSafeEqual(providedBuffer, storedBuffer)
     ) {
-      throw new BadRequestError("Invalid code.");
+      throw new BadRequestError("Invalid code", "INVALID_CODE");
     }
 
     const deletedCode = await this.datamapper.delete(storedCode.id);

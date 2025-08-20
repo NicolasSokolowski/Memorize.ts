@@ -18,7 +18,10 @@ export const requireAuth = async (
   if (!accessToken) {
     throw new NotAuthorizedError();
   } else if (!process.env.ACCESS_TOKEN_SECRET) {
-    throw new BadRequestError("Access token secret must be set");
+    throw new BadRequestError(
+      "Access token secret must be set",
+      "INVALID_SECRET"
+    );
   }
 
   try {

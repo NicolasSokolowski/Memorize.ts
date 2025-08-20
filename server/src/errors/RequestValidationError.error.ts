@@ -4,6 +4,7 @@ import { CustomError } from "./CustomError.error";
 export class RequestValidationError extends CustomError {
   statusCode = 400;
   private field?: string;
+  code = "VALIDATION_ERROR";
 
   constructor(
     public errors: Joi.ValidationErrorItem[],
@@ -19,10 +20,10 @@ export class RequestValidationError extends CustomError {
       const field = err.path?.[0] as string | undefined;
 
       if (err.type === "any.required") {
-        return { message: `Missing field ${err.path}`, field };
+        return { message: `Missing field ${err.path}`, field, code: this.code };
       }
 
-      return { message: err.message, field };
+      return { message: err.message, code: this.code, field };
     });
   }
 }

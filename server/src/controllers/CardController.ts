@@ -33,7 +33,7 @@ export class CardController extends CoreController<
     const cards = await this.datamapper.findAllCardsByDeckId(deckId);
 
     if (!cards) {
-      throw new NotFoundError();
+      throw new NotFoundError("Cards not found", "CARDS_NOT_FOUND");
     }
 
     res.status(200).send(cards);
@@ -49,7 +49,7 @@ export class CardController extends CoreController<
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!cards) {
-      throw new NotFoundError();
+      throw new NotFoundError("Cards not found", "CARDS_NOT_FOUND");
     }
 
     // Update cards last update field
@@ -128,8 +128,8 @@ export class CardController extends CoreController<
 
     if (checkIfExists) {
       throw new BadRequestError(
-        "Front side name already exists in this deck.",
-        "name"
+        "Front side already exists in this deck",
+        "DUPLICATE_ENTRY"
       );
     }
 
@@ -146,10 +146,17 @@ export class CardController extends CoreController<
     const cardId = parseInt(req.params.card_id, 10);
     const data: Partial<CardData> = req.body;
 
+    if (!cardId) {
+      throw new BadRequestError(
+        "You should provide a valid id",
+        "INVALID_PARAMETER"
+      );
+    }
+
     const card = await this.datamapper.findByPk(cardId);
 
     if (!card) {
-      throw new NotFoundError();
+      throw new NotFoundError("Card not found", "CARD_NOT_FOUND");
     }
 
     const checkIfCardExistsInDeck = await this.datamapper.checkCompositeKey(
@@ -159,8 +166,8 @@ export class CardController extends CoreController<
 
     if (checkIfCardExistsInDeck && checkIfCardExistsInDeck.id !== cardId) {
       throw new BadRequestError(
-        "Front side name already exists in this deck.",
-        "name"
+        "Front side already exists in this deck",
+        "DUPLICATE_ENTRY"
       );
     }
 
@@ -189,19 +196,25 @@ export class CardController extends CoreController<
     const userEmail = req.user?.email;
 
     if (!Array.isArray(cards) || cards.length === 0) {
-      throw new BadRequestError("Invalid cards data provided.");
+      throw new BadRequestError(
+        "The provided cards array must not be empty",
+        "INVALID_DATA"
+      );
     }
 
     const cardIds = cards.map((card) => card.id);
 
     if (cardIds.some((id) => typeof id !== "number" || isNaN(id))) {
-      throw new BadRequestError("Invalid card IDs provided.");
+      throw new BadRequestError(
+        "Each card ID must be a valid number",
+        "INVALID_DATA"
+      );
     }
 
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     // Check if all cards belong to the user and return them if all of them do
@@ -212,7 +225,7 @@ export class CardController extends CoreController<
 
     if (!allCardsBelongToUser) {
       throw new AccessDeniedError(
-        "One or more cards do not belong to you, or does not exist."
+        "Some cards are either not found or you don't have permission to access them"
       );
     }
 
@@ -224,10 +237,6 @@ export class CardController extends CoreController<
         user_answer: update?.user_answer
       };
     });
-
-    if (!allCardsBelongToUser) {
-      throw new AccessDeniedError("One or more cards do not belong to you.");
-    }
 
     // Handle the card difficulty depending on user's answer
     const cardsDifficultyRecalculated =

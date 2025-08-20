@@ -23,13 +23,13 @@ export abstract class CoreController<T extends EntityControllerReq<D>, D> {
     const id: number = parseInt(req.params[paramName]);
 
     if (!id) {
-      throw new BadRequestError("You should provide an id");
+      throw new BadRequestError("ID parameter is missing", "INVALID_PARAMETER");
     }
 
     const searchedItem = await this.datamapper.findByPk(id);
 
     if (!searchedItem) {
-      throw new NotFoundError();
+      throw new NotFoundError("Item not found", "NOT_FOUND");
     }
 
     res.status(200).send(searchedItem);
@@ -39,7 +39,7 @@ export abstract class CoreController<T extends EntityControllerReq<D>, D> {
     const itemsList = await this.datamapper.findAll();
 
     if (!itemsList) {
-      throw new NotFoundError();
+      throw new NotFoundError("Items not found", "NOT_FOUND");
     }
 
     res.status(200).send(itemsList);
@@ -47,6 +47,11 @@ export abstract class CoreController<T extends EntityControllerReq<D>, D> {
 
   getBySpecificField = async (field: string, value: string): Promise<D> => {
     const item = await this.datamapper.findBySpecificField(field, value);
+
+    if (!item) {
+      throw new NotFoundError("Item not found", "NOT_FOUND");
+    }
+
     return item;
   };
 
@@ -59,7 +64,10 @@ export abstract class CoreController<T extends EntityControllerReq<D>, D> {
     );
 
     if (checkIfExists) {
-      throw new BadRequestError(`Provided item already exists.`);
+      throw new BadRequestError(
+        `Provided item already exists`,
+        "DUPLICATE_ENTRY"
+      );
     }
 
     const createdItem = await this.datamapper.insert(data);
@@ -76,13 +84,16 @@ export abstract class CoreController<T extends EntityControllerReq<D>, D> {
     const id: number = parseInt(req.params[paramName]);
 
     if (!id || isNaN(id)) {
-      throw new BadRequestError("Please provide a valid id.");
+      throw new BadRequestError(
+        "Please provide a valid id",
+        "INVALID_PARAMETER"
+      );
     }
 
     const itemToDelete = await this.datamapper.findByPk(id);
 
     if (!itemToDelete) {
-      throw new NotFoundError();
+      throw new NotFoundError("Item not found", "NOT_FOUND");
     }
 
     const deletedItem = await this.datamapper.delete(id);

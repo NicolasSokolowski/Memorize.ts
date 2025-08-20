@@ -34,7 +34,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const { password, created_at, updated_at, ...userWithoutPassword } = user;
@@ -51,7 +51,10 @@ export class UserController extends CoreController<
     );
 
     if (isEmailUsed) {
-      throw new BadRequestError("Provided email is already in use.", "email");
+      throw new BadRequestError(
+        "Provided email is already in use",
+        "EMAIL_ALREADY_EXISTS"
+      );
     }
 
     try {
@@ -61,14 +64,14 @@ export class UserController extends CoreController<
       if (!hashedPassword) {
         throw new BadRequestError(
           "The password could not be hashed",
-          "password"
+          "PASSWORD_ERROR"
         );
       }
 
       const default_role = await roleDatamapper.findByPk(2);
 
       if (!default_role) {
-        throw new NotFoundError();
+        throw new NotFoundError("Role not found", "ROLE_NOT_FOUND");
       }
 
       const newUserData = {
@@ -113,19 +116,25 @@ export class UserController extends CoreController<
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new BadRequestError("Incorrect password or email.");
+      throw new BadRequestError(
+        "Incorrect password or email",
+        "CREDENTIALS_ERROR"
+      );
     }
 
     const user = await this.datamapper.findBySpecificField("email", email);
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const isPasswordValid = await Password.compare(user.password, password);
 
     if (!isPasswordValid) {
-      throw new BadRequestError("Incorrect password or email.");
+      throw new BadRequestError(
+        "Incorrect password or email.",
+        "CREDENTIALS_ERROR"
+      );
     }
 
     const default_role = await roleController.datamapper.findByPk(2);
@@ -184,7 +193,7 @@ export class UserController extends CoreController<
     }
 
     if (!REFRESH_TOKEN_SECRET) {
-      throw new BadRequestError("Refresh token must be set");
+      throw new BadRequestError("Refresh token must be set", "INVALID_SECRET");
     }
 
     try {
@@ -212,7 +221,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     if (data.email) {
@@ -223,14 +232,15 @@ export class UserController extends CoreController<
 
       if (checkIfEmailExists) {
         throw new BadRequestError(
-          `Provided email is already in use. Please choose another one.`
+          "Provided email is already used",
+          "EMAIL_ALREADY_EXISTS"
         );
       }
     } else {
       data.email = user.email;
     }
 
-    data.password = user.password; // Preserve the existing password
+    data.password = user.password;
 
     const updatedUser = await this.datamapper.update(data, userEmail);
 
@@ -249,13 +259,16 @@ export class UserController extends CoreController<
     const { name: roleName } = req.body;
 
     if (!userId) {
-      throw new BadRequestError("You should provide a valid id");
+      throw new BadRequestError(
+        "You should provide a valid id",
+        "INVALID_PARAMETER"
+      );
     }
 
     const user = await this.datamapper.findByPk(userId);
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const role = await roleController.datamapper.findBySpecificField(
@@ -264,7 +277,7 @@ export class UserController extends CoreController<
     );
 
     if (!role) {
-      throw new NotFoundError();
+      throw new NotFoundError("Role not found", "USER_NOT_FOUND");
     }
 
     const updatedUser = await this.datamapper.updateRole(userId, role.id);
@@ -280,13 +293,7 @@ export class UserController extends CoreController<
 
   changePassword = async (req: Request, res: Response): Promise<void> => {
     const userEmail = req.user?.email;
-    const { currentPassword, newPassword, confirmNewPassword } = req.body;
-
-    if (newPassword !== confirmNewPassword) {
-      throw new BadRequestError(
-        "New password and confirmation password are different."
-      );
-    }
+    const { currentPassword, newPassword } = req.body;
 
     const user = await this.datamapper.findBySpecificField(
       this.field,
@@ -294,7 +301,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError("User not found.");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     try {
@@ -306,13 +313,19 @@ export class UserController extends CoreController<
       );
 
       if (!isCurrentPasswordValid) {
-        throw new BadRequestError("Current password is incorrect");
+        throw new BadRequestError(
+          "Current password is incorrect",
+          "INVALID_CURRENT_PASSWORD"
+        );
       }
 
       const hashedNewPassword = await Password.toHash(newPassword);
 
       if (!hashedNewPassword) {
-        throw new BadRequestError("The new password could not be hashed");
+        throw new BadRequestError(
+          "The new password could not be hashed",
+          "PASSWORD_HASH_ERROR"
+        );
       }
 
       const updatedPassword = await this.datamapper.updatePassword(
@@ -349,7 +362,8 @@ export class UserController extends CoreController<
 
     if (newPassword !== passwordConfirmation) {
       throw new BadRequestError(
-        "New password and confirmation password are different."
+        "New password and confirmation password are different",
+        "CREDENTIALS_ERROR"
       );
     }
 
@@ -359,7 +373,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError("User not found.");
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     try {
@@ -367,7 +381,10 @@ export class UserController extends CoreController<
       const hashedNewPassword = await Password.toHash(newPassword);
 
       if (!hashedNewPassword) {
-        throw new BadRequestError("The new password could not be hashed");
+        throw new BadRequestError(
+          "The new password could not be hashed",
+          "PASSWORD_ERROR"
+        );
       }
 
       const updatedPassword = await this.datamapper.updatePassword(
@@ -424,7 +441,7 @@ export class UserController extends CoreController<
     );
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found", "USER_NOT_FOUND");
     }
 
     const deletedUser = await this.datamapper.delete(user.id);
@@ -454,7 +471,7 @@ export class UserController extends CoreController<
     );
 
     if (checkIfEmailExists) {
-      throw new BadRequestError("Email already used.");
+      throw new BadRequestError("Email already used", "EMAIL_ALREADY_EXISTS");
     }
 
     res.status(200).json({ success: true });
