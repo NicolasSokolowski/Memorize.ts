@@ -1,8 +1,9 @@
 import { CustomError } from "./CustomError.error";
 
 export class DatabaseConnectionError extends CustomError {
-  reason = "Error connecting to database";
+  message = "Error connecting to database";
   statusCode = 500;
+  code = "DATABASE_ERROR";
 
   constructor() {
     super("Error connecting to database");
@@ -11,6 +12,6 @@ export class DatabaseConnectionError extends CustomError {
   }
 
   serializeErrors() {
-    return [{ message: this.reason }];
+    return [{ message: this.message, code: this.code }];
   }
 }
