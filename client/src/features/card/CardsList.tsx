@@ -26,7 +26,7 @@ function CardsList() {
   }, [dispatch, deckIdNumber, hasBeenFetchedOnce]);
 
   return (
-    <div className="h-full overflow-y-auto bg-primary p-12">
+    <div className="overflow-y-auto bg-primary p-12">
       <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-12 pb-8">
         <CardCreation deckId={deckIdNumber} />
         {cards.map((card) => (
