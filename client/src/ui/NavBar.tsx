@@ -66,9 +66,9 @@ function NavBar() {
           >
             <span>Mon profil</span>
             <img
-              src="/deck.png"
+              src="/profile.png"
               alt="Deck icon"
-              className="w-24 translate-x-6"
+              className="w-16 translate-x-3"
               draggable={false}
             />
           </button>

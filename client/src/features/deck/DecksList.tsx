@@ -4,6 +4,8 @@ import { getDecks } from "../../store/deck/deckThunk";
 import DeckDetails from "./DeckDetails";
 import DeckCreation from "./DeckCreation";
 import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
+import { useOutletContext } from "react-router-dom";
+import { Deck } from "../../store/deck/deckSlice";
 
 function DecksList() {
   const dispatch = useAppDispatch();
@@ -11,6 +13,8 @@ function DecksList() {
   const hasBeenFetchedOnce = useAppSelector(
     (state) => state.deck.hasBeenFetchedOnce
   );
+
+  const filteredItems = useOutletContext<Deck[]>() || decks;
 
   useEffect(() => {
     if (!hasBeenFetchedOnce) {
@@ -20,10 +24,10 @@ function DecksList() {
   }, [dispatch, hasBeenFetchedOnce]);
 
   return (
-    <div className="h-full overflow-y-auto bg-primary p-12">
+    <div className="overflow-y-auto bg-primary p-12">
       <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-12 pb-8">
         <DeckCreation />
-        {decks.map((deck) => (
+        {filteredItems.map((deck) => (
           <DeckDetails key={deck.id} deck={deck} />
         ))}
       </div>

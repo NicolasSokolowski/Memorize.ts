@@ -10,6 +10,7 @@ import DeckTraining from "./features/training/DeckTraining";
 import UserProfile from "./features/user/UserProfile";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppInit from "./AppInit";
+import SearchBarLayout from "./ui/SearchBarLayout";
 
 const router = createBrowserRouter([
   {
@@ -27,20 +28,26 @@ const router = createBrowserRouter([
             element: <UserLayout />,
             children: [
               {
-                path: "decks",
-                element: <DecksList />
-              },
-              {
-                path: "decks/:deckId/cards",
-                element: <CardsList />
+                path: "",
+                element: <SearchBarLayout />,
+                children: [
+                  {
+                    path: "decks",
+                    element: <DecksList />
+                  },
+                  {
+                    path: "decks/:deckId/cards",
+                    element: <CardsList />
+                  },
+                  {
+                    path: "training/decks",
+                    element: <DeckSelection />
+                  }
+                ]
               },
               {
                 path: "training/mode",
                 element: <DeckModeSelection />
-              },
-              {
-                path: "training/decks",
-                element: <DeckSelection />
               },
               {
                 path: "profile",
