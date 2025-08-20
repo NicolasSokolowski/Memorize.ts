@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import DeckPicker from "./DeckPicker";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { getDecks } from "../../../store/deck/deckThunk";
 import { getAllCardsByUserEmail } from "../../../store/card/cardThunks";
+import { Deck } from "../../../store/deck/deckSlice";
 
 function DeckSelection() {
   const dispatch = useAppDispatch();
@@ -11,6 +12,8 @@ function DeckSelection() {
   const hasBeenFetchedOnce = useAppSelector(
     (state) => state.deck.hasBeenFetchedOnce
   );
+
+  const filteredItems = useOutletContext<Deck[]>() || decks;
 
   useEffect(() => {
     if (!hasBeenFetchedOnce) {
@@ -20,7 +23,7 @@ function DeckSelection() {
   }, [dispatch, hasBeenFetchedOnce]);
 
   return (
-    <div className="h-full overflow-y-auto bg-primary p-12">
+    <div className="overflow-y-auto bg-primary p-12">
       <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-12 pb-8">
         <Link
           to="/user/training/mode"
@@ -28,7 +31,7 @@ function DeckSelection() {
         >
           <span className="font-patua text-9xl text-secondary">&lt;</span>
         </Link>
-        {decks.map((deck) => (
+        {filteredItems.map((deck) => (
           <DeckPicker key={deck.id} deck={deck} />
         ))}
       </div>
