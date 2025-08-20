@@ -9,7 +9,10 @@ export class Token {
     const user = { email, role };
 
     if (!ACCESS_TOKEN_SECRET) {
-      throw new BadRequestError("Access token secret must be set.");
+      throw new BadRequestError(
+        "Access token secret must be set",
+        "INVALID_SECRET"
+      );
     }
 
     const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, {
@@ -23,7 +26,10 @@ export class Token {
     const user = { email, role };
 
     if (!REFRESH_TOKEN_SECRET) {
-      throw new BadRequestError("Refresh token secret must be set.");
+      throw new BadRequestError(
+        "Refresh token secret must be set",
+        "INVALID_SECRET"
+      );
     }
 
     const refreshToken = jwt.sign(user, REFRESH_TOKEN_SECRET, {

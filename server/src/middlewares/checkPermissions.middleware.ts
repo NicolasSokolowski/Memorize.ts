@@ -41,7 +41,10 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           const deck_id = req.params.deck_id;
 
           if (!deck_id || isNaN(parseInt(deck_id, 10))) {
-            throw new BadRequestError("Invalid deck ID provided.");
+            throw new BadRequestError(
+              "Invalid deck ID provided.",
+              "INVALID_ID"
+            );
           }
 
           const deck = await deckDatamapper.findByPk(parseInt(deck_id, 10));
@@ -59,7 +62,10 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           const deckId = req.params.deck_id;
 
           if (!deckId || isNaN(parseInt(deckId, 10))) {
-            throw new BadRequestError("Invalid deck ID provided.");
+            throw new BadRequestError(
+              "Invalid deck ID provided.",
+              "INVALID_ID"
+            );
           }
 
           const cardDeck = await deckDatamapper.findByPk(parseInt(deckId, 10));
@@ -75,7 +81,10 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           const card_id = req.params.card_id;
 
           if (!card_id || isNaN(parseInt(card_id, 10))) {
-            throw new BadRequestError("Invalid card ID provided.");
+            throw new BadRequestError(
+              "Invalid card ID provided.",
+              "INVALID_ID"
+            );
           }
 
           const cardUser = await cardDatamapper.findCardUserByCardId(
