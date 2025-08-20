@@ -24,7 +24,7 @@ export class DeckController extends CoreController<
     const decks = await this.datamapper.findAllDecksByUserEmail(userEmail);
 
     if (!decks) {
-      throw new NotFoundError();
+      throw new NotFoundError("Deck not found");
     }
 
     res.status(200).send(decks);
@@ -37,7 +37,7 @@ export class DeckController extends CoreController<
     const user = await userDatamapper.findBySpecificField("email", userEmail);
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError("User not found");
     }
 
     data.user_id = user.id;
@@ -56,13 +56,16 @@ export class DeckController extends CoreController<
     const data: DeckData = req.body;
 
     if (!deck_id) {
-      throw new BadRequestError("You should provide a valid id");
+      throw new BadRequestError(
+        "You should provide a valid id",
+        "INVALID_PARAMETER"
+      );
     }
 
     const deck = await this.datamapper.findByPk(deck_id);
 
     if (!deck) {
-      throw new NotFoundError();
+      throw new NotFoundError("Deck not found");
     }
 
     const checkIfExists = await this.datamapper.findBySpecificField(
@@ -71,7 +74,7 @@ export class DeckController extends CoreController<
     );
 
     if (checkIfExists) {
-      throw new BadRequestError("Name already exists in this deck.", "name");
+      throw new BadRequestError("Deck name already exists", "DUPLICATE_ENTRY");
     }
 
     data.id = deck_id;
