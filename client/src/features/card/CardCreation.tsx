@@ -19,8 +19,12 @@ interface ApiErrorResponse {
 }
 
 const errorsInitialState = {
-  frontMessage: "",
-  backMessage: ""
+  front: {
+    message: ""
+  },
+  back: {
+    message: ""
+  }
 };
 
 function CardCreation({ deckId }: CardCreationProp) {
@@ -72,9 +76,15 @@ function CardCreation({ deckId }: CardCreationProp) {
         for (const e of error.errors) {
           if (e.field === "front") {
             setIsInputFlipped(false);
-            setError((prev) => ({ ...prev, frontMessage: e.message }));
+            setError((prev) => ({
+              ...prev,
+              front: { ...prev.front, message: e.message }
+            }));
           } else if (e.field === "back") {
-            setError((prev) => ({ ...prev, backMessage: e.message }));
+            setError((prev) => ({
+              ...prev,
+              back: { ...prev.back, message: e.message }
+            }));
           }
         }
       }
@@ -128,23 +138,22 @@ function CardCreation({ deckId }: CardCreationProp) {
                     </div>
                   </div>
                 </div>
-                {error.frontMessage && (
+                {error.front.message && (
                   <p className="mt-2 w-44 break-words pl-1 font-patua text-sm text-red-500">
-                    {error.frontMessage}
+                    {error.front.message}
                   </p>
                 )}
-                {error.backMessage && (
+                {error.back.message && (
                   <p className="mt-2 w-44 break-words pl-1 font-patua text-sm text-red-500">
-                    {error.backMessage}
+                    {error.back.message}
                   </p>
                 )}
                 <div className="flex w-full translate-y--2 justify-between gap-10">
-                  <button type="button">
+                  <button type="button" onClick={handleCancel}>
                     <img
                       src="/cancelation.png"
                       alt="Cancelation icon"
                       className="w-20"
-                      onClick={handleCancel}
                       draggable={false}
                     />
                   </button>

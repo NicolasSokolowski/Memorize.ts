@@ -33,7 +33,12 @@ function CardModification({
 }: CardModificationProps) {
   const [cardData, setCardData] = useState(initialState);
   const [error, setError] = useState({
-    message: ""
+    front: {
+      message: ""
+    },
+    back: {
+      message: ""
+    }
   });
   const dispatch = useAppDispatch();
 
@@ -54,9 +59,15 @@ function CardModification({
       if (error.errors) {
         for (const e of error.errors) {
           if (e.field === "front") {
-            setError((prev) => ({ ...prev, message: e.message }));
+            setError((prev) => ({
+              ...prev,
+              front: { ...prev.front, message: e.message }
+            }));
           } else if (e.field === "back") {
-            setError((prev) => ({ ...prev, message: e.message }));
+            setError((prev) => ({
+              ...prev,
+              back: { ...prev.back, message: e.message }
+            }));
           }
         }
       }
@@ -68,7 +79,7 @@ function CardModification({
 
     setError((prev) => ({
       ...prev,
-      message: ""
+      [side]: { ...prev[side], message: "" }
     }));
 
     setCardData((prev) => ({
@@ -79,7 +90,7 @@ function CardModification({
 
   const handleCancel = () => {
     setCardData({ front: card.front, back: card.back });
-    setError({ message: "" });
+    setError({ front: { message: "" }, back: { message: "" } });
     onCancel();
   };
 
@@ -104,9 +115,9 @@ function CardModification({
               placeholder={side === "front" ? "Face avant" : "Face arrière"}
               className="mt-2 h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
             />
-            {error.message && (
+            {error[side].message && (
               <p className="w-44 break-words pl-1 font-patua text-sm text-red-500">
-                {error.message}
+                {error[side].message}
               </p>
             )}
             <div className="flex w-full justify-between gap-10">
