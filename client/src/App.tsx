@@ -38,16 +38,16 @@ const router = createBrowserRouter([
                   {
                     path: "decks/:deckId/cards",
                     element: <CardsList />
+                  },
+                  {
+                    path: "training/decks",
+                    element: <DeckSelection />
                   }
                 ]
               },
               {
                 path: "training/mode",
                 element: <DeckModeSelection />
-              },
-              {
-                path: "training/decks",
-                element: <DeckSelection />
               },
               {
                 path: "profile",
