@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../services/axios.instance";
 import axios from "axios";
+import { onCancelProp } from "../../types/user";
 
-type PasswordResetProps = {
-  onCancel: () => void;
-};
-
-function PasswordResetForm({ onCancel }: PasswordResetProps) {
+function PasswordResetForm({ onCancel }: onCancelProp) {
   const [passwordHasBeenChanged, setPasswordHasBeenChanged] = useState(false);
   const [newPassword, setNewPassword] = useState({
     newPassword: "",
