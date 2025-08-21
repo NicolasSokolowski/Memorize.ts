@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 import { RootState } from "../store/store";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Deck } from "../store/deck/deckSlice";
 import { Card } from "../store/card/cardSlice";
 
@@ -31,6 +31,10 @@ function SearchBarLayout() {
       );
     }
   }, [items, searchedItem, store.slice]);
+
+  useEffect(() => {
+    setSearchedItem("");
+  }, [location]);
 
   return (
     <>
