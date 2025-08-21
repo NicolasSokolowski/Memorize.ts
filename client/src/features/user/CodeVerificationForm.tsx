@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { verifyCodeValidity } from "../../store/user/userThunk";
-import { ApiErrorResponse } from "../../helpers/interfaces";
+import { ApiErrorResponse } from "../../types/api";
 
 type CodeVerificationProps = {
   onCancel: () => void;
