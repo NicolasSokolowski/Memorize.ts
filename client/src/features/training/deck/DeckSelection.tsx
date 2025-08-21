@@ -1,26 +1,18 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import DeckPicker from "./DeckPicker";
-import { Link, useOutletContext } from "react-router-dom";
-import { getDecks } from "../../../store/deck/deckThunk";
-import { getAllCardsByUserEmail } from "../../../store/card/cardThunks";
+import { Link, useLocation, useOutletContext } from "react-router-dom";
 import { Deck } from "../../../store/deck/deckSlice";
+import { useMemo } from "react";
+
+interface LocationState {
+  decks: Deck[];
+}
 
 function DeckSelection() {
-  const dispatch = useAppDispatch();
-  const decks = useAppSelector((state) => state.deck.decks);
-  const hasBeenFetchedOnce = useAppSelector(
-    (state) => state.deck.hasBeenFetchedOnce
-  );
+  const location = useLocation();
+  const state = location.state as LocationState;
+  const decks = useMemo(() => state?.decks ?? [], [state?.decks]);
 
   const filteredItems = useOutletContext<Deck[]>() || decks;
-
-  useEffect(() => {
-    if (!hasBeenFetchedOnce) {
-      dispatch(getDecks());
-      dispatch(getAllCardsByUserEmail());
-    }
-  }, [dispatch, hasBeenFetchedOnce]);
 
   return (
     <div className="overflow-y-auto bg-primary p-12">

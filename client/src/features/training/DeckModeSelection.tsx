@@ -20,6 +20,8 @@ function DeckModeSelection() {
   const memoHardCards = useMemo(() => selectHardCards(), []);
   const hardCards = useAppSelector(memoHardCards);
 
+  const decks = useAppSelector((state) => state.deck.decks);
+
   const hasBeenFetchedOnce = useAppSelector(
     (state) => state.deck.hasBeenFetchedOnce
   );
@@ -115,11 +117,20 @@ function DeckModeSelection() {
         </div>
         <div
           className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/deck.png')] bg-cover shadow-xl"
-          onClick={() => navigate("/user/training/decks")}
+          onClick={() => {
+            if (decks.length > 0) {
+              navigate("/user/training/decks", { state: { decks } });
+            }
+          }}
         >
           <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
             Choisir un deck
           </div>
+          {decks.length === 0 && (
+            <div className="flex h-16 w-full items-center justify-center font-patua text-xl text-textPrimary">
+              Pas de deck
+            </div>
+          )}
         </div>
       </div>
     </div>
