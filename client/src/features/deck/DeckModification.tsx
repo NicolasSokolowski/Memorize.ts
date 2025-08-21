@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { DeckProps } from "./DeckDetails";
 import { useAppDispatch } from "../../store/hooks";
 import { updateDeck } from "../../store/deck/deckThunk";
-
-interface ApiErrorResponse {
-  errors: {
-    message: string;
-    field?: string;
-  }[];
-}
+import { ApiErrorResponse } from "../../types/api";
 
 const initialState = {
   name: ""

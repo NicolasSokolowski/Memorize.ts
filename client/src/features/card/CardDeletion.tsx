@@ -2,17 +2,11 @@ import { useState } from "react";
 import { Card } from "../../store/card/cardSlice";
 import { deleteCard } from "../../store/card/cardThunks";
 import { useAppDispatch } from "../../store/hooks";
+import { ApiErrorResponse } from "../../types/api";
 
 interface CardDeletionProps {
   card: Card;
   onCancel: () => void;
-}
-
-interface ApiErrorResponse {
-  errors: {
-    message: string;
-    field?: string;
-  }[];
 }
 
 function CardDeletion({ card, onCancel }: CardDeletionProps) {

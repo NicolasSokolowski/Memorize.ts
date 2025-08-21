@@ -3,18 +3,12 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { login } from "../../store/user/userThunk";
 import { setHasAccount } from "../../store/user/userSlice";
 import PasswordReset from "./PasswordReset";
+import { ApiErrorResponse } from "../../types/api";
 
 const initialState = {
   email: "",
   password: ""
 };
-
-interface ApiErrorResponse {
-  errors: {
-    message: string;
-    field?: string;
-  }[];
-}
 
 function LoginForm() {
   const [userInfo, setUserInfo] = useState(initialState);

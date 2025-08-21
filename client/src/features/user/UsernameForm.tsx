@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { updateUserInfos } from "../../store/user/userThunk";
-import { ApiErrorResponse } from "../../helpers/interfaces";
+import { onCancelProp } from "../../types/user";
+import { ApiErrorResponse } from "../../types/api";
 
-type UsernameFormProps = {
-  onCancel: () => void;
-};
-
-function UsernameForm({ onCancel }: UsernameFormProps) {
+function UsernameForm({ onCancel }: onCancelProp) {
   const [usernameEdited, setUsernameEdited] = useState("");
   const [error, setError] = useState({
     message: ""

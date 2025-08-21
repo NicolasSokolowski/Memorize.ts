@@ -1,17 +1,11 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { createDeck } from "../../store/deck/deckThunk";
+import { ApiErrorResponse } from "../../types/api";
 
 const initialState = {
   name: ""
 };
-
-interface ApiErrorResponse {
-  errors: {
-    message: string;
-    field?: string;
-  }[];
-}
 
 function DeckCreation() {
   const [deckData, setDeckData] = useState(initialState);

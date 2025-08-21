@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { CardProps } from "./CardDetails";
 import { useAppDispatch } from "../../store/hooks";
 import { updateCard } from "../../store/card/cardThunks";
-
-interface ApiErrorResponse {
-  errors: {
-    message: string;
-    field?: string;
-  }[];
-}
+import { ApiErrorResponse } from "../../types/api";
 
 type CardSide = "front" | "back";
 

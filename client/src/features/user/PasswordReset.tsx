@@ -6,12 +6,9 @@ import {
   sendVerificationCode
 } from "../../store/user/userThunk";
 import { useAppDispatch } from "../../store/hooks";
+import { onCancelProp } from "../../types/user";
 
-type PasswordResetProps = {
-  onCancel: () => void;
-};
-
-function PasswordReset({ onCancel }: PasswordResetProps) {
+function PasswordReset({ onCancel }: onCancelProp) {
   const [email, setEmail] = useState("");
   const [emailHasBeenSent, setEmailHasBeenSent] = useState(false);
   const [isCodeValid, setIsCodeValid] = useState(false);

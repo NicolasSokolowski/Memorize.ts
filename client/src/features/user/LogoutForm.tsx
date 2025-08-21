@@ -1,11 +1,8 @@
 import { useAppDispatch } from "../../store/hooks";
 import { logout } from "../../store/user/userThunk";
+import { onCancelProp } from "../../types/user";
 
-type LogoutFormProps = {
-  onCancel: () => void;
-};
-
-function LogoutForm({ onCancel }: LogoutFormProps) {
+function LogoutForm({ onCancel }: onCancelProp) {
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {

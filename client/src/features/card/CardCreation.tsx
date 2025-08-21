@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { createCard } from "../../store/card/cardThunks";
+import { ApiErrorResponse } from "../../types/api";
 
 const initialState = {
   front: "",
@@ -9,13 +10,6 @@ const initialState = {
 
 interface CardCreationProp {
   deckId: number;
-}
-
-interface ApiErrorResponse {
-  errors: {
-    message: string;
-    field?: string;
-  }[];
 }
 
 const errorsInitialState = {

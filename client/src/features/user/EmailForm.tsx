@@ -6,12 +6,9 @@ import {
   sendVerificationCode
 } from "../../store/user/userThunk";
 import CodeVerificationForm from "./CodeVerificationForm";
+import { onCancelProp } from "../../types/user";
 
-type EditEmailProps = {
-  onCancel: () => void;
-};
-
-function EmailForm({ onCancel }: EditEmailProps) {
+function EmailForm({ onCancel }: onCancelProp) {
   const [isNewEmailAvailable, setIsNewEmailAvailable] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [error, setError] = useState("");

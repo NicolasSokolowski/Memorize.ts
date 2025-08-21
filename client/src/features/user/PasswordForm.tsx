@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../services/axios.instance";
 import axios from "axios";
-
-type PasswordFormProps = {
-  onCancel: () => void;
-};
+import { onCancelProp } from "../../types/user";
 
 const initialState = {
   currentPassword: "",
@@ -12,7 +9,7 @@ const initialState = {
   confirmNewPassword: ""
 };
 
-function PasswordForm({ onCancel }: PasswordFormProps) {
+function PasswordForm({ onCancel }: onCancelProp) {
   const [passwordHasBeenChanged, setPasswordHasBeenChanged] = useState(false);
   const [passwordData, setPasswordData] = useState(initialState);
   const [error, setError] = useState({
