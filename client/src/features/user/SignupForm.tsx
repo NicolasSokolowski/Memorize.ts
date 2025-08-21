@@ -3,19 +3,13 @@ import { AxiosError } from "axios";
 import axiosInstance from "../../services/axios.instance";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setHasAccount } from "../../store/user/userSlice";
+import { ApiErrorResponse } from "../../types/api";
 
 const initialState = {
   email: "",
   password: "",
   username: ""
 };
-
-interface ApiErrorResponse {
-  errors: {
-    message: string;
-    field?: string;
-  }[];
-}
 
 function SignupForm() {
   const [userInfo, setUserInfo] = useState(initialState);

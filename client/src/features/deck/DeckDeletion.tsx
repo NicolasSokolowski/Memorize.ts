@@ -2,16 +2,10 @@ import { useState } from "react";
 import { deleteDeck } from "../../store/deck/deckThunk";
 import { useAppDispatch } from "../../store/hooks";
 import { DeckProps } from "./DeckDetails";
+import { ApiErrorResponse } from "../../types/api";
 
 interface DeckModificationProps extends DeckProps {
   onCancel: () => void;
-}
-
-interface ApiErrorResponse {
-  errors: {
-    message: string;
-    field?: string;
-  }[];
 }
 
 function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
