@@ -189,8 +189,10 @@ export const verifyCodeValidity = createAsyncThunk<
   VerifyCodeData,
   { rejectValue: ApiErrorResponse }
 >("VERIFY_CODE", async ({ requestType, code, data }, { rejectWithValue }) => {
+  const path = requestType === "PASSWORD_RESET" ? "check/reset" : "check";
+
   try {
-    const response = await axiosInstance.post("/auth/code/check", {
+    const response = await axiosInstance.post(`/auth/code/${path}`, {
       requestType,
       code,
       data
