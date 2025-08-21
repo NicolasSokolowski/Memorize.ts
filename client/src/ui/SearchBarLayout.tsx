@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 import { RootState } from "../store/store";
 import { useEffect, useMemo, useState } from "react";
@@ -6,6 +6,8 @@ import { Deck } from "../store/deck/deckSlice";
 import { Card } from "../store/card/cardSlice";
 
 function SearchBarLayout() {
+  const { deckId } = useParams<{ deckId: string }>();
+  const deckIdNumber = parseInt(deckId!, 10);
   const [searchedItem, setSearchedItem] = useState("");
   const location = useLocation();
 
@@ -26,11 +28,12 @@ function SearchBarLayout() {
     } else {
       return (items as Card[]).filter(
         (card) =>
-          card.front.toLowerCase().includes(search) ||
-          card.back.toLowerCase().includes(search)
+          card.deck_id === deckIdNumber &&
+          (card.front.toLowerCase().includes(search) ||
+            card.back.toLowerCase().includes(search))
       );
     }
-  }, [items, searchedItem, store.slice]);
+  }, [items, searchedItem, store.slice, deckIdNumber]);
 
   useEffect(() => {
     setSearchedItem("");
