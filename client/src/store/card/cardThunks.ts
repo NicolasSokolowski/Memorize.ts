@@ -2,13 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Card } from "./cardSlice";
 import axiosInstance from "../../services/axios.instance";
 import axios from "axios";
-
-interface ApiErrorResponse {
-  errors: {
-    message: string;
-    field?: string;
-  }[];
-}
+import { ApiErrorResponse } from "../../types/api";
 
 export const getCardsByDeckId = createAsyncThunk<Card[], number>(
   "GET_CARDS",
