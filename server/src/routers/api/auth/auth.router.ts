@@ -38,6 +38,15 @@ authRouter
 authRouter
   .route("/code/check")
   .post(
+    errorCatcher(requireAuth),
+    errorCatcher(checkPermissions(["admin", "user"])),
+    errorCatcher(validateRequest("body", verifyCodeSchema)),
+    errorCatcher(codeController.verifyCodeValidity)
+  );
+
+authRouter
+  .route("/code/check/reset")
+  .post(
     errorCatcher(validateRequest("body", verifyCodeSchema)),
     errorCatcher(codeController.verifyCodeValidity)
   );
