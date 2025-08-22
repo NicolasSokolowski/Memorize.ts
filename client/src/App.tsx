@@ -11,6 +11,7 @@ import UserProfile from "./features/user/UserProfile";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppInit from "./AppInit";
 import SearchBarLayout from "./ui/SearchBarLayout";
+import AllCardsList from "./features/card/AllCardsList";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
                   {
                     path: "training/decks",
                     element: <DeckSelection />
+                  },
+                  {
+                    path: "cards",
+                    element: <AllCardsList />
                   }
                 ]
               },
