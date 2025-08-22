@@ -48,7 +48,7 @@ const updateCardProgress = (cards) => {
         case "hard":
           card.difficulty = 1;
           card.win_streak = 0;
-          card.next_occurrence = 1;
+          card.next_occurrence = 0;
           card.max_early = 4;
           break;
       }
