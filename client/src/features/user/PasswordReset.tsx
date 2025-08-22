@@ -63,7 +63,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
           autoComplete="off"
         />
         {!emailHasBeenSent ? (
-          <div className="mt-5 flex w-full flex-col justify-center ">
+          <div className="mx-4 mb-6 flex w-full flex-col justify-center ">
             <div className="flex w-full justify-center gap-20">
               {error ? (
                 <p className="break-words pl-2 font-patua text-red-500">
