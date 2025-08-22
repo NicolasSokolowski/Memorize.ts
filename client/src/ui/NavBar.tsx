@@ -47,16 +47,19 @@ function NavBar() {
               />
             </button>
           </li>
-          <li className="flex h-14 w-full items-center rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl">
-            <span className="w-full">Mes cartes</span>
-            <div className="flex items-center">
+          <li>
+            <button
+              onClick={() => navigate("/user/cards")}
+              className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
+            >
+              <span>Mes cartes</span>
               <img
                 src="/card.png"
                 alt="Card icon"
-                className="ml-1 w-16"
+                className="ml-1 w-14 translate-x-1"
                 draggable={false}
               />
-            </div>
+            </button>
           </li>
         </ol>
         <div className="mb-5 flex h-36 w-full items-end">
