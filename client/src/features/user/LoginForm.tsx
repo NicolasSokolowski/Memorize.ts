@@ -134,7 +134,7 @@ function LoginForm() {
                 className="h-12 w-80 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
               />
               {error.message ? (
-                <p className="mt-1 h-2 max-w-full break-words font-patua text-red-500">
+                <p className="ml-2 mt-1 h-2 max-w-full break-words font-patua text-base text-red-500">
                   {error.message}
                 </p>
               ) : (

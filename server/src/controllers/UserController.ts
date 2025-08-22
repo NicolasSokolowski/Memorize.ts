@@ -115,24 +115,20 @@ export class UserController extends CoreController<
   signin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    if (!email || !password) {
+    const user = await this.datamapper.findBySpecificField("email", email);
+
+    if (!user) {
       throw new BadRequestError(
         "Incorrect password or email",
         "CREDENTIALS_ERROR"
       );
     }
 
-    const user = await this.datamapper.findBySpecificField("email", email);
-
-    if (!user) {
-      throw new NotFoundError("User not found", "USER_NOT_FOUND");
-    }
-
     const isPasswordValid = await Password.compare(user.password, password);
 
     if (!isPasswordValid) {
       throw new BadRequestError(
-        "Incorrect password or email.",
+        "Incorrect password or email",
         "CREDENTIALS_ERROR"
       );
     }
