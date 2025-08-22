@@ -32,12 +32,20 @@ function SearchBarLayout() {
         deck.name.toLowerCase().includes(search)
       );
     } else {
-      return (items as Card[]).filter(
-        (card) =>
-          card.deck_id === deckIdNumber &&
-          (card.front.toLowerCase().includes(search) ||
-            card.back.toLowerCase().includes(search))
-      );
+      return (items as Card[]).filter((card) => {
+        if (deckIdNumber) {
+          return (
+            card.deck_id === deckIdNumber &&
+            (card.front.toLowerCase().includes(search) ||
+              card.back.toLowerCase().includes(search))
+          );
+        } else {
+          return (
+            card.front.toLowerCase().includes(search) ||
+            card.back.toLowerCase().includes(search)
+          );
+        }
+      });
     }
   }, [items, searchedItem, store.slice, deckIdNumber]);
 
@@ -51,9 +59,13 @@ function SearchBarLayout() {
         {cardsLocation && (
           <div className="relative ml-12 flex w-1/6 items-center justify-center">
             <div className="flex h-10 w-full items-center rounded-full bg-primary shadow-inner-strong">
-              {deck && (
+              {deck ? (
                 <span className="ml-5 font-patua text-lg text-textPrimary">
                   {deck.name}
+                </span>
+              ) : (
+                <span className="ml-5 font-patua text-lg text-textPrimary">
+                  Toutes les cartes
                 </span>
               )}
             </div>
