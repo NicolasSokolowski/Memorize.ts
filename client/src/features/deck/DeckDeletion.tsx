@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { deleteDeck } from "../../store/deck/deckThunk";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { DeckProps } from "./DeckDetails";
 import { ApiErrorResponse } from "../../types/api";
 
@@ -13,6 +13,10 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
     message: ""
   });
   const dispatch = useAppDispatch();
+
+  const cardsLength = useAppSelector((state) =>
+    state.card.cards.filter((card) => card.deck_id === deck.id)
+  ).length;
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,9 +47,16 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
             className="flex flex-col items-center gap-2"
             onSubmit={handleSubmit()}
           >
-            <p className="w-44 pl-2 font-patua text-base text-textPrimary">
-              Voulez-vous vraiment supprimer ?
-            </p>
+            {cardsLength === 0 ? (
+              <p className="w-44 pl-2 font-patua text-base text-textPrimary">
+                Voulez-vous vraiment supprimer ?
+              </p>
+            ) : (
+              <p className="w-44 pl-2 text-center font-patua text-base text-textPrimary">
+                Cela entraînera la suppression de {cardsLength} carte
+                {cardsLength > 1 && "s"}. Êtes-vous sûr ?
+              </p>
+            )}
             {error.message && (
               <p className="w-44 break-words pl-1 font-patua text-sm text-red-500">
                 {error.message}
