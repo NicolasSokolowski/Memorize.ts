@@ -43,7 +43,7 @@ function CardDetails({ card }: CardProps) {
           >
             <div className="flip-card-front">
               <div
-                className="relative flex size-60 flex-col items-center justify-between rounded-md bg-tertiary shadow-xl"
+                className="relative flex size-60 flex-col items-center justify-between rounded-md bg-tertiary shadow-custom-light"
                 onClick={() => {
                   if (!isEdit) setIsFlipped(true);
                 }}
@@ -123,7 +123,7 @@ function CardDetails({ card }: CardProps) {
               >
                 <div className="flip-face flip-face-front">
                   <div
-                    className="relative flex size-60 flex-col items-center justify-between rounded-md bg-tertiary shadow-xl"
+                    className="relative flex size-60 flex-col items-center justify-between rounded-md bg-tertiary shadow-custom-light"
                     onClick={() => {
                       if (!isEdit) setIsFlipped(false);
                     }}

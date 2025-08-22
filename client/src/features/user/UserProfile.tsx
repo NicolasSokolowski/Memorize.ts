@@ -37,7 +37,7 @@ function UserProfile() {
   return (
     <div className="min-h-screen">
       <div className="flex h-96 items-center justify-center">
-        <div className="flex size-80 items-center justify-center rounded-full bg-tertiary shadow-xl">
+        <div className="flex size-80 items-center justify-center rounded-full bg-tertiary shadow-custom-light">
           <img className="size-64 rounded-full bg-white shadow-inner-strong" />
         </div>
       </div>
@@ -56,7 +56,7 @@ function UserProfile() {
       <div className="mx-20 flex h-96 justify-center gap-32">
         <div className="mx-4 mb-6 flex w-112 flex-col gap-4">
           <button
-            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="edit-username"
             onClick={(e) => handleEdit(e)}
           >
@@ -65,7 +65,7 @@ function UserProfile() {
             </span>
           </button>
           <button
-            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-email" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "edit-email" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="edit-email"
             onClick={(e) => handleEdit(e)}
           >
@@ -74,7 +74,7 @@ function UserProfile() {
             </span>
           </button>
           <button
-            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-password" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "edit-password" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="edit-password"
             onClick={(e) => handleEdit(e)}
           >
@@ -83,14 +83,14 @@ function UserProfile() {
             </span>
           </button>
           <button
-            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "logout" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "logout" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="logout"
             onClick={(e) => handleEdit(e)}
           >
             <span className="font-patua text-xl">Me déconnecter</span>
           </button>
           <button
-            className={`h-16 w-full rounded-md shadow-md ${visibleForm === "delete-user" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "delete-user" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="delete-user"
             onClick={(e) => handleEdit(e)}
           >

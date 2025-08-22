@@ -48,7 +48,7 @@ function DeckModeSelection() {
         Sélectionnez un deck
       </h1>
       <div className="flex h-80 w-full justify-center gap-10">
-        <div className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl">
+        <div className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light">
           <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
             Cartes du jour
           </div>
@@ -82,7 +82,7 @@ function DeckModeSelection() {
             )}
           </div>
         </div>
-        <div className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl">
+        <div className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light">
           <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
             Cartes difficiles
           </div>
@@ -116,7 +116,7 @@ function DeckModeSelection() {
           </div>
         </div>
         <div
-          className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/deck.png')] bg-cover shadow-xl"
+          className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/deck.png')] bg-cover shadow-custom-light"
           onClick={() => {
             if (decks.length > 0) {
               navigate("/user/training/decks", { state: { decks } });

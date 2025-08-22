@@ -17,7 +17,7 @@ function DeckPicker({ deck }: DeckProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex size-60 flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/deck.png')] bg-cover pt-3 shadow-xl">
+    <div className="flex size-60 flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/deck.png')] bg-cover pt-3 shadow-custom-light">
       <h3 className="w-full break-words text-center font-patua text-xl text-textPrimary">
         {deck.name}
       </h3>

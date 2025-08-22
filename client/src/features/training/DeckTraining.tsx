@@ -103,7 +103,7 @@ function DeckTraining() {
                 Cartes restantes : {cardsLeft}
               </span>
               <button
-                className="h-16 w-40 rounded-full bg-tertiary shadow-xl"
+                className="h-16 w-40 rounded-full bg-tertiary shadow-custom-light"
                 onClick={() => handleQuit()}
               >
                 <span className="font-patua text-3xl text-secondary">
@@ -118,7 +118,7 @@ function DeckTraining() {
               {currentCard && (
                 <div className="flip-box-inner">
                   <div
-                    className="flip-training-a flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
+                    className="flip-training-a flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                     onClick={() => handleFlip()}
                   >
                     <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
@@ -126,7 +126,7 @@ function DeckTraining() {
                     </span>
                   </div>
                   <div
-                    className="flip-training-b flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-xl"
+                    className="flip-training-b flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                     onClick={() => handleFlip()}
                   >
                     <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
