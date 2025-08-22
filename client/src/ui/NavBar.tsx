@@ -1,7 +1,16 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function NavBar() {
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const deckPage =
+    location.pathname.includes("/decks") &&
+    !location.pathname.includes("/cards") &&
+    !location.pathname.includes("/training");
+  const cardPage = location.pathname.includes("/cards");
+  const profilePage = location.pathname.includes("/profile");
+  const trainingPage = location.pathname.includes("/training");
 
   return (
     <div className="flex h-full w-60 flex-col justify-between bg-tertiary">
@@ -20,7 +29,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/training/mode")}
-              className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
+              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-xl`}
             >
               <span>Entraînement</span>
               <div className="flex items-center">
@@ -36,7 +45,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/decks")}
-              className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
+              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${deckPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-xl`}
             >
               <span>Mes decks</span>
               <img
@@ -50,7 +59,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/cards")}
-              className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
+              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${cardPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-xl`}
             >
               <span>Mes cartes</span>
               <img
@@ -65,7 +74,7 @@ function NavBar() {
         <div className="mb-5 flex h-36 w-full items-end">
           <button
             onClick={() => navigate("/user/profile")}
-            className="flex h-14 w-full cursor-pointer items-center justify-between rounded-lg bg-secondary p-2 px-4 font-patua text-xl text-white shadow-xl"
+            className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-xl`}
           >
             <span>Mon profil</span>
             <img
