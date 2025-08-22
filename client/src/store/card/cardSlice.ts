@@ -39,7 +39,13 @@ const initialState: CardState = {
 const cardSlice = createSlice({
   name: "card",
   initialState,
-  reducers: {},
+  reducers: {
+    deleteCardsByDeckId: (state, action) => {
+      state.cards = state.cards.filter(
+        (card) => card.deck_id !== action.payload
+      );
+    }
+  },
   extraReducers: (builder) => {
     builder
       // GET CARDS
@@ -128,6 +134,7 @@ const cardSlice = createSlice({
   }
 });
 
+export const { deleteCardsByDeckId } = cardSlice.actions;
 export default cardSlice.reducer;
 
 export const getCards = (state: { card: CardState }) => state.card.cards;
