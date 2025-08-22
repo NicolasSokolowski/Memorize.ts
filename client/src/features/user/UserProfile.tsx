@@ -54,7 +54,7 @@ function UserProfile() {
         </div>
       </div>
       <div className="mx-20 flex h-96 justify-center gap-32">
-        <div className="m-4 flex w-112 flex-col gap-4">
+        <div className="mx-4 mb-6 flex w-112 flex-col gap-4">
           <button
             className={`h-16 w-full rounded-md shadow-md ${visibleForm === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="edit-username"
