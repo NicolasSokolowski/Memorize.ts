@@ -131,6 +131,7 @@ function SignupForm() {
             onChange={(e) => handleChange(e)}
             placeholder="Nom d'utilisateur"
             className="h-12 w-80 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+            autoComplete="off"
           />
           {error.username && (
             <p className="max-w-full break-words font-patua text-sm text-red-500">
