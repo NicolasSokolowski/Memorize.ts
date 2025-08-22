@@ -3,6 +3,7 @@ import axiosInstance from "../../services/axios.instance";
 import { Deck } from "./deckSlice";
 import axios from "axios";
 import { ApiErrorResponse } from "../../types/api";
+import { deleteCardsByDeckId } from "../card/cardSlice";
 
 export const getDecks = createAsyncThunk<Deck[]>("GET_DECKS", async () => {
   const response = await axiosInstance.get("/decks");
@@ -50,9 +51,10 @@ export const deleteDeck = createAsyncThunk<
   number,
   number,
   { rejectValue: ApiErrorResponse }
->("DELETE_DECK", async (id, { rejectWithValue }) => {
+>("DELETE_DECK", async (id, { dispatch, rejectWithValue }) => {
   try {
     await axiosInstance.delete(`/decks/${id}`);
+    dispatch(deleteCardsByDeckId(id));
     return id;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
