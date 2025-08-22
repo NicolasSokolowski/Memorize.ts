@@ -37,7 +37,7 @@ function UserProfile() {
   return (
     <div className="min-h-screen">
       <div className="flex h-96 items-center justify-center">
-        <div className="flex size-80 items-center justify-center rounded-full bg-tertiary shadow-xl">
+        <div className="flex size-80 items-center justify-center rounded-full bg-tertiary shadow-custom-light">
           <img className="size-64 rounded-full bg-white shadow-inner-strong" />
         </div>
       </div>
