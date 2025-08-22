@@ -37,7 +37,7 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
   };
 
   return (
-    <div className="flip-box-b-right size-60 rounded-lg bg-tertiary shadow-lg">
+    <div className="flip-box-b-right size-60 rounded-lg bg-tertiary shadow-custom-light">
       <div className="flex h-full flex-col justify-between">
         <h3 className="mt-4 text-center font-patua text-xl text-textPrimary">
           Supprimer

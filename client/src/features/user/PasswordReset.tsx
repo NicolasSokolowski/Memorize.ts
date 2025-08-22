@@ -43,7 +43,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
   };
 
   return (
-    <div className="flex size-full h-144 flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-lg">
+    <div className="flex size-full h-144 flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light">
       <h3 className="m-4 text-center text-2xl">
         Réinitialisation du mot de passe
       </h3>
@@ -63,7 +63,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
           autoComplete="off"
         />
         {!emailHasBeenSent ? (
-          <div className="mx-4 mb-6 flex w-full flex-col justify-center ">
+          <div className="mx-2 mt-3 flex w-full flex-col justify-center">
             <div className="flex w-full justify-center gap-20">
               {error ? (
                 <p className="break-words pl-2 font-patua text-red-500">

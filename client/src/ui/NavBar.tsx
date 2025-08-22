@@ -29,7 +29,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/training/mode")}
-              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-xl`}
+              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-custom-light`}
             >
               <span>Entraînement</span>
               <div className="flex items-center">
@@ -45,7 +45,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/decks")}
-              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${deckPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-xl`}
+              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${deckPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-custom-light`}
             >
               <span>Mes decks</span>
               <img
@@ -59,7 +59,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/cards")}
-              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${cardPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-xl`}
+              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${cardPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-custom-light`}
             >
               <span>Mes cartes</span>
               <img
@@ -74,7 +74,7 @@ function NavBar() {
         <div className="mb-5 flex h-36 w-full items-end">
           <button
             onClick={() => navigate("/user/profile")}
-            className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-xl`}
+            className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-custom-light`}
           >
             <span>Mon profil</span>
             <img

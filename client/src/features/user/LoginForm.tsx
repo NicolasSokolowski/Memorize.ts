@@ -94,7 +94,7 @@ function LoginForm() {
       className={`flip-card-inner ${activeAction === "reset-password" ? "flip-vertical-reverse" : ""}`}
     >
       <div className="flip-card-front">
-        <section className="h-full min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-xl">
+        <section className="h-full min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-custom-light">
           <h2 className="m-5 text-center font-patua text-4xl text-textPrimary">
             Connexion
           </h2>
@@ -144,7 +144,7 @@ function LoginForm() {
             <div className="flex w-80 flex-col gap-3">
               <button
                 type="submit"
-                className="mt-5 w-80 rounded-md bg-secondary p-3 shadow-xl"
+                className="mt-5 w-80 rounded-md bg-secondary p-3 shadow-custom-light"
               >
                 <span className="rounded-md font-patua text-3xl text-white">
                   Connexion

@@ -19,7 +19,7 @@ function DeckSelection() {
       <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-12 pb-8">
         <Link
           to="/user/training/mode"
-          className="flex size-60 flex-col items-center justify-center rounded-md bg-tertiary shadow-xl"
+          className="flex size-60 flex-col items-center justify-center rounded-md bg-tertiary shadow-custom-light"
         >
           <span className="font-patua text-9xl text-secondary">&lt;</span>
         </Link>

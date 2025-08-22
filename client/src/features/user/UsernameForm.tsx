@@ -48,7 +48,7 @@ function UsernameForm({ onCancel }: onCancelProp) {
   };
 
   return (
-    <div className="mx-4 mb-6  flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-lg">
+    <div className="mx-4 mb-6  flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light">
       <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
         Modifier mon nom
       </h3>

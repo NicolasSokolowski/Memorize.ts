@@ -78,7 +78,7 @@ function SignupForm() {
   };
 
   return (
-    <section className="min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-xl transition-all duration-300">
+    <section className="min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-custom-light transition-all duration-300">
       <h2 className="m-5 text-center font-patua text-4xl">Inscription</h2>
       <form
         className="flex flex-col items-center justify-center gap-6 p-5"
@@ -142,7 +142,7 @@ function SignupForm() {
         <div className="flex w-80 flex-col gap-3">
           <button
             type="submit"
-            className="mt-5 w-80 rounded-md bg-secondary p-3 shadow-xl"
+            className="mt-5 w-80 rounded-md bg-secondary p-3 shadow-custom-light"
           >
             <span className="rounded-md font-patua text-3xl text-white">
               S'inscrire
