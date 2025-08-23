@@ -55,7 +55,7 @@ function SearchBarLayout() {
 
   return (
     <>
-      <div className="relative flex h-14 bg-white shadow-bottom">
+      <div className="sticky top-0 z-10 flex h-14 bg-white shadow-bottom">
         {cardsLocation && (
           <div className="relative ml-12 flex w-1/6 items-center justify-center">
             <div className="flex h-10 w-full items-center rounded-full bg-primary shadow-inner-strong">

@@ -6,6 +6,7 @@ import DeckCreation from "./DeckCreation";
 import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
 import { useOutletContext } from "react-router-dom";
 import { Deck } from "../../store/deck/deckSlice";
+import { sortDecks } from "../../helpers/sortDecks";
 
 function DecksList() {
   const dispatch = useAppDispatch();
@@ -15,6 +16,7 @@ function DecksList() {
   );
 
   const filteredItems = useOutletContext<Deck[]>() || decks;
+  const sortedDecks = sortDecks(filteredItems);
 
   useEffect(() => {
     if (!hasBeenFetchedOnce) {
@@ -24,10 +26,10 @@ function DecksList() {
   }, [dispatch, hasBeenFetchedOnce]);
 
   return (
-    <div className="overflow-y-auto bg-primary p-12">
+    <div className="scrollbar-hide h-full overflow-y-auto bg-primary p-12">
       <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-12 pb-8">
         <DeckCreation />
-        {filteredItems.map((deck) => (
+        {sortedDecks.map((deck) => (
           <DeckDetails key={deck.id} deck={deck} />
         ))}
       </div>

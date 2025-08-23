@@ -35,25 +35,25 @@ function UserProfile() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="scrollbar-hide h-full overflow-y-auto">
       <div className="flex h-96 items-center justify-center">
         <div className="flex size-80 items-center justify-center rounded-full bg-tertiary shadow-custom-light">
           <img className="size-64 rounded-full bg-white shadow-inner-strong" />
         </div>
       </div>
-      <div className="mx-20 mt-4 h-32 font-patua text-2xl">
-        <div className="h-16">
+      <div className="mx-20 mt-4 h-28 font-patua text-2xl">
+        <div className="h-12">
           <span className="ml-52 text-textPrimary">
             Nom d'utilisateur : <span>{user?.username}</span>
           </span>
         </div>
-        <div className="h-16">
+        <div className="h-12">
           <span className="ml-52 text-textPrimary">
             Adresse e-mail : <span>{user?.email}</span>
           </span>
         </div>
       </div>
-      <div className="mx-20 flex h-96 justify-center gap-32">
+      <div className="mx-20 mb-10 flex h-96 justify-center gap-32">
         <div className="mx-4 mb-6 flex w-112 flex-col gap-4">
           <button
             className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
