@@ -9,8 +9,8 @@ function AllCardsList() {
   const filteredItems = useOutletContext<Card[]>() || cards;
 
   return (
-    <div className="overflow-y-auto bg-primary p-12">
-      <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-12 pb-8">
+    <div className="scrollbar-hide overflow-y-auto bg-primary p-8">
+      <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-8">
         {filteredItems.map((card) => (
           <CardDetails key={card.id} card={card} />
         ))}
