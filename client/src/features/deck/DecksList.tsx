@@ -26,8 +26,8 @@ function DecksList() {
   }, [dispatch, hasBeenFetchedOnce]);
 
   return (
-    <div className="scrollbar-hide h-full overflow-y-auto bg-primary p-12">
-      <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-12 pb-8">
+    <div className="scrollbar-hide overflow-y-auto bg-primary p-8">
+      <div className="grid grid-cols-[repeat(auto-fit,_15rem)] gap-8">
         <DeckCreation />
         {sortedDecks.map((deck) => (
           <DeckDetails key={deck.id} deck={deck} />
