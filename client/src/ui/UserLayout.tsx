@@ -7,7 +7,7 @@ function UserLayout() {
       <div className="z-50 flex w-80 justify-center rounded-sm bg-tertiary shadow-right">
         <NavBar />
       </div>
-      <div className="w-full overflow-y-auto bg-primary">
+      <div className="scrollbar-hide w-full overflow-y-auto bg-primary">
         <Outlet />
       </div>
     </div>
