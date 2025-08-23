@@ -6,6 +6,7 @@ import DeckCreation from "./DeckCreation";
 import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
 import { useOutletContext } from "react-router-dom";
 import { Deck } from "../../store/deck/deckSlice";
+import { sortDecks } from "../../helpers/sortDecks";
 
 function DecksList() {
   const dispatch = useAppDispatch();
@@ -14,21 +15,8 @@ function DecksList() {
     (state) => state.deck.hasBeenFetchedOnce
   );
 
-  const cards = useAppSelector((state) => state.card.cards);
-
   const filteredItems = useOutletContext<Deck[]>() || decks;
-
-  const sortedDecks = [...filteredItems].sort((a, b) => {
-    const aCount = cards.filter((c) => c.deck_id === a.id).length;
-    const bCount = cards.filter((c) => c.deck_id === b.id).length;
-
-    if (aCount > 0 && bCount === 0) return -1;
-    if (aCount === 0 && bCount > 0) return 1;
-
-    if (aCount !== bCount) return bCount - aCount;
-
-    return a.name.localeCompare(b.name, "fr", { sensitivity: "base" });
-  });
+  const sortedDecks = sortDecks(filteredItems);
 
   useEffect(() => {
     if (!hasBeenFetchedOnce) {

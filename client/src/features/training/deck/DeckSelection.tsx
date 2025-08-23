@@ -2,6 +2,7 @@ import DeckPicker from "./DeckPicker";
 import { Link, useLocation, useOutletContext } from "react-router-dom";
 import { Deck } from "../../../store/deck/deckSlice";
 import { useMemo } from "react";
+import { sortDecks } from "../../../helpers/sortDecks";
 
 interface LocationState {
   decks: Deck[];
@@ -13,6 +14,7 @@ function DeckSelection() {
   const decks = useMemo(() => state?.decks ?? [], [state?.decks]);
 
   const filteredItems = useOutletContext<Deck[]>() || decks;
+  const sortedDecks = sortDecks(filteredItems);
 
   return (
     <div className="overflow-y-auto bg-primary p-12">
@@ -23,7 +25,7 @@ function DeckSelection() {
         >
           <span className="font-patua text-9xl text-secondary">&lt;</span>
         </Link>
-        {filteredItems.map((deck) => (
+        {sortedDecks.map((deck) => (
           <DeckPicker key={deck.id} deck={deck} />
         ))}
       </div>
