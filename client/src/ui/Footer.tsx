@@ -14,12 +14,12 @@ function Footer() {
     <footer
       className={`absolute bottom-0 right-0 flex h-10 w-full bg-white ${isTraining && "hidden"} shadow-inner-strong`}
     >
-      <div className={`w-96 ${isHome && "hidden"}`} />
-      <div className="mx-20 flex w-full items-center justify-between font-patua text-lg text-textPrimary">
+      <div className={`sm:w-96 ${isHome && "hidden"}`} />
+      <div className="mx-10 flex w-full items-center justify-center gap-8 font-patua text-sm text-textPrimary sm:mx-20 sm:justify-between sm:gap-0 sm:text-base lg:text-lg">
         <p>CGU</p>
         <p>About us</p>
         <p>Contact</p>
-        <p>© 2025 Memorize. All rights reserved.</p>
+        <p>© 2025 Memorize</p>
       </div>
     </footer>
   );

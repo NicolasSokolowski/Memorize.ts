@@ -3,11 +3,11 @@ import NavBar from "./NavBar";
 
 function UserLayout() {
   return (
-    <div className="flex h-screen">
-      <div className="z-50 flex w-80 justify-center rounded-sm bg-tertiary shadow-right">
+    <div className="relative h-screen w-full sm:flex">
+      <div className="flex w-full justify-center rounded-sm bg-tertiary shadow-right sm:z-50 sm:w-72 sm:max-w-80 md:w-80">
         <NavBar />
       </div>
-      <div className="scrollbar-hide w-full overflow-y-auto bg-primary">
+      <div className="scrollbar-hide size-full overflow-y-auto bg-primary">
         <Outlet />
       </div>
     </div>
