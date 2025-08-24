@@ -44,10 +44,10 @@ function DeckModeSelection() {
 
   return (
     <div className="flex size-full flex-col">
-      <h1 className="flex h-1/3 items-center justify-center font-patua text-8xl text-textPrimary">
+      <h1 className="flex items-center justify-center pb-10 pt-24 font-patua text-4xl text-textPrimary sm:p-10 sm:pb-12 md:py-14 md:text-5xl lg:p-16 lg:pb-20 lg:text-6xl xl:p-24 xl:text-7xl">
         Sélectionnez un deck
       </h1>
-      <div className="flex h-80 w-full justify-center gap-10">
+      <div className="grid grid-cols-[repeat(auto-fit,_21rem)] items-center justify-center gap-8 pb-20">
         <div className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light">
           <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
             Cartes du jour
@@ -116,7 +116,7 @@ function DeckModeSelection() {
           </div>
         </div>
         <div
-          className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/deck.png')] bg-cover shadow-custom-light"
+          className="flex size-80 flex-col justify-between rounded-lg bg-tertiary bg-[url('/deck.png')] bg-cover bg-center bg-no-repeat shadow-custom-light"
           onClick={() => {
             if (decks.length > 0) {
               navigate("/user/training/decks", { state: { decks } });
