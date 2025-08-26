@@ -13,7 +13,7 @@ function NavBar() {
   const trainingPage = location.pathname.includes("/training");
 
   return (
-    <div className="absolute z-10 flex h-16 w-full justify-center bg-tertiary shadow-inner-strong sm:static sm:top-0 sm:size-full sm:flex-col sm:justify-between sm:shadow-none">
+    <div className="absolute top-0 z-10 flex h-16 w-full justify-center bg-tertiary shadow-inner-strong sm:static sm:size-full sm:flex-col sm:justify-between sm:shadow-none">
       <div className="flex flex-col justify-between">
         <div className="hidden w-full justify-end p-2 sm:flex">
           <button className="mr-4 text-xl text-secondary">&larr;</button>

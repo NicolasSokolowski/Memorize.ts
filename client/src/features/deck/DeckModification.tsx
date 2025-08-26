@@ -71,7 +71,7 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
   };
 
   return (
-    <div className="flip-box-b-left size-60 rounded-lg bg-tertiary shadow-custom-light">
+    <div className="flip-box-b-left size-full rounded-lg bg-tertiary shadow-custom-light">
       <div className="flex h-full flex-col justify-between">
         <h3 className="mt-4 text-center font-patua text-xl">Modifier</h3>
         <div className="flex h-full flex-col items-center justify-center">

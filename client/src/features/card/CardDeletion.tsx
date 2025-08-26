@@ -37,7 +37,7 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
 
   return (
     <div
-      className="size-60 rounded-lg bg-tertiary shadow-custom-light"
+      className="size-full rounded-lg bg-tertiary shadow-custom-light"
       style={{ backfaceVisibility: "visible" }}
     >
       <div className="flex h-full flex-col justify-between">

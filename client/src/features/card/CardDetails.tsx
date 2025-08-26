@@ -43,7 +43,7 @@ function CardDetails({ card }: CardProps) {
           >
             <div className="flip-card-front">
               <div
-                className="relative flex size-60 flex-col items-center justify-between rounded-md bg-tertiary shadow-custom-light"
+                className="relative flex size-full flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                 onClick={() => {
                   if (!isEdit) setIsFlipped(true);
                 }}
@@ -51,11 +51,6 @@ function CardDetails({ card }: CardProps) {
                 <h3 className="w-full break-words pt-3 text-center font-patua text-xl text-textPrimary">
                   {card.front}
                 </h3>
-                <img
-                  src="/card.png"
-                  className="absolute top-14 w-32"
-                  draggable={false}
-                />
                 <div className="flex h-16 w-full justify-between">
                   <button
                     type="button"
@@ -123,7 +118,7 @@ function CardDetails({ card }: CardProps) {
               >
                 <div className="flip-face flip-face-front">
                   <div
-                    className="relative flex size-60 flex-col items-center justify-between rounded-md bg-tertiary shadow-custom-light"
+                    className="relative flex size-full flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                     onClick={() => {
                       if (!isEdit) setIsFlipped(false);
                     }}
@@ -131,11 +126,6 @@ function CardDetails({ card }: CardProps) {
                     <h3 className="w-full break-words pt-3 text-center font-patua text-xl text-textPrimary">
                       {card.back}
                     </h3>
-                    <img
-                      src="/cardback.png"
-                      className="absolute top-14 w-32"
-                      draggable={false}
-                    />
                     <div className="flex h-16 w-full justify-between">
                       <button
                         type="button"
