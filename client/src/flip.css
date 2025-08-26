@@ -201,17 +201,17 @@
 .flip-training {
   background-color: transparent;
   perspective: 1000px;
-  width: 28rem;
-  height: 28rem;
+  width: 24rem;
+  height: 24rem;
   position: relative;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (min-width: 1024px) {
   .flip-training {
     background-color: transparent;
     perspective: 1000px;
-    width: 24rem;
-    height: 24rem;
+    width: 28rem;
+    height: 28rem;
     position: relative;
   }
 }
