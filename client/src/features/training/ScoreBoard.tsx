@@ -35,80 +35,84 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
     total > 0 ? Math.round(((easyCount + mediumCount / 2) / total) * 100) : 0;
 
   return (
-    <div className="mx-20 flex w-3/5 flex-col rounded-lg bg-tertiary shadow-custom-light">
-      <span className="mt-5 p-10 pb-20 text-center font-patua text-7xl text-textPrimary">
+    <div className="flex w-4/5 flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light">
+      <span className="p-8 text-center text-4xl md:text-5xl lg:text-6xl xl:p-14 xl:text-7xl">
         Tableau des scores
       </span>
-      <div className="my-4 flex flex-col items-center justify-center">
-        <div className="flex w-4/5 justify-between">
-          <div className="h-12 w-4/5 font-patua text-4xl text-textPrimary">
+      <div className="flex flex-col items-center justify-between text-xl md:text-2xl lg:text-3xl xl:text-4xl">
+        <div className="flex w-full justify-between">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             Nombre de cartes révisées :
           </div>
-          <div className="h-12 font-patua text-4xl text-textPrimary">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(cardsToUpdate.length).padStart(2, "0")}
           </div>
         </div>
-        <div className="flex w-4/5 justify-between">
-          <div className="h-12 w-4/5 font-patua text-4xl text-textPrimary">
+        <div className="flex w-full justify-between">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             Nombre de cartes faciles :
           </div>
-          <div className="h-12 font-patua text-4xl text-textPrimary">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(easyCount).padStart(2, "0")}
           </div>
         </div>
-        <div className="flex w-4/5 justify-between">
-          <div className="h-12 w-4/5 font-patua text-4xl text-textPrimary">
+        <div className="flex w-full justify-between">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             Nombre de cartes moyennes :
           </div>
-          <div className="h-12 font-patua text-4xl text-textPrimary">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(mediumCount).padStart(2, "0")}
           </div>
         </div>
-        <div className="flex w-4/5 justify-between">
-          <div className="h-12 w-4/5 font-patua text-4xl text-textPrimary">
+        <div className="flex w-full justify-between">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             Nombre de cartes difficiles :
           </div>
-          <div className="h-12 font-patua text-4xl text-textPrimary">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(hardCount).padStart(2, "0")}
           </div>
         </div>
-        <div className="mt-10 flex w-4/5 justify-between">
-          <div className="h-12 w-4/5 font-patua text-4xl text-textPrimary">
+        <div className="mt-10 flex w-full justify-between">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             Nombre de nouvelles cartes :
           </div>
-          <div className="h-12 font-patua text-4xl text-textPrimary">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(newCardsCount).padStart(2, "0")}
           </div>
         </div>
-        <div className="flex w-4/5 justify-between">
-          <div className="h-12 w-4/5 font-patua text-4xl text-textPrimary">
+        <div className="flex w-full justify-between">
+          <div className="mx-8 mb-6 p-1 sm:mx-10 sm:p-2 md:mx-16 md:mb-0 lg:mx-20 xl:mx-24">
             Nombre de cartes en série de victoires :
           </div>
-          <div className="h-12 font-patua text-4xl text-textPrimary">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(winStreakCount).padStart(2, "0")}
           </div>
         </div>
-        <div className="flex w-4/5 justify-between">
-          <div className="h-12 w-4/5 font-patua text-4xl text-textPrimary">
+        <div className="flex w-full justify-between">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             Taux de réussite :
           </div>
-          <div className="h-12 font-patua text-4xl text-textPrimary">
+          <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(successRate).padStart(2, "0")}%
           </div>
         </div>
       </div>
-      <div className="mb-5 flex h-32 w-full items-center justify-center gap-44">
+      <div className="mb-5 flex h-24 w-full items-center justify-center gap-8 sm:gap-24 md:h-28 md:gap-32 lg:h-32 lg:gap-36 xl:gap-44">
         <button
-          className="h-16 w-52 rounded-full bg-secondary shadow-custom-light"
+          className="h-12 w-36 rounded-full bg-secondary shadow-custom-light md:h-14 lg:h-16 lg:w-52"
           onClick={onReplay}
         >
-          <span className="font-patua text-4xl text-tertiary">Rejouer</span>
+          <span className="text-2xl text-tertiary md:text-2xl lg:text-4xl">
+            Rejouer
+          </span>
         </button>
         <button
-          className="h-16 w-52 rounded-full bg-secondary shadow-custom-light"
+          className="h-12 w-36 rounded-full bg-secondary shadow-custom-light md:h-14 lg:h-16 lg:w-52"
           onClick={() => navigate("/user/training/mode")}
         >
-          <span className="font-patua text-4xl text-tertiary">Quitter</span>
+          <span className="text-2xl text-tertiary md:text-2xl lg:text-4xl">
+            Quitter
+          </span>
         </button>
       </div>
     </div>
