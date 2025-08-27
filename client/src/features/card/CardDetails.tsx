@@ -48,7 +48,7 @@ function CardDetails({ card }: CardProps) {
                   if (!isEdit) setIsFlipped(true);
                 }}
               >
-                <h3 className="w-full break-words pt-3 text-center font-patua text-xl text-textPrimary">
+                <h3 className="w-full break-words pt-3 text-center font-patua text-2xl text-textPrimary xs:text-xl">
                   {card.front}
                 </h3>
                 <div className="flex h-16 w-full justify-between">
@@ -123,7 +123,7 @@ function CardDetails({ card }: CardProps) {
                       if (!isEdit) setIsFlipped(false);
                     }}
                   >
-                    <h3 className="w-full break-words pt-3 text-center font-patua text-xl text-textPrimary">
+                    <h3 className="w-full break-words pt-3 text-center font-patua text-2xl text-textPrimary xs:text-xl">
                       {card.back}
                     </h3>
                     <div className="flex h-16 w-full justify-between">
