@@ -41,7 +41,7 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
       style={{ backfaceVisibility: "visible" }}
     >
       <div className="flex h-full flex-col justify-between">
-        <h3 className="mt-4 text-center font-patua text-xl text-textPrimary">
+        <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
           Supprimer
         </h3>
         <div className="flex h-full flex-col items-center justify-center">
@@ -49,11 +49,11 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
             className="flex flex-col items-center gap-2"
             onSubmit={handleSubmit()}
           >
-            <p className="w-44 pl-2 font-patua text-base text-textPrimary">
+            <p className="w-60 pl-2 text-center font-patua text-lg text-textPrimary xs:w-44 xs:text-base">
               Voulez-vous vraiment supprimer ?
             </p>
             {error.message && (
-              <p className="w-44 break-words pl-1 font-patua text-sm text-red-500">
+              <p className="w-60 break-words pl-1 font-patua text-lg text-red-500 xs:w-44 xs:text-base">
                 {error.message}
               </p>
             )}
