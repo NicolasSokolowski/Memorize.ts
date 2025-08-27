@@ -100,13 +100,17 @@ function CardCreation({ deckId }: CardCreationProp) {
         </div>
         <div className="flip-box-b-top mr-2 size-full rounded-lg bg-tertiary shadow-custom-light">
           <div className="flex h-full flex-col justify-between">
-            <h3 className="mt-4 text-center font-patua text-xl">Créer</h3>
+            <h3 className="mt-4 text-center font-patua text-2xl xs:text-xl">
+              Créer
+            </h3>
             <div className="flex h-full flex-col items-center justify-center">
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center gap-4 xs:gap-2"
               >
-                <div className={`flip-input ${isInputFlipped ? "flip" : ""}`}>
+                <div
+                  className={`flip-input ${isInputFlipped ? "flip" : ""} flex w-60 justify-center xs:w-44 `}
+                >
                   <div className="flip-input-inner">
                     <div className="flip-input-a">
                       <input
@@ -116,7 +120,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
                         placeholder="Face avant"
-                        className="mb-2 h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+                        className="mb-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
                       />
                     </div>
                     <div className="flip-input-b-top">
@@ -127,7 +131,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
                         placeholder="Face arrière"
-                        className="h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+                        className="h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
                       />
                     </div>
                   </div>
