@@ -73,10 +73,12 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
   return (
     <div className="flip-box-b-left size-full rounded-lg bg-tertiary shadow-custom-light">
       <div className="flex h-full flex-col justify-between">
-        <h3 className="mt-4 text-center font-patua text-xl">Modifier</h3>
+        <h3 className="mt-4 text-center font-patua text-2xl xs:text-xl">
+          Modifier
+        </h3>
         <div className="flex h-full flex-col items-center justify-center">
           <form
-            className="flex flex-col items-center gap-2"
+            className="flex flex-col items-center gap-4 xs:gap-2"
             onSubmit={handleSubmit()}
           >
             <input
@@ -85,10 +87,10 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
               value={deckData.name}
               onChange={(e) => handleChange(e)}
               placeholder="Nom du deck"
-              className="mt-2 h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+              className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
             />
             {error.name && (
-              <p className="w-44 break-words pl-1 font-patua text-sm text-red-500">
+              <p className="w-44 break-words pl-1 font-patua text-lg text-red-500 xs:text-sm">
                 {error.name}
               </p>
             )}
