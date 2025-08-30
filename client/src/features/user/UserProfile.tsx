@@ -36,27 +36,48 @@ function UserProfile() {
 
   return (
     <div className="scrollbar-hide h-full overflow-y-auto">
-      <div className="flex h-96 items-center justify-center">
+      <div className="mt-14 flex h-96 items-center justify-center sm:mt-0">
         <div className="flex size-80 items-center justify-center rounded-full bg-tertiary shadow-custom-light">
           <img className="size-64 rounded-full bg-white shadow-inner-strong" />
         </div>
       </div>
-      <div className="mx-20 mt-4 h-28 font-patua text-2xl">
-        <div className="h-12">
-          <span className="ml-52 text-textPrimary">
+      <div className="mt-4 h-28 w-full font-patua text-xl sm:text-2xl">
+        <div className="flex h-12 w-full items-center justify-center sm:flex-none">
+          <span className="text-textPrimary">
             Nom d'utilisateur : <span>{user?.username}</span>
           </span>
         </div>
-        <div className="h-12">
-          <span className="ml-52 text-textPrimary">
+        <div className="mx-auto flex h-12 w-full items-center justify-center sm:flex-none">
+          <span className="break-words text-center text-textPrimary">
             Adresse e-mail : <span>{user?.email}</span>
           </span>
         </div>
       </div>
-      <div className="mx-20 mb-10 flex h-96 justify-center gap-32">
-        <div className="mx-4 mb-6 flex w-112 flex-col gap-4">
+      <div className="mx-16 mb-10 flex justify-center sm:h-96">
+        <div className="mb-6 flex w-96 flex-col gap-4 sm:mx-4 sm:w-112">
+          <div
+            className={
+              visibleForm === "edit-username"
+                ? `flip-profile ${isEditing ? "flip" : ""} w-96 xs:block sm:hidden`
+                : "hidden"
+            }
+          >
+            <div className="flip-box-inner">
+              <div className="flip-box-profile-a" />
+              <div className="flip-box-profile-edit">
+                {visibleForm === "edit-username" && (
+                  <UsernameForm
+                    onCancel={() => {
+                      setIsEditing(false);
+                      setTimeout(() => setVisibleForm("none"), 800);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
           <button
-            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-96 rounded-md shadow-custom-light ${visibleForm === "edit-username" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="edit-username"
             onClick={(e) => handleEdit(e)}
           >
@@ -64,8 +85,29 @@ function UserProfile() {
               Modifier mon nom d'utilisateur
             </span>
           </button>
+          <div
+            className={
+              visibleForm === "edit-email"
+                ? `flip-profile ${isEditing ? "flip" : ""} w-96 xs:block sm:hidden`
+                : "hidden"
+            }
+          >
+            <div className="flip-box-inner">
+              <div className="flip-box-profile-a" />
+              <div className="flip-box-profile-edit">
+                {visibleForm === "edit-email" && (
+                  <EmailForm
+                    onCancel={() => {
+                      setIsEditing(false);
+                      setTimeout(() => setVisibleForm("none"), 800);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
           <button
-            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "edit-email" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-96 rounded-md shadow-custom-light ${visibleForm === "edit-email" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="edit-email"
             onClick={(e) => handleEdit(e)}
           >
@@ -73,8 +115,29 @@ function UserProfile() {
               Modifier mon adresse e-mail
             </span>
           </button>
+          <div
+            className={
+              visibleForm === "edit-password"
+                ? `flip-profile ${isEditing ? "flip" : ""} w-96 xs:block sm:hidden`
+                : "hidden"
+            }
+          >
+            <div className="flip-box-inner">
+              <div className="flip-box-profile-a" />
+              <div className="flip-box-profile-edit">
+                {visibleForm === "edit-password" && (
+                  <PasswordForm
+                    onCancel={() => {
+                      setIsEditing(false);
+                      setTimeout(() => setVisibleForm("none"), 800);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
           <button
-            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "edit-password" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-96 rounded-md shadow-custom-light ${visibleForm === "edit-password" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="edit-password"
             onClick={(e) => handleEdit(e)}
           >
@@ -82,22 +145,66 @@ function UserProfile() {
               Modifier mon mot de passe
             </span>
           </button>
+          <div
+            className={
+              visibleForm === "logout"
+                ? `flip-profile ${isEditing ? "flip" : ""} w-96 xs:block sm:hidden`
+                : "hidden"
+            }
+          >
+            <div className="flip-box-inner">
+              <div className="flip-box-profile-a" />
+              <div className="flip-box-profile-edit">
+                {visibleForm === "logout" && (
+                  <LogoutForm
+                    onCancel={() => {
+                      setIsEditing(false);
+                      setTimeout(() => setVisibleForm("none"), 800);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
           <button
-            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "logout" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-96 rounded-md shadow-custom-light ${visibleForm === "logout" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="logout"
             onClick={(e) => handleEdit(e)}
           >
             <span className="font-patua text-xl">Me déconnecter</span>
           </button>
+          <div
+            className={
+              visibleForm === "delete-user"
+                ? `flip-profile ${isEditing ? "flip" : ""} w-96 xs:block sm:hidden`
+                : "hidden"
+            }
+          >
+            <div className="flip-box-inner">
+              <div className="flip-box-profile-a" />
+              <div className="flip-box-profile-edit">
+                {visibleForm === "delete-user" && (
+                  <DeleteAccount
+                    onCancel={() => {
+                      setIsEditing(false);
+                      setTimeout(() => setVisibleForm("none"), 800);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
           <button
-            className={`h-16 w-full rounded-md shadow-custom-light ${visibleForm === "delete-user" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
+            className={`h-16 w-96 rounded-md shadow-custom-light ${visibleForm === "delete-user" ? "bg-tertiary text-textPrimary" : "bg-secondary text-white"}`}
             value="delete-user"
             onClick={(e) => handleEdit(e)}
           >
             <span className="font-patua text-xl">Supprimer mon compte</span>
           </button>
         </div>
-        <div className={`flip-profile ${isEditing ? "flip" : ""}`}>
+        <div
+          className={`flip-profile hidden sm:block ${isEditing ? "flip" : ""}`}
+        >
           <div className="flip-box-inner">
             <div className="flip-box-profile-a" />
             <div className="flip-box-profile-edit">
