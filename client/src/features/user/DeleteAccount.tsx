@@ -6,6 +6,7 @@ import {
   ApiErrorResponse,
   sendVerificationCode
 } from "../../store/user/userThunk";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 type DeleteFormProps = {
   onCancel: () => void;
@@ -65,33 +66,12 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
             {error ? (
               <div className="pl-3 font-patua text-red-500">{error}</div>
             ) : (
-              <>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                 <p className="text-center font-patua text-xl text-textPrimary">
                   Êtes-vous sûr de vouloir supprimer votre compte ?
                 </p>
-                <form
-                  className="mt-5 flex w-full justify-center gap-20"
-                  onSubmit={handleSubmit}
-                >
-                  <button type="button">
-                    <img
-                      src="/cancelation.png"
-                      alt="Cancelation icon"
-                      onClick={onCancel}
-                      className="w-24"
-                      draggable={false}
-                    />
-                  </button>
-                  <button type="submit" className="mr-2">
-                    <img
-                      src="/validation.png"
-                      alt="Validation icon"
-                      className="w-20"
-                      draggable={false}
-                    />
-                  </button>
-                </form>
-              </>
+                <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+              </form>
             )}
           </div>
         </div>

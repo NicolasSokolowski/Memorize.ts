@@ -3,6 +3,7 @@ import { deleteDeck } from "../../store/deck/deckThunk";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { DeckProps } from "./DeckDetails";
 import { ApiErrorResponse } from "../../types/api";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 interface DeckModificationProps extends DeckProps {
   onCancel: () => void;
@@ -62,24 +63,11 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
                 {error.message}
               </p>
             )}
-            <div className="flex w-full justify-between gap-10">
-              <button type="button" onClick={() => onCancel()}>
-                <img
-                  src="/cancelation.png"
-                  alt="Cancelation icon"
-                  className="w-20"
-                  draggable={false}
-                />
-              </button>
-              <button type="submit" className="mr-2">
-                <img
-                  src="/validation.png"
-                  alt="Validation icon"
-                  className="w-16"
-                  draggable={false}
-                />
-              </button>
-            </div>
+            <ChoiceButton
+              width="20"
+              gap="gap-20 sm:gap-10"
+              onCancel={onCancel}
+            />
           </form>
         </div>
       </div>

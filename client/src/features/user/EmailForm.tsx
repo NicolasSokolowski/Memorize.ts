@@ -7,6 +7,7 @@ import {
 } from "../../store/user/userThunk";
 import CodeVerificationForm from "./CodeVerificationForm";
 import { onCancelProp } from "../../types/user";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 function EmailForm({ onCancel }: onCancelProp) {
   const [isNewEmailAvailable, setIsNewEmailAvailable] = useState(false);
@@ -73,7 +74,7 @@ function EmailForm({ onCancel }: onCancelProp) {
             <input
               id="email"
               type="text"
-              className="mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
+              className="mb-5 mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
               value={newEmail}
               onChange={(e) => {
                 setError("");
@@ -81,30 +82,10 @@ function EmailForm({ onCancel }: onCancelProp) {
               }}
               autoComplete="off"
             />
-            <div className="mt-5 flex w-full flex-col justify-center ">
-              {error && (
-                <div className="pl-3 font-patua text-red-500">{error}</div>
-              )}
-              <div className="flex w-full justify-center gap-20">
-                <button type="button">
-                  <img
-                    src="/cancelation.png"
-                    alt="Cancelation icon"
-                    onClick={onCancel}
-                    className="w-24"
-                    draggable={false}
-                  />
-                </button>
-                <button type="submit" className="mr-2">
-                  <img
-                    src="/validation.png"
-                    alt="Validation icon"
-                    className="w-20"
-                    draggable={false}
-                  />
-                </button>
-              </div>
-            </div>
+            {error && (
+              <div className="pl-3 font-patua text-red-500">{error}</div>
+            )}
+            <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
           </form>
         </div>
       </div>

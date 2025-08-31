@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { verifyCodeValidity } from "../../store/user/userThunk";
 import { ApiErrorResponse } from "../../types/api";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 type CodeVerificationProps = {
   onCancel: () => void;
@@ -115,25 +116,7 @@ function CodeVerificationForm(props: CodeVerificationProps) {
       </div>
       <div className="mt-5 flex w-full flex-col justify-center text-center ">
         {error && <div className="pl-3 font-patua text-red-500">{error}</div>}
-        <div className="flex w-full justify-center gap-20">
-          <button type="button">
-            <img
-              src="/cancelation.png"
-              alt="Cancelation icon"
-              onClick={onCancel}
-              className="w-24"
-              draggable={false}
-            />
-          </button>
-          <button type="submit" className="mr-2">
-            <img
-              src="/validation.png"
-              alt="Validation icon"
-              className="w-20"
-              draggable={false}
-            />
-          </button>
-        </div>
+        <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
       </div>
     </form>
   );

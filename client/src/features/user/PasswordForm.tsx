@@ -2,6 +2,7 @@ import { useEffect, useId, useState } from "react";
 import axiosInstance from "../../services/axios.instance";
 import axios from "axios";
 import { onCancelProp } from "../../types/user";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 const initialState = {
   currentPassword: "",
@@ -124,25 +125,7 @@ function PasswordForm({ onCancel }: onCancelProp) {
                 {error.message}
               </p>
             ) : (
-              <div className="flex w-full justify-center gap-20">
-                <button type="button">
-                  <img
-                    src="/cancelation.png"
-                    alt="Cancelation icon"
-                    onClick={onCancel}
-                    className="w-20"
-                    draggable={false}
-                  />
-                </button>
-                <button type="submit" className="mr-2">
-                  <img
-                    src="/validation.png"
-                    alt="Validation icon"
-                    className="w-16"
-                    draggable={false}
-                  />
-                </button>
-              </div>
+              <ChoiceButton width="20" gap="gap-20" onCancel={onCancel} />
             )}
           </form>
         </div>

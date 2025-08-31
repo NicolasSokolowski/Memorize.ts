@@ -1,6 +1,7 @@
 import { useAppDispatch } from "../../store/hooks";
 import { logout } from "../../store/user/userThunk";
 import { onCancelProp } from "../../types/user";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 function LogoutForm({ onCancel }: onCancelProp) {
   const dispatch = useAppDispatch();
@@ -19,30 +20,12 @@ function LogoutForm({ onCancel }: onCancelProp) {
       </h3>
       <form
         onSubmit={handleSubmit()}
-        className="mx-12 flex flex-1 flex-col justify-center"
+        className="mx-12 flex flex-1 flex-col justify-center gap-5"
       >
         <p className="text-center font-patua text-xl text-textPrimary">
           Êtes-vous sûr de vouloir vous déconnecter ?
         </p>
-        <div className="mt-5 flex w-full justify-center gap-20">
-          <button type="button">
-            <img
-              src="/cancelation.png"
-              alt="Cancelation icon"
-              onClick={onCancel}
-              className="w-24"
-              draggable={false}
-            />
-          </button>
-          <button type="submit" className="mr-2">
-            <img
-              src="/validation.png"
-              alt="Validation icon"
-              className="w-20"
-              draggable={false}
-            />
-          </button>
-        </div>
+        <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
       </form>
     </div>
   );

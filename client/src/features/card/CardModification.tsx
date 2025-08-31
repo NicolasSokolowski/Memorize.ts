@@ -3,6 +3,7 @@ import { CardProps } from "./CardDetails";
 import { useAppDispatch } from "../../store/hooks";
 import { updateCard } from "../../store/card/cardThunks";
 import { ApiErrorResponse } from "../../types/api";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 type CardSide = "front" | "back";
 
@@ -82,12 +83,6 @@ function CardModification({
     }));
   };
 
-  const handleCancel = () => {
-    setCardData({ front: card.front, back: card.back });
-    setError({ front: { message: "" }, back: { message: "" } });
-    onCancel();
-  };
-
   return (
     <div
       className="size-full rounded-lg bg-tertiary shadow-custom-light"
@@ -116,24 +111,11 @@ function CardModification({
                 {error[side].message}
               </p>
             )}
-            <div className="flex w-full justify-between gap-10">
-              <button type="button" onClick={handleCancel}>
-                <img
-                  src="/cancelation.png"
-                  alt="Cancel"
-                  className="w-20"
-                  draggable={false}
-                />
-              </button>
-              <button type="submit" className="mr-2">
-                <img
-                  src="/validation.png"
-                  alt="Validate"
-                  className="w-16"
-                  draggable={false}
-                />
-              </button>
-            </div>
+            <ChoiceButton
+              width="20"
+              gap="gap-20 sm:gap-10"
+              onCancel={onCancel}
+            />
           </form>
         </div>
       </div>
