@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import axiosInstance from "../../services/axios.instance";
 import axios from "axios";
 import { onCancelProp } from "../../types/user";
@@ -11,6 +11,9 @@ const initialState = {
 
 function PasswordForm({ onCancel }: onCancelProp) {
   const [passwordHasBeenChanged, setPasswordHasBeenChanged] = useState(false);
+  const cpId = useId();
+  const npId = useId();
+  const cnpId = useId();
   const [passwordData, setPasswordData] = useState(initialState);
   const [error, setError] = useState({
     message: ""
@@ -83,42 +86,33 @@ function PasswordForm({ onCancel }: onCancelProp) {
             onSubmit={handleSubmit()}
             className="mx-12 flex flex-1 flex-col justify-center"
           >
-            <label
-              htmlFor="currentPassword"
-              className="ml-1 font-patua text-textPrimary"
-            >
+            <label htmlFor={cpId} className="ml-1 font-patua text-textPrimary">
               Mot de passe actuel
             </label>
             <input
-              id="currentPassword"
+              id={cpId}
               type="password"
               className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
               value={passwordData.currentPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
             />
-            <label
-              htmlFor="newPassword"
-              className="ml-1 font-patua text-textPrimary"
-            >
+            <label htmlFor={npId} className="ml-1 font-patua text-textPrimary">
               Nouveau mot de passe
             </label>
             <input
-              id="newPassword"
+              id={npId}
               type="password"
               className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
               value={passwordData.newPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
             />
-            <label
-              htmlFor="confirmNewPassword"
-              className="ml-1 font-patua text-textPrimary"
-            >
+            <label htmlFor={cnpId} className="ml-1 font-patua text-textPrimary">
               Confirmation de mot de passe
             </label>
             <input
-              id="confirmNewPassword"
+              id={cnpId}
               type="password"
               className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
               value={passwordData.confirmNewPassword}
