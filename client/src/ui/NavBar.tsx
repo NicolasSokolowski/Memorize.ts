@@ -25,7 +25,7 @@ function NavBar() {
         </div>
       </div>
       <nav className="mx-4 my-2 flex h-full justify-between sm:mt-6 sm:flex-col">
-        <ol className="flex w-full gap-16 sm:h-48 sm:flex-col sm:gap-4">
+        <ol className="flex w-full gap-12 xs:gap-16 sm:h-48 sm:flex-col sm:gap-4">
           <li>
             <button
               onClick={() => navigate("/user/training/mode")}
@@ -68,21 +68,21 @@ function NavBar() {
               />
             </button>
           </li>
+          <li>
+            <button
+              onClick={() => navigate("/user/profile")}
+              className={`relative size-12 cursor-pointer items-center justify-center rounded-full sm:flex sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-white shadow-custom-light lg:text-xl`}
+            >
+              <span className="hidden sm:block">Mon profil</span>
+              <img
+                src="/profile.png"
+                alt="Deck icon"
+                className="absolute inset-0 m-auto w-14 sm:inset-auto sm:right-2 sm:m-0 md:w-16"
+                draggable={false}
+              />
+            </button>
+          </li>
         </ol>
-        <div className="absolute right-2 sm:static sm:right-auto sm:mb-5 sm:flex sm:w-full sm:items-end">
-          <button
-            onClick={() => navigate("/user/profile")}
-            className={`relative size-12 cursor-pointer items-center justify-center rounded-full sm:flex sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-white shadow-custom-light lg:text-xl`}
-          >
-            <span className="hidden sm:block">Mon profil</span>
-            <img
-              src="/profile.png"
-              alt="Deck icon"
-              className="absolute inset-0 m-auto w-14 sm:inset-auto sm:right-2 sm:m-0 md:w-16"
-              draggable={false}
-            />
-          </button>
-        </div>
       </nav>
     </div>
   );
