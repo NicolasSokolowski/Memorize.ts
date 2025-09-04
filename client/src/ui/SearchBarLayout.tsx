@@ -57,14 +57,14 @@ function SearchBarLayout() {
     <>
       <div className="sticky top-16 z-10 flex h-14 bg-white shadow-bottom sm:top-0">
         {cardsLocation && (
-          <div className="relative ml-4 flex w-32 max-w-64 items-center justify-center sm:ml-8 sm:w-28 lg:w-52 xl:w-64">
+          <div className="relative ml-4 flex max-w-64 items-center justify-center sm:ml-8 sm:w-[7.5rem] lg:w-52 xl:w-64">
             <div className="flex h-10 w-full items-center rounded-full sm:bg-primary sm:shadow-inner-strong">
               {deck ? (
                 <span className="font-patua text-sm text-textPrimary sm:ml-5 lg:text-lg">
                   {deck.name}
                 </span>
               ) : (
-                <span className="font-patua text-sm text-textPrimary lg:ml-5 lg:text-lg">
+                <span className="font-patua text-sm text-textPrimary sm:ml-2 lg:ml-5 lg:text-lg">
                   Toutes les cartes
                 </span>
               )}
