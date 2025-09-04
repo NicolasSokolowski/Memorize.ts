@@ -58,7 +58,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
       className={`flip-card-inner ${firstConfirmationCheck ? "flip-vertical" : ""}`}
     >
       <div className="flip-card-front">
-        <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light sm:mx-4">
+        <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
             Supprimer mon compte
           </h3>
@@ -82,7 +82,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
             className={`flip-card-inner--inner ${isCodeValid ? "flip-vertical" : ""}`}
           >
             <div className="flip-card-back-face">
-              <div className="mb-6 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light sm:mx-4">
+              <div className="mb-6 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
                 <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
                   Supprimer mon compte
                 </h3>
@@ -94,7 +94,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
               </div>
             </div>
             <div className="flip-card-back-of-back">
-              <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light sm:mx-4">
+              <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light lg:mx-4">
                 <h3 className="mt-4 text-center text-2xl">
                   Supprimer mon compte
                 </h3>

@@ -57,8 +57,8 @@ function UserProfile() {
           </span>
         </div>
       </div>
-      <div className="mx-16 mb-12 flex justify-center sm:mb-16 sm:h-96">
-        <div className="mb-6 flex w-96 flex-col gap-4 sm:mx-4 sm:w-112">
+      <div className="mx-16 mb-12 flex justify-center sm:mb-8">
+        <div className="mb-8 flex w-96 flex-col gap-4 lg:mx-4 lg:w-112">
           {actions.map(({ key, label }) => (
             <div key={key}>
               {visibleForm === key && (
@@ -67,7 +67,7 @@ function UserProfile() {
                   setIsEditing={setIsEditing}
                   visibleForm={visibleForm}
                   setVisibleForm={setVisibleForm}
-                  className="mb-4 w-96 xs:block sm:hidden"
+                  className="mb-4 w-96 sm:block lg:hidden"
                 />
               )}
               <button
@@ -89,7 +89,7 @@ function UserProfile() {
           setIsEditing={setIsEditing}
           visibleForm={visibleForm}
           setVisibleForm={setVisibleForm}
-          className="hidden size-96 sm:block"
+          className="hidden size-96 lg:block"
         />
       </div>
     </div>
