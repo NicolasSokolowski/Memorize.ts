@@ -41,6 +41,16 @@
   position: relative;
 }
 
+@media screen and (max-width: 1280px) {
+  .flip-box {
+    background-color: transparent;
+    perspective: 1000px;
+    width: 22rem;
+    height: 26rem;
+    position: relative;
+  }
+}
+
 .flip-box.flip .flip-box-inner {
   transform: rotateY(180deg);
 }
@@ -53,6 +63,16 @@
   width: 15rem;
   height: 15rem;
   position: relative;
+}
+
+@media screen and (max-width: 575px) {
+  .flip-box-deck {
+    background-color: transparent;
+    perspective: 1000px;
+    width: 20rem;
+    height: 20rem;
+    position: relative;
+  }
 }
 
 .flip-box-deck.flip .flip-box-inner {
@@ -201,9 +221,19 @@
 .flip-training {
   background-color: transparent;
   perspective: 1000px;
-  width: 28rem;
-  height: 28rem;
+  width: 24rem;
+  height: 24rem;
   position: relative;
+}
+
+@media screen and (min-width: 1024px) {
+  .flip-training {
+    background-color: transparent;
+    perspective: 1000px;
+    width: 28rem;
+    height: 28rem;
+    position: relative;
+  }
 }
 
 .flip-training.flip .flip-box-inner {

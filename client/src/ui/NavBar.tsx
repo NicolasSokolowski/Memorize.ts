@@ -13,45 +13,43 @@ function NavBar() {
   const trainingPage = location.pathname.includes("/training");
 
   return (
-    <div className="flex h-full w-60 flex-col justify-between bg-tertiary">
+    <div className="absolute top-0 z-10 flex h-16 w-full justify-center bg-tertiary shadow-inner-strong sm:static sm:size-full sm:flex-col sm:justify-between sm:shadow-none">
       <div className="flex flex-col justify-between">
-        <div className="flex w-full justify-end p-2">
-          <button className="text-xl text-secondary">&larr;</button>
+        <div className="hidden w-full justify-end p-2 sm:flex">
+          <button className="mr-4 text-xl text-secondary">&larr;</button>
         </div>
-        <div className="flex h-52 items-center justify-center">
-          <div className="flex size-48 items-center justify-center rounded-full bg-primary shadow-inner-strong">
-            <div className="size-40 rounded-full bg-white text-center shadow-inner-strong"></div>
+        <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center rounded-full bg-primary shadow-inner-strong sm:size-40 lg:size-48">
+            <div className="rounded-full bg-white text-center shadow-inner-strong sm:size-32 lg:size-40"></div>
           </div>
         </div>
       </div>
-      <nav className="mt-6 flex h-full flex-col justify-between">
-        <ol className="flex h-48 w-full flex-col gap-4">
+      <nav className="mx-4 my-2 flex h-full justify-between sm:mt-6 sm:flex-col">
+        <ol className="flex w-full gap-12 xs:gap-16 sm:h-48 sm:flex-col sm:gap-4">
           <li>
             <button
               onClick={() => navigate("/user/training/mode")}
-              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-custom-light`}
+              className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} p-4 py-2 font-patua text-white shadow-custom-light lg:text-xl`}
             >
-              <span>Entraînement</span>
-              <div className="flex items-center">
-                <img
-                  src="/training.png"
-                  alt="Training icon"
-                  className="w-16 translate-x-2"
-                  draggable={false}
-                />
-              </div>
+              <span className="hidden sm:block">Entraînement</span>
+              <img
+                src="/training.png"
+                alt="Training icon"
+                className="absolute sm:right-2 sm:w-12 md:w-16"
+                draggable={false}
+              />
             </button>
           </li>
           <li>
             <button
               onClick={() => navigate("/user/decks")}
-              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${deckPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-custom-light`}
+              className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${deckPage ? "bg-primary" : "bg-secondary"} px-4 py-2 font-patua text-white shadow-custom-light lg:text-xl`}
             >
-              <span>Mes decks</span>
+              <span className="hidden sm:block">Mes decks</span>
               <img
                 src="/deck.png"
                 alt="Deck icon"
-                className="w-24 translate-x-6"
+                className="absolute w-24 sm:right-[-8px] sm:w-20 md:w-24"
                 draggable={false}
               />
             </button>
@@ -59,32 +57,32 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/cards")}
-              className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${cardPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-custom-light`}
+              className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${cardPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-white shadow-custom-light lg:text-xl`}
             >
-              <span>Mes cartes</span>
+              <span className="hidden sm:block">Mes cartes</span>
               <img
                 src="/card.png"
                 alt="Card icon"
-                className="ml-1 w-14 translate-x-1"
+                className="absolute sm:right-2 sm:w-12 md:right-3 md:w-14"
+                draggable={false}
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => navigate("/user/profile")}
+              className={`relative size-12 cursor-pointer items-center justify-center rounded-full sm:flex sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-white shadow-custom-light lg:text-xl`}
+            >
+              <span className="hidden sm:block">Mon profil</span>
+              <img
+                src="/profile.png"
+                alt="Deck icon"
+                className="absolute inset-0 m-auto w-14 sm:inset-auto sm:right-2 sm:m-0 md:w-16"
                 draggable={false}
               />
             </button>
           </li>
         </ol>
-        <div className="mb-5 flex h-36 w-full items-end">
-          <button
-            onClick={() => navigate("/user/profile")}
-            className={`flex h-14 w-full cursor-pointer items-center justify-between rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-xl text-white shadow-custom-light`}
-          >
-            <span>Mon profil</span>
-            <img
-              src="/profile.png"
-              alt="Deck icon"
-              className="w-16 translate-x-3"
-              draggable={false}
-            />
-          </button>
-        </div>
       </nav>
     </div>
   );

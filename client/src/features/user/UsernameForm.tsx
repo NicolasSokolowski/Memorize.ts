@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { updateUserInfos } from "../../store/user/userThunk";
 import { onCancelProp } from "../../types/user";
 import { ApiErrorResponse } from "../../types/api";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 function UsernameForm({ onCancel }: onCancelProp) {
   const [usernameEdited, setUsernameEdited] = useState("");
@@ -48,7 +49,7 @@ function UsernameForm({ onCancel }: onCancelProp) {
   };
 
   return (
-    <div className="mx-4 mb-6  flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light">
+    <div className="mb-6 flex  size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
       <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
         Modifier mon nom
       </h3>
@@ -65,7 +66,7 @@ function UsernameForm({ onCancel }: onCancelProp) {
         <input
           id="username"
           type="text"
-          className="mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
+          className="mb-5 mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
           value={usernameEdited}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
@@ -75,25 +76,7 @@ function UsernameForm({ onCancel }: onCancelProp) {
             {error.message}
           </p>
         )}
-        <div className="mt-5 flex w-full justify-center gap-20">
-          <button type="button">
-            <img
-              src="/cancelation.png"
-              alt="Cancelation icon"
-              onClick={onCancel}
-              className="w-24"
-              draggable={false}
-            />
-          </button>
-          <button type="submit" className="mr-2">
-            <img
-              src="/validation.png"
-              alt="Validation icon"
-              className="w-20"
-              draggable={false}
-            />
-          </button>
-        </div>
+        <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
       </form>
     </div>
   );

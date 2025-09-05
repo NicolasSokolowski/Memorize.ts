@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import axiosInstance from "../../services/axios.instance";
 import axios from "axios";
 import { onCancelProp } from "../../types/user";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 const initialState = {
   currentPassword: "",
@@ -11,6 +12,9 @@ const initialState = {
 
 function PasswordForm({ onCancel }: onCancelProp) {
   const [passwordHasBeenChanged, setPasswordHasBeenChanged] = useState(false);
+  const cpId = useId();
+  const npId = useId();
+  const cnpId = useId();
   const [passwordData, setPasswordData] = useState(initialState);
   const [error, setError] = useState({
     message: ""
@@ -75,7 +79,7 @@ function PasswordForm({ onCancel }: onCancelProp) {
       className={`flip-card-inner ${passwordHasBeenChanged ? "flip-vertical" : ""}`}
     >
       <div className="flip-card-front">
-        <div className="mx-4 mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light">
+        <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
             Modifier mon mot de passe
           </h3>
@@ -83,42 +87,33 @@ function PasswordForm({ onCancel }: onCancelProp) {
             onSubmit={handleSubmit()}
             className="mx-12 flex flex-1 flex-col justify-center"
           >
-            <label
-              htmlFor="currentPassword"
-              className="ml-1 font-patua text-textPrimary"
-            >
+            <label htmlFor={cpId} className="ml-1 font-patua text-textPrimary">
               Mot de passe actuel
             </label>
             <input
-              id="currentPassword"
+              id={cpId}
               type="password"
               className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
               value={passwordData.currentPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
             />
-            <label
-              htmlFor="newPassword"
-              className="ml-1 font-patua text-textPrimary"
-            >
+            <label htmlFor={npId} className="ml-1 font-patua text-textPrimary">
               Nouveau mot de passe
             </label>
             <input
-              id="newPassword"
+              id={npId}
               type="password"
               className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
               value={passwordData.newPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
             />
-            <label
-              htmlFor="confirmNewPassword"
-              className="ml-1 font-patua text-textPrimary"
-            >
+            <label htmlFor={cnpId} className="ml-1 font-patua text-textPrimary">
               Confirmation de mot de passe
             </label>
             <input
-              id="confirmNewPassword"
+              id={cnpId}
               type="password"
               className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
               value={passwordData.confirmNewPassword}
@@ -130,32 +125,14 @@ function PasswordForm({ onCancel }: onCancelProp) {
                 {error.message}
               </p>
             ) : (
-              <div className="flex w-full justify-center gap-20">
-                <button type="button">
-                  <img
-                    src="/cancelation.png"
-                    alt="Cancelation icon"
-                    onClick={onCancel}
-                    className="w-20"
-                    draggable={false}
-                  />
-                </button>
-                <button type="submit" className="mr-2">
-                  <img
-                    src="/validation.png"
-                    alt="Validation icon"
-                    className="w-16"
-                    draggable={false}
-                  />
-                </button>
-              </div>
+              <ChoiceButton width="20" gap="gap-20" onCancel={onCancel} />
             )}
           </form>
         </div>
       </div>
       {passwordHasBeenChanged && (
         <div className="flip-card-back">
-          <div className="mx-4 mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light">
+          <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light lg:mx-4">
             <h3 className="m-4 text-center text-2xl">
               Modifier mon mot de passe
             </h3>

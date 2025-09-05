@@ -3,6 +3,7 @@ import { deleteDeck } from "../../store/deck/deckThunk";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { DeckProps } from "./DeckDetails";
 import { ApiErrorResponse } from "../../types/api";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 interface DeckModificationProps extends DeckProps {
   onCancel: () => void;
@@ -37,49 +38,36 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
   };
 
   return (
-    <div className="flip-box-b-right size-60 rounded-lg bg-tertiary shadow-custom-light">
+    <div className="flip-box-b-right size-full rounded-lg bg-tertiary shadow-custom-light">
       <div className="flex h-full flex-col justify-between">
-        <h3 className="mt-4 text-center font-patua text-xl text-textPrimary">
+        <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
           Supprimer
         </h3>
         <div className="flex h-full flex-col items-center justify-center">
           <form
-            className="flex flex-col items-center gap-2"
+            className="flex flex-col items-center gap-4 xs:gap-2"
             onSubmit={handleSubmit()}
           >
             {cardsLength === 0 ? (
-              <p className="w-44 pl-2 font-patua text-base text-textPrimary">
+              <p className="w-64 pl-2 text-center font-patua text-lg text-textPrimary xs:w-44 xs:text-base">
                 Voulez-vous vraiment supprimer ?
               </p>
             ) : (
-              <p className="w-44 pl-2 text-center font-patua text-base text-textPrimary">
+              <p className="w-64 pl-2 text-center font-patua text-lg text-textPrimary xs:w-44 xs:text-base">
                 Cela entraînera la suppression de {cardsLength} carte
                 {cardsLength > 1 && "s"}. Êtes-vous sûr ?
               </p>
             )}
             {error.message && (
-              <p className="w-44 break-words pl-1 font-patua text-sm text-red-500">
+              <p className="w-64 break-words pl-1 text-center font-patua text-lg text-red-500 xs:w-44 xs:text-base">
                 {error.message}
               </p>
             )}
-            <div className="flex w-full justify-between gap-10">
-              <button type="button" onClick={() => onCancel()}>
-                <img
-                  src="/cancelation.png"
-                  alt="Cancelation icon"
-                  className="w-20"
-                  draggable={false}
-                />
-              </button>
-              <button type="submit" className="mr-2">
-                <img
-                  src="/validation.png"
-                  alt="Validation icon"
-                  className="w-16"
-                  draggable={false}
-                />
-              </button>
-            </div>
+            <ChoiceButton
+              width="20"
+              gap="gap-20 sm:gap-10"
+              onCancel={onCancel}
+            />
           </form>
         </div>
       </div>

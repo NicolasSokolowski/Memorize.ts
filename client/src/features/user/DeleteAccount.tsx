@@ -6,6 +6,7 @@ import {
   ApiErrorResponse,
   sendVerificationCode
 } from "../../store/user/userThunk";
+import ChoiceButton from "../../ui/ChoiceButton";
 
 type DeleteFormProps = {
   onCancel: () => void;
@@ -57,7 +58,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
       className={`flip-card-inner ${firstConfirmationCheck ? "flip-vertical" : ""}`}
     >
       <div className="flip-card-front">
-        <div className="mx-4 mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light">
+        <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
             Supprimer mon compte
           </h3>
@@ -65,33 +66,12 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
             {error ? (
               <div className="pl-3 font-patua text-red-500">{error}</div>
             ) : (
-              <>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                 <p className="text-center font-patua text-xl text-textPrimary">
                   Êtes-vous sûr de vouloir supprimer votre compte ?
                 </p>
-                <form
-                  className="mt-5 flex w-full justify-center gap-20"
-                  onSubmit={handleSubmit}
-                >
-                  <button type="button">
-                    <img
-                      src="/cancelation.png"
-                      alt="Cancelation icon"
-                      onClick={onCancel}
-                      className="w-24"
-                      draggable={false}
-                    />
-                  </button>
-                  <button type="submit" className="mr-2">
-                    <img
-                      src="/validation.png"
-                      alt="Validation icon"
-                      className="w-20"
-                      draggable={false}
-                    />
-                  </button>
-                </form>
-              </>
+                <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+              </form>
             )}
           </div>
         </div>
@@ -102,9 +82,9 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
             className={`flip-card-inner--inner ${isCodeValid ? "flip-vertical" : ""}`}
           >
             <div className="flip-card-back-face">
-              <div className="mx-4 mb-6 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light">
+              <div className="mb-6 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
                 <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-                  Modifier mon adresse e-mail
+                  Supprimer mon compte
                 </h3>
                 <CodeVerificationForm
                   onCancel={onCancel}
@@ -114,7 +94,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
               </div>
             </div>
             <div className="flip-card-back-of-back">
-              <div className="mx-4 mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light">
+              <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light lg:mx-4">
                 <h3 className="mt-4 text-center text-2xl">
                   Supprimer mon compte
                 </h3>

@@ -4,8 +4,8 @@ import Footer from "./Footer";
 
 function AppLayout() {
   return (
-    <div className="relative h-screen flex-col">
-      <main>
+    <div className="flex h-screen-dvh flex-col">
+      <main className="scrollbar-hide flex-1 overflow-y-auto">
         <Outlet />
       </main>
       <Footer />

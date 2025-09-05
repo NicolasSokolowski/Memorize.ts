@@ -97,28 +97,28 @@ function DeckTraining() {
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-primary">
       {cardIndex < cards.length && (
         <>
-          <div className="flex h-32 w-full items-center">
-            <div className="absolute left-0 top-0 flex h-40 w-full justify-between p-16">
-              <span className="mt-4 font-patua text-3xl text-textPrimary">
+          <div className="flex w-full">
+            <div className="absolute left-0 top-0 flex h-32 w-full justify-between p-6 px-14 sm:p-8 sm:pt-6 md:pt-7 lg:pt-12 ">
+              <span className="mt-2 font-patua text-xl text-textPrimary sm:mx-2 sm:text-2xl lg:mt-4 lg:text-2xl xl:text-3xl">
                 Cartes restantes : {cardsLeft}
               </span>
               <button
-                className="h-16 w-40 rounded-full bg-tertiary shadow-custom-light"
+                className="h-12 w-28 rounded-full bg-tertiary shadow-custom-light sm:h-12 sm:w-32 lg:h-14 xl:h-16 xl:w-40"
                 onClick={() => handleQuit()}
               >
-                <span className="font-patua text-3xl text-secondary">
+                <span className="font-patua text-xl text-secondary sm:text-2xl lg:text-2xl xl:text-3xl">
                   Quitter
                 </span>
               </button>
             </div>
           </div>
 
-          <div className="flex h-full flex-col items-center justify-center">
+          <div className="flex size-full flex-col items-center justify-center gap-12 lg:gap-10">
             <div className={`flip-training ${isFlipped ? "flip" : ""}`}>
               {currentCard && (
                 <div className="flip-box-inner">
                   <div
-                    className="flip-training-a flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
+                    className="flip-training-a flex flex-col rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                     onClick={() => handleFlip()}
                   >
                     <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
@@ -126,7 +126,7 @@ function DeckTraining() {
                     </span>
                   </div>
                   <div
-                    className="flip-training-b flex h-112 w-112 flex-col rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
+                    className="flip-training-b flex flex-col rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                     onClick={() => handleFlip()}
                   >
                     <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
@@ -136,39 +136,39 @@ function DeckTraining() {
                 </div>
               )}
             </div>
-            <div className="mt-10 flex h-44 w-full justify-center gap-5">
+            <div className="flex h-32 w-full justify-center gap-2 sm:gap-3 md:gap-4 lg:h-44 lg:gap-5">
               <button
-                className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong"
+                className="flex size-36 items-center justify-center rounded-full bg-tertiary shadow-inner-strong lg:size-44"
                 value="easy"
                 onClick={(e) => handleNextCard(e)}
                 disabled={flipCount === 0}
               >
                 <div
-                  className={`relative size-36 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)]  disabled:cursor-not-allowed ${flipCount === 0 ? "bg-gray-300" : "bg-green-500"}`}
+                  className={`relative size-28 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed lg:size-36 ${flipCount === 0 ? "bg-gray-300" : "bg-green-500"}`}
                 >
                   <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
                 </div>
               </button>
               <button
-                className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong"
+                className="flex size-36 items-center justify-center rounded-full bg-tertiary shadow-inner-strong lg:size-44"
                 value="medium"
                 onClick={(e) => handleNextCard(e)}
                 disabled={flipCount === 0}
               >
                 <div
-                  className={`relative size-36 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed ${flipCount === 0 ? "bg-gray-300" : "bg-orange-400"}`}
+                  className={`relative size-28 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed lg:size-36 ${flipCount === 0 ? "bg-gray-300" : "bg-orange-400"}`}
                 >
                   <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
                 </div>
               </button>
               <button
-                className="flex size-44 items-center justify-center rounded-full bg-tertiary shadow-inner-strong"
+                className="flex size-36 items-center justify-center rounded-full bg-tertiary shadow-inner-strong lg:size-44"
                 value="hard"
                 onClick={(e) => handleNextCard(e)}
                 disabled={flipCount === 0}
               >
                 <div
-                  className={`relative size-36 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed ${flipCount === 0 ? "bg-gray-300" : "bg-red-600"}`}
+                  className={`relative size-28 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.3),inset_0_2px_3px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed lg:size-36 ${flipCount === 0 ? "bg-gray-300" : "bg-red-600"}`}
                 >
                   <div className="absolute -inset-4 -z-10 rounded-full border-t-2"></div>
                 </div>

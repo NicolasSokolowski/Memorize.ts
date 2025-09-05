@@ -42,11 +42,11 @@ function DeckDetails({ deck }: DeckProps) {
       <div className="flip-box-inner">
         <div className="flip-box-a">
           <div
-            className="flex size-60 flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/deck.png')] bg-cover pt-3 shadow-custom-light"
+            className="flex size-full flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/deck.png')] bg-cover pt-3 shadow-custom-light"
             onClick={() => navigate(`/user/decks/${deck.id}/cards`)}
           >
             <div className="flex h-[15%] w-full">
-              <h3 className="w-full break-words text-center font-patua text-xl text-textPrimary">
+              <h3 className="w-full break-words text-center font-patua text-2xl text-textPrimary sm:text-xl">
                 {deck.name}
               </h3>
             </div>

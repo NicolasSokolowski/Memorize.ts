@@ -63,7 +63,7 @@ function DeckCreation() {
       <div className="flip-box-inner">
         <div className="flip-box-a">
           <button
-            className="flex size-60 items-center justify-center rounded-lg bg-tertiary shadow-custom-light"
+            className="flex size-full items-center justify-center rounded-lg bg-tertiary shadow-custom-light"
             onClick={() => setIsCreating(!isCreating)}
           >
             <span className="relative top-[-12px] font-patua text-9xl text-secondary">
@@ -71,13 +71,15 @@ function DeckCreation() {
             </span>
           </button>
         </div>
-        <div className="flip-box-b-top mr-2 size-60 rounded-lg bg-tertiary shadow-custom-light">
+        <div className="flip-box-b-top mr-2 size-full rounded-lg bg-tertiary shadow-custom-light">
           <div className="flex h-full flex-col justify-between">
-            <h3 className="mt-4 text-center font-patua text-xl">Créer</h3>
+            <h3 className="mt-4 text-center font-patua text-2xl xs:text-xl">
+              Créer
+            </h3>
             <div className="flex h-full flex-col items-center justify-center">
               <form
                 onSubmit={handleSubmit()}
-                className="flex flex-col items-center gap-2"
+                className="flex flex-col items-center gap-4 xs:gap-2"
               >
                 <input
                   id="name"
@@ -86,7 +88,7 @@ function DeckCreation() {
                   onChange={(e) => handleChange(e)}
                   autoComplete="off"
                   placeholder="Nom du deck"
-                  className="mt-2 h-10 w-44 rounded-lg pl-2 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+                  className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
                 />
                 {error.name && (
                   <p className="w-44 break-words font-patua text-sm text-red-500">
