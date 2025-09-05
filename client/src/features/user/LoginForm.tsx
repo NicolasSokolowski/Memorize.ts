@@ -94,12 +94,12 @@ function LoginForm() {
       className={`flip-card-inner ${activeAction === "reset-password" ? "flip-vertical-reverse" : ""}`}
     >
       <div className="flip-card-front">
-        <section className="h-full min-h-[36rem] w-100 overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-custom-light">
-          <h2 className="m-5 text-center font-patua text-4xl text-textPrimary">
+        <section className="min-h-[33rem] overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-custom-light xl:min-h-[36rem]">
+          <h2 className="m-5 text-center font-patua text-3xl text-textPrimary xl:text-4xl">
             Connexion
           </h2>
           <form
-            className="flex h-112 flex-col items-center justify-center gap-6 p-5"
+            className="flex flex-col items-center justify-center gap-4 p-3 xl:gap-6 xl:p-5"
             onSubmit={handleSubmit()}
           >
             <div className="flex flex-col items-start gap-2">
@@ -115,10 +115,10 @@ function LoginForm() {
                 value={userInfo.email}
                 onChange={(e) => handleChange(e)}
                 placeholder="Adresse e-mail"
-                className="h-12 w-80 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+                className="h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80"
               />
             </div>
-            <div className="flex w-80 flex-col items-start gap-2">
+            <div className="flex flex-col items-start gap-2">
               <label
                 className="ml-2 font-patua text-xl text-textPrimary"
                 htmlFor="password-log"
@@ -131,7 +131,7 @@ function LoginForm() {
                 value={userInfo.password}
                 onChange={(e) => handleChange(e)}
                 placeholder="Mot de passe"
-                className="h-12 w-80 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70"
+                className="h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80"
               />
               {error.message ? (
                 <p className="ml-2 mt-1 h-2 max-w-full break-words font-patua text-base text-red-500">
@@ -141,10 +141,10 @@ function LoginForm() {
                 <p className="mt-1 h-2" />
               )}
             </div>
-            <div className="flex w-80 flex-col gap-3">
+            <div className="flex flex-col gap-3">
               <button
                 type="submit"
-                className="mt-5 w-80 rounded-md bg-secondary p-3 shadow-custom-light"
+                className="mt-5 w-72 rounded-md bg-secondary p-3 shadow-custom-light xl:w-80"
               >
                 <span className="rounded-md font-patua text-3xl text-white">
                   Connexion

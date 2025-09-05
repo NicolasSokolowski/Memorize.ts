@@ -41,6 +41,16 @@
   position: relative;
 }
 
+@media screen and (max-width: 1280px) {
+  .flip-box {
+    background-color: transparent;
+    perspective: 1000px;
+    width: 22rem;
+    height: 26rem;
+    position: relative;
+  }
+}
+
 .flip-box.flip .flip-box-inner {
   transform: rotateY(180deg);
 }

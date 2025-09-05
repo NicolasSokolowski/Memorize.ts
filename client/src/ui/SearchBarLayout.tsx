@@ -71,7 +71,7 @@ function SearchBarLayout() {
             </div>
           </div>
         )}
-        <div className="absolute left-1/2 top-1/2 w-1/3 min-w-44 -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute left-1/2 top-1/2 w-1/3 min-w-36 -translate-x-1/2 -translate-y-1/2">
           <div className="relative my-2 flex h-10 w-full max-w-96 items-center justify-between rounded-full bg-tertiary shadow-inner-strong">
             <input
               className="ml-5 bg-transparent font-patua text-textPrimary focus:outline-none"
