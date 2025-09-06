@@ -28,7 +28,9 @@ function CardDetails({ card }: CardProps) {
   }, [activeAction]);
 
   return (
-    <div className={`flip-box-deck relative ${isFlipped ? "flip-left" : ""}`}>
+    <div
+      className={`flip-box-deck relative animate-pop ${isFlipped ? "flip-left" : ""}`}
+    >
       <div className="flip-box-inner">
         {/* Face A */}
         <div className="flip-box-a">

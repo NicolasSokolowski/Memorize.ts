@@ -59,7 +59,7 @@ function DeckCreation() {
   };
 
   return (
-    <div className={`flip-box-deck ${isCreating ? "flip" : ""}`}>
+    <div className={`flip-box-deck animate-pop ${isCreating ? "flip" : ""}`}>
       <div className="flip-box-inner">
         <div className="flip-box-a">
           <button
