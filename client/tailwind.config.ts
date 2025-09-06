@@ -44,6 +44,15 @@ export default {
         tertiary: "#F4EFE5",
         textPrimary: "#060606bf"
       }
+    },
+    keyframes: {
+      pop: {
+        "0%": { transform: "scale(0.9)", opacity: "0" },
+        "100%": { transform: "scale(1)", opacity: "1" }
+      }
+    },
+    animation: {
+      pop: "pop 0.3s ease-out"
     }
   },
   plugins: []

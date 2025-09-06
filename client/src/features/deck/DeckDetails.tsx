@@ -37,7 +37,7 @@ function DeckDetails({ deck }: DeckProps) {
 
   return (
     <div
-      className={`flip-box-deck ${flipSide === "left" ? "flip-left" : ""} ${flipSide === "right" ? "flip-right" : ""}`}
+      className={`flip-box-deck animate-pop ${flipSide === "left" ? "flip-left" : ""} ${flipSide === "right" ? "flip-right" : ""}`}
     >
       <div className="flip-box-inner">
         <div className="flip-box-a">
