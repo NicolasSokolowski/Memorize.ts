@@ -44,7 +44,7 @@ function SignupForm() {
           setError((prev) => ({
             ...prev,
             fields: apiError.field
-              ? [...prev.fields, apiError.field]
+              ? [...new Set([...prev.fields, apiError.field])]
               : prev.fields,
             messages: apiError.message
               ? [...prev.messages, apiError.message]
@@ -60,7 +60,8 @@ function SignupForm() {
 
     setError((prev) => ({
       ...prev,
-      [id]: ""
+      fields: error.fields.filter((field) => field !== id),
+      messages: error.messages.filter((message) => !message.includes(id))
     }));
 
     setUserInfo((prev) => ({
