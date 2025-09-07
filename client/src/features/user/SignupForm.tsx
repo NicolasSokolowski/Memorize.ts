@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import axiosInstance from "../../services/axios.instance";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -24,8 +24,23 @@ const errorInitialState: SignupErrorType = {
 function SignupForm() {
   const [userInfo, setUserInfo] = useState(initialState);
   const [error, setError] = useState(errorInitialState);
+  const [errorMsgIndex, setErrorMsgIndex] = useState(0);
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (error.messages.length > 0) {
+      if (errorMsgIndex !== error.messages.length - 1) {
+        setTimeout(() => {
+          setErrorMsgIndex(errorMsgIndex + 1);
+        }, 3000);
+      } else {
+        setTimeout(() => {
+          setErrorMsgIndex(0);
+        }, 3000);
+      }
+    }
+  }, [errorMsgIndex, error.messages.length]);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -80,7 +95,7 @@ function SignupForm() {
   };
 
   return (
-    <section className="min-h-[33rem] overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-custom-light transition-all duration-300 xl:min-h-[36rem]">
+    <section className="min-h-[33rem] overflow-hidden rounded-md bg-tertiary shadow-custom-light transition-all duration-300 xl:min-h-[36rem]">
       <h2 className="m-5 text-center font-patua text-3xl xl:text-4xl">
         Inscription
       </h2>
