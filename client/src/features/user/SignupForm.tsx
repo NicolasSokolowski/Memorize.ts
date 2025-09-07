@@ -11,13 +11,19 @@ const initialState = {
   username: ""
 };
 
+type SignupErrorType = {
+  fields: string[];
+  messages: string[];
+};
+
+const errorInitialState: SignupErrorType = {
+  fields: [],
+  messages: []
+};
+
 function SignupForm() {
   const [userInfo, setUserInfo] = useState(initialState);
-  const [error, setError] = useState({
-    email: "",
-    password: "",
-    username: ""
-  });
+  const [error, setError] = useState(errorInitialState);
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
 
@@ -34,14 +40,16 @@ function SignupForm() {
       const axiosError = err as AxiosError<ApiErrorResponse>;
 
       if (axiosError.response?.data.errors) {
-        for (const error of axiosError.response.data.errors) {
-          if (error.field === "email") {
-            setError((prev) => ({ ...prev, email: error.message }));
-          } else if (error.field === "password") {
-            setError((prev) => ({ ...prev, password: error.message }));
-          } else if (error.field === "username") {
-            setError((prev) => ({ ...prev, username: error.message }));
-          }
+        for (const apiError of axiosError.response.data.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...prev.fields, apiError.field]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
         }
       }
     }
@@ -64,12 +72,7 @@ function SignupForm() {
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    setError({
-      email: "",
-      password: "",
-      username: ""
-    });
-
+    setError(errorInitialState);
     setUserInfo(initialState);
 
     dispatch(setHasAccount(!hasAccount));
@@ -81,7 +84,7 @@ function SignupForm() {
         Inscription
       </h2>
       <form
-        className="flex flex-col items-center justify-center gap-4 p-3 xl:gap-6 xl:p-5"
+        className="flex flex-col items-center justify-center gap-2 p-3 xl:gap-3 xl:p-5"
         onSubmit={handleSubmit()}
       >
         <div className="flex flex-col items-start gap-2">
@@ -96,11 +99,6 @@ function SignupForm() {
             placeholder="Adresse e-mail"
             className="h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80"
           />
-          {error.email && (
-            <p className="max-w-full break-words font-patua text-sm text-red-500">
-              {error.email}
-            </p>
-          )}
         </div>
         <div className="flex flex-col items-start gap-2">
           <label className="ml-2 font-patua text-xl " htmlFor="password">
@@ -112,13 +110,8 @@ function SignupForm() {
             value={userInfo.password}
             onChange={(e) => handleChange(e)}
             placeholder="Mot de passe"
-            className="h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80"
+            className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80`}
           />
-          {error.password && (
-            <p className="max-w-full break-words font-patua text-sm text-red-500">
-              {error.password}
-            </p>
-          )}
         </div>
         <div className="flex flex-col items-start gap-1 xl:gap-2">
           <label className="ml-2 font-patua text-xl" htmlFor="username">
@@ -133,11 +126,6 @@ function SignupForm() {
             className="h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80"
             autoComplete="off"
           />
-          {error.username && (
-            <p className="max-w-full break-words font-patua text-sm text-red-500">
-              {error.username}
-            </p>
-          )}
         </div>
         <div className="flex flex-col gap-3">
           <button
