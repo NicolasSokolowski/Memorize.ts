@@ -6,17 +6,18 @@ import {
   sendVerificationCode
 } from "../../store/user/userThunk";
 import { useAppDispatch } from "../../store/hooks";
-import { onCancelProp } from "../../types/user";
+import { errorInitialState, onCancelProp } from "../../types/user";
+import Error from "../../ui/Error";
 
 function PasswordReset({ onCancel }: onCancelProp) {
   const [email, setEmail] = useState("");
   const [emailHasBeenSent, setEmailHasBeenSent] = useState(false);
   const [isCodeValid, setIsCodeValid] = useState(false);
   const dispatch = useAppDispatch();
-  const [error, setError] = useState("");
+  const [error, setError] = useState(errorInitialState);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError("");
+    setError(errorInitialState);
     setEmail(e.target.value);
     setEmailHasBeenSent(false);
     setIsCodeValid(false);
@@ -34,16 +35,27 @@ function PasswordReset({ onCancel }: onCancelProp) {
         })
       ).unwrap();
       setEmailHasBeenSent(true);
-    } catch (err) {
-      const apiError = err as ApiErrorResponse;
-      if (apiError?.errors?.length) {
-        setError(apiError.errors[0].message);
+    } catch (err: unknown) {
+      const error = err as ApiErrorResponse;
+
+      if (error.errors) {
+        for (const apiError of error.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
+        }
       }
     }
   };
 
   return (
-    <div className="flex min-h-[33rem] flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light xl:min-h-[36rem]">
+    <div className="relative flex min-h-[33rem] flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light xl:min-h-[36rem]">
       <h3 className="m-4 text-center text-xl xl:text-2xl">
         Réinitialisation du mot de passe
       </h3>
@@ -65,35 +77,29 @@ function PasswordReset({ onCancel }: onCancelProp) {
         {!emailHasBeenSent ? (
           <div className="mx-2 mt-3 flex w-full flex-col justify-center">
             <div className="flex w-full justify-center gap-20">
-              {error ? (
-                <p className="break-words pl-2 font-patua text-red-500">
-                  {error}
-                </p>
-              ) : (
-                <div className="flex w-full justify-center gap-20">
-                  <button type="button">
-                    <img
-                      src="/cancelation.png"
-                      alt="Cancelation icon"
-                      onClick={onCancel}
-                      className="w-24"
-                      draggable={false}
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    className="mr-2"
-                    onClick={(e) => handleSubmit(e)}
-                  >
-                    <img
-                      src="/validation.png"
-                      alt="Validation icon"
-                      className="w-20"
-                      draggable={false}
-                    />
-                  </button>
-                </div>
-              )}
+              <div className="flex w-full justify-center gap-20">
+                <button type="button">
+                  <img
+                    src="/cancelation.png"
+                    alt="Cancelation icon"
+                    onClick={onCancel}
+                    className="w-24"
+                    draggable={false}
+                  />
+                </button>
+                <button
+                  type="button"
+                  className="mr-2"
+                  onClick={(e) => handleSubmit(e)}
+                >
+                  <img
+                    src="/validation.png"
+                    alt="Validation icon"
+                    className="w-20"
+                    draggable={false}
+                  />
+                </button>
+              </div>
             </div>
           </div>
         ) : (
@@ -111,6 +117,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
           </div>
         )}
       </div>
+      {error.messages.length > 0 && <Error error={error} />}
     </div>
   );
 }

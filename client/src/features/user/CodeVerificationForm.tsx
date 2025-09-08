@@ -3,6 +3,8 @@ import { useAppDispatch } from "../../store/hooks";
 import { verifyCodeValidity } from "../../store/user/userThunk";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
+import { errorInitialState } from "../../types/user";
+import Error from "../../ui/Error";
 
 type CodeVerificationProps = {
   onCancel: () => void;
@@ -24,13 +26,13 @@ type CodeVerificationProps = {
 function CodeVerificationForm(props: CodeVerificationProps) {
   const [code, setCode] = useState(["", "", "", ""]);
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
   const { onCancel, setIsCodeValid, requestType } = props;
   const data = "data" in props ? props.data : undefined;
 
   const handleCodeChange = (index: number, value: string) => {
-    setError("");
+    setError(errorInitialState);
     const newChar = value.slice(-1);
     setCode((prev) => {
       const updated = [...prev];
@@ -85,40 +87,53 @@ function CodeVerificationForm(props: CodeVerificationProps) {
 
       setIsCodeValid(true);
     } catch (err: unknown) {
-      const apiError = err as ApiErrorResponse;
-      if (apiError?.errors?.length) {
-        setError(apiError.errors[0].message);
+      const error = err as ApiErrorResponse;
+
+      if (error.errors) {
+        for (const apiError of error.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
+        }
       }
     }
   };
 
   return (
-    <form
-      className="mx-12 flex flex-1 flex-col justify-center"
-      onSubmit={handleCodeSubmit}
-    >
-      <div className="ml-1 text-center font-patua text-xl text-textPrimary">
-        Veuillez saisir le code reçu sur votre e-mail :
-      </div>
-      <div className="mt-4 flex justify-center gap-2 font-patua">
-        {code.map((digit, index) => (
-          <input
-            key={index}
-            ref={(el) => (inputsRef.current[index] = el)}
-            type="text"
-            maxLength={1}
-            value={digit}
-            onChange={(e) => handleCodeChange(index, e.target.value)}
-            onKeyDown={(e) => handleCodeKeyDown(index, e)}
-            className="h-16 w-12 rounded-lg border border-black text-center text-4xl text-textPrimary shadow-inner-strong"
-          />
-        ))}
-      </div>
-      <div className="mt-5 flex w-full flex-col justify-center text-center ">
-        {error && <div className="pl-3 font-patua text-red-500">{error}</div>}
-        <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
-      </div>
-    </form>
+    <>
+      <form
+        className="mx-12 flex flex-1 flex-col justify-center"
+        onSubmit={handleCodeSubmit}
+      >
+        <div className="ml-1 text-center font-patua text-xl text-textPrimary">
+          Veuillez saisir le code reçu sur votre e-mail :
+        </div>
+        <div className="mt-4 flex justify-center gap-2 font-patua">
+          {code.map((digit, index) => (
+            <input
+              key={index}
+              ref={(el) => (inputsRef.current[index] = el)}
+              type="text"
+              maxLength={1}
+              value={digit}
+              onChange={(e) => handleCodeChange(index, e.target.value)}
+              onKeyDown={(e) => handleCodeKeyDown(index, e)}
+              className={`${error.messages[0] ? "ring-2 ring-error" : "border-black"} h-16 w-12 rounded-lg border text-center text-4xl text-textPrimary shadow-inner-strong`}
+            />
+          ))}
+        </div>
+        <div className="mt-5 flex w-full flex-col justify-center text-center ">
+          <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+        </div>
+      </form>
+      {error.messages.length > 0 && <Error error={error} />}
+    </>
   );
 }
 

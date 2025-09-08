@@ -4,6 +4,7 @@ import { User } from "./userSlice";
 import axios from "axios";
 
 export type ApiError = {
+  field?: string;
   message: string;
 };
 
