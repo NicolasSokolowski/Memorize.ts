@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { login } from "../../store/user/userThunk";
 import { setHasAccount } from "../../store/user/userSlice";
@@ -25,6 +25,9 @@ function LoginForm() {
   const [activeAction, setActiveAction] = useState<Action>("none");
   const [visibleAction, setVisibleAction] = useState<Action>("none");
   const [error, setError] = useState(errorInitialState);
+  const [errorMsgIndex, setErrorMsgIndex] = useState(0);
+  const [msgHeight, setMsgHeight] = useState(0);
+  const msgRef = useRef<HTMLParagraphElement>(null);
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
 
@@ -33,6 +36,24 @@ function LoginForm() {
   };
 
   type Action = "none" | "reset-password";
+
+  useEffect(() => {
+    if (error.messages.length > 0) {
+      const timeout = setTimeout(() => {
+        setErrorMsgIndex((prev) =>
+          prev < error.messages.length - 1 ? prev + 1 : 0
+        );
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [errorMsgIndex, error.messages]);
+
+  useEffect(() => {
+    if (msgRef.current) {
+      setMsgHeight(msgRef.current.offsetHeight);
+    }
+  }, [errorMsgIndex, error.messages]);
 
   useEffect(() => {
     if (activeAction === "none") {
@@ -105,7 +126,7 @@ function LoginForm() {
 
   return (
     <div
-      className={`flip-card-inner ${activeAction === "reset-password" ? "flip-vertical-reverse" : ""}`}
+      className={`flip-card-inner relative ${activeAction === "reset-password" ? "flip-vertical-reverse" : ""}`}
     >
       <div className="flip-card-front">
         <section className="min-h-[33rem] overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-custom-light xl:min-h-[36rem]">
@@ -178,6 +199,19 @@ function LoginForm() {
               </div>
             </div>
           </form>
+          {error.messages.length > 0 && (
+            <div
+              className="absolute bottom-0 w-full overflow-hidden rounded-b-md bg-error transition-all duration-500 ease-in-out"
+              style={{ height: msgHeight }}
+            >
+              <p
+                ref={msgRef}
+                className="px-3 py-2 text-center font-patua text-sm text-white text-opacity-85"
+              >
+                {error.messages[errorMsgIndex]}
+              </p>
+            </div>
+          )}
         </section>
       </div>
       {visibleAction === "reset-password" && (
