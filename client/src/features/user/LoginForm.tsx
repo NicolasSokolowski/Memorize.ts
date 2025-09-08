@@ -1,23 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { login } from "../../store/user/userThunk";
 import { setHasAccount } from "../../store/user/userSlice";
 import PasswordReset from "./PasswordReset";
 import { ApiErrorResponse } from "../../types/api";
+import { errorInitialState } from "../../types/user";
+import Error from "../../ui/Error";
 
 const initialState = {
   email: "",
   password: ""
-};
-
-type SigninErrorType = {
-  fields: string[];
-  messages: string[];
-};
-
-const errorInitialState: SigninErrorType = {
-  fields: [],
-  messages: []
 };
 
 function LoginForm() {
@@ -25,9 +17,6 @@ function LoginForm() {
   const [activeAction, setActiveAction] = useState<Action>("none");
   const [visibleAction, setVisibleAction] = useState<Action>("none");
   const [error, setError] = useState(errorInitialState);
-  const [errorMsgIndex, setErrorMsgIndex] = useState(0);
-  const [msgHeight, setMsgHeight] = useState(0);
-  const msgRef = useRef<HTMLParagraphElement>(null);
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
 
@@ -36,24 +25,6 @@ function LoginForm() {
   };
 
   type Action = "none" | "reset-password";
-
-  useEffect(() => {
-    if (error.messages.length > 0) {
-      const timeout = setTimeout(() => {
-        setErrorMsgIndex((prev) =>
-          prev < error.messages.length - 1 ? prev + 1 : 0
-        );
-      }, 3000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [errorMsgIndex, error.messages]);
-
-  useEffect(() => {
-    if (msgRef.current) {
-      setMsgHeight(msgRef.current.offsetHeight);
-    }
-  }, [errorMsgIndex, error.messages]);
 
   useEffect(() => {
     if (activeAction === "none") {
@@ -191,6 +162,7 @@ function LoginForm() {
                   className="font-patua text-sm text-secondary underline underline-offset-2"
                   onClick={() => {
                     setActiveAction("reset-password");
+                    setError(errorInitialState);
                     setUserInfo(initialState);
                   }}
                 >
@@ -199,19 +171,7 @@ function LoginForm() {
               </div>
             </div>
           </form>
-          {error.messages.length > 0 && (
-            <div
-              className="absolute bottom-0 w-full overflow-hidden rounded-b-md bg-error transition-all duration-500 ease-in-out"
-              style={{ height: msgHeight }}
-            >
-              <p
-                ref={msgRef}
-                className="px-3 py-2 text-center font-patua text-sm text-white text-opacity-85"
-              >
-                {error.messages[errorMsgIndex]}
-              </p>
-            </div>
-          )}
+          {error.messages.length > 0 && <Error error={error} />}
         </section>
       </div>
       {visibleAction === "reset-password" && (
