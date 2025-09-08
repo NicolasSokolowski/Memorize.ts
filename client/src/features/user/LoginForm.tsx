@@ -126,10 +126,10 @@ function LoginForm() {
 
   return (
     <div
-      className={`flip-card-inner relative ${activeAction === "reset-password" ? "flip-vertical-reverse" : ""}`}
+      className={`flip-card-inner ${activeAction === "reset-password" ? "flip-vertical-reverse" : ""}`}
     >
       <div className="flip-card-front">
-        <section className="min-h-[33rem] overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-custom-light xl:min-h-[36rem]">
+        <section className="relative min-h-[33rem] overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-custom-light xl:min-h-[36rem]">
           <h2 className="m-5 text-center font-patua text-3xl text-textPrimary xl:text-4xl">
             Connexion
           </h2>
