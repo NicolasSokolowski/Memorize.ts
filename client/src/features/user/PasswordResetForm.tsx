@@ -88,7 +88,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
         <input
           id="newPassword"
           type="password"
-          className="my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
+          className={`${error.messages.length > 0 ? "ring-2 ring-error" : ""} my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong`}
           value={newPassword.newPassword}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
@@ -102,7 +102,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
         <input
           id="passwordConfirmation"
           type="password"
-          className="my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
+          className={`${error.messages.length > 0 ? "ring-2 ring-error" : ""} my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong`}
           value={newPassword.passwordConfirmation}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
