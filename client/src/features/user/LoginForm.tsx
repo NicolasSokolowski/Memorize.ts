@@ -4,7 +4,6 @@ import { login } from "../../store/user/userThunk";
 import { setHasAccount } from "../../store/user/userSlice";
 import PasswordReset from "./PasswordReset";
 import { ApiErrorResponse } from "../../types/api";
-import { AxiosError } from "axios";
 
 const initialState = {
   email: "",
@@ -54,10 +53,10 @@ function LoginForm() {
 
       setUserInfo(initialState);
     } catch (err: unknown) {
-      const axiosError = err as AxiosError<ApiErrorResponse>;
+      const error = err as ApiErrorResponse;
 
-      if (axiosError.response?.data.errors) {
-        for (const apiError of axiosError.response.data.errors) {
+      if (error.errors) {
+        for (const apiError of error.errors) {
           setError((prev) => ({
             ...prev,
             fields: apiError.field
@@ -85,8 +84,8 @@ function LoginForm() {
 
     setError((prev) => ({
       ...prev,
-      fields: prev.fields.filter((field) => field !== id),
-      messages: prev.messages.filter((message) => !message.includes(id))
+      fields: prev.fields.filter((f) => f !== field),
+      messages: prev.messages.filter((message) => !message.includes(field))
     }));
 
     setUserInfo((prev) => ({
