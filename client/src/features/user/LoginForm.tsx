@@ -162,6 +162,7 @@ function LoginForm() {
                   className="font-patua text-sm text-secondary underline underline-offset-2"
                   onClick={() => {
                     setActiveAction("reset-password");
+                    setError(errorInitialState);
                     setUserInfo(initialState);
                   }}
                 >
