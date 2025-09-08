@@ -10,13 +10,21 @@ const initialState = {
   password: ""
 };
 
+type SigninErrorType = {
+  fields: string[];
+  messages: string[];
+};
+
+const errorInitialState: SigninErrorType = {
+  fields: [],
+  messages: []
+};
+
 function LoginForm() {
   const [userInfo, setUserInfo] = useState(initialState);
   const [activeAction, setActiveAction] = useState<Action>("none");
   const [visibleAction, setVisibleAction] = useState<Action>("none");
-  const [error, setError] = useState({
-    message: ""
-  });
+  const [error, setError] = useState(errorInitialState);
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
 
@@ -80,10 +88,7 @@ function LoginForm() {
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    setError({
-      message: ""
-    });
-
+    setError(errorInitialState);
     setUserInfo(initialState);
 
     dispatch(setHasAccount(!hasAccount));
@@ -133,13 +138,6 @@ function LoginForm() {
                 placeholder="Mot de passe"
                 className="h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80"
               />
-              {error.message ? (
-                <p className="ml-2 mt-1 h-2 max-w-full break-words font-patua text-base text-red-500">
-                  {error.message}
-                </p>
-              ) : (
-                <p className="mt-1 h-2" />
-              )}
             </div>
             <div className="flex flex-col gap-3">
               <button
