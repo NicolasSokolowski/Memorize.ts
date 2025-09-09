@@ -90,11 +90,8 @@ function DeckCreation() {
                 onSubmit={handleSubmit()}
                 className="flex flex-col items-center gap-4 xs:gap-2"
               >
-                <div className="flex flex-col font-patua">
-                  <label
-                    className="ml-2 text-lg text-textPrimary sm:text-base"
-                    htmlFor="name"
-                  >
+                <div className="flex flex-col font-patua text-lg text-textPrimary sm:text-base">
+                  <label className="ml-2 " htmlFor="name">
                     Nom du deck
                   </label>
                   <input
