@@ -3,6 +3,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { createDeck } from "../../store/deck/deckThunk";
 import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
+import Error from "../../ui/Error";
 
 const initialState = {
   name: ""
@@ -65,7 +66,9 @@ function DeckCreation() {
   };
 
   return (
-    <div className={`flip-box-deck animate-pop ${isCreating ? "flip" : ""}`}>
+    <div
+      className={`flip-box-deck relative animate-pop ${isCreating ? "flip" : ""}`}
+    >
       <div className="flip-box-inner">
         <div className="flip-box-a">
           <button
@@ -79,7 +82,7 @@ function DeckCreation() {
         </div>
         <div className="flip-box-b-top mr-2 size-full rounded-lg bg-tertiary shadow-custom-light">
           <div className="flex h-full flex-col justify-between">
-            <h3 className="mt-4 text-center font-patua text-2xl xs:text-xl">
+            <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
               Créer
             </h3>
             <div className="flex h-full flex-col items-center justify-center">
@@ -104,8 +107,11 @@ function DeckCreation() {
                     className="mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2 sm:mt-1"
                   />
                 </div>
-                <div className="flex w-full translate-y--2 justify-between gap-10">
-                  <button type="button">
+                <div className="flex h-20 w-full translate-y--2 justify-between gap-10">
+                  <button
+                    type="button"
+                    className={`${error.messages.length > 0 && "hidden"}`}
+                  >
                     <img
                       src="/cancelation.png"
                       alt="Cancelation icon"
@@ -114,7 +120,10 @@ function DeckCreation() {
                       draggable={false}
                     />
                   </button>
-                  <button type="submit" className="mr-2">
+                  <button
+                    type="submit"
+                    className={`mr-2 ${error.messages.length > 0 && "hidden"}`}
+                  >
                     <img
                       src="/validation.png"
                       alt="Validation icon"
@@ -123,6 +132,7 @@ function DeckCreation() {
                     />
                   </button>
                 </div>
+                {error.messages.length > 0 && <Error error={error} />}
               </form>
             </div>
           </div>
