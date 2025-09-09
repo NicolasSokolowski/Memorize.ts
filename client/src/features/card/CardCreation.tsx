@@ -73,11 +73,11 @@ function CardCreation({ deckId }: CardCreationProp) {
               : prev.fields,
             messages: e.message ? [...prev.messages, e.message] : prev.messages
           }));
-        }
-      }
 
-      if (error.fields[0]?.includes("front")) {
-        setIsInputFlipped(false);
+          if (e.field === "front") {
+            setIsInputFlipped(false);
+          }
+        }
       }
     }
   };
@@ -123,7 +123,10 @@ function CardCreation({ deckId }: CardCreationProp) {
                         className="mb-2 mt-1 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
                       />
                     </div>
-                    <div className="flip-input-b-top">
+                    <div className="flip-input-b-top font-patua text-textPrimary">
+                      <label className="ml-2" htmlFor="back">
+                        Face arrière
+                      </label>
                       <input
                         id="back"
                         type="text"
