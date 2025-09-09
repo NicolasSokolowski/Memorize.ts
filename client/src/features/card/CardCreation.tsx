@@ -103,14 +103,14 @@ function CardCreation({ deckId }: CardCreationProp) {
             <div className="flex h-full flex-col items-center justify-center">
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col items-center gap-4 xs:gap-6"
+                className="flex flex-col items-center gap-16 xs:gap-10"
               >
                 <div
                   className={`flip-input ${isInputFlipped ? "flip" : ""} flex w-60 justify-center xs:w-44`}
                 >
                   <div className="flip-input-inner">
                     <div className="flip-input-a font-patua text-textPrimary">
-                      <label className="ml-2" htmlFor="front">
+                      <label className="ml-2 text-lg" htmlFor="front">
                         Face avant
                       </label>
                       <input
@@ -120,11 +120,11 @@ function CardCreation({ deckId }: CardCreationProp) {
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
                         placeholder="Face avant"
-                        className="mb-2 mt-1 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
+                        className="mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:mt-1 xs:h-10 xs:w-44 xs:pl-2"
                       />
                     </div>
                     <div className="flip-input-b-top font-patua text-textPrimary">
-                      <label className="ml-2" htmlFor="back">
+                      <label className="ml-2 text-lg" htmlFor="back">
                         Face arrière
                       </label>
                       <input
@@ -134,13 +134,17 @@ function CardCreation({ deckId }: CardCreationProp) {
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
                         placeholder="Face arrière"
-                        className="h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
+                        className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:mt-1 xs:h-10 xs:w-44 xs:pl-2"
                       />
                     </div>
                   </div>
                 </div>
-                <div className="flex w-full translate-y--2 justify-between gap-10">
-                  <button type="button" onClick={handleCancel}>
+                <div className="flex h-20 w-full translate-y--2 justify-between gap-10">
+                  <button
+                    type="button"
+                    onClick={handleCancel}
+                    className={`${error.messages.length > 0 && "hidden"}`}
+                  >
                     <img
                       src="/cancelation.png"
                       alt="Cancelation icon"
@@ -151,7 +155,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                   <button
                     type={isInputFlipped ? "submit" : "button"}
                     onClick={isInputFlipped ? undefined : handleClick}
-                    className="mr-2"
+                    className={`mr-2 ${error.messages.length > 0 && "hidden"}`}
                   >
                     <img
                       src="/validation.png"
