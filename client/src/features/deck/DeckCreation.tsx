@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { createDeck } from "../../store/deck/deckThunk";
 import { ApiErrorResponse } from "../../types/api";
+import { errorInitialState } from "../../types/user";
 
 const initialState = {
   name: ""
@@ -10,9 +11,7 @@ const initialState = {
 function DeckCreation() {
   const [deckData, setDeckData] = useState(initialState);
   const [isCreating, setIsCreating] = useState(false);
-  const [error, setError] = useState({
-    name: ""
-  });
+  const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,21 +28,28 @@ function DeckCreation() {
       const error = err as ApiErrorResponse;
 
       if (error.errors) {
-        for (const e of error.errors) {
-          if (e.field === "name") {
-            setError((prev) => ({ ...prev, name: e.message }));
-          }
+        for (const apiError of error.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
         }
       }
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+    const { id, value } = e.target;
 
     setError((prev) => ({
       ...prev,
-      name: ""
+      fields: prev.fields.filter((field) => field !== id),
+      messages: prev.messages.filter((message) => !message.includes(id))
     }));
 
     setDeckData((prev) => ({
@@ -54,7 +60,7 @@ function DeckCreation() {
 
   const handleCancel = () => {
     setDeckData(initialState);
-    setError({ name: "" });
+    setError(errorInitialState);
     setIsCreating(!isCreating);
   };
 
@@ -90,11 +96,6 @@ function DeckCreation() {
                   placeholder="Nom du deck"
                   className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
                 />
-                {error.name && (
-                  <p className="w-44 break-words font-patua text-sm text-red-500">
-                    {error.name}
-                  </p>
-                )}
                 <div className="flex w-full translate-y--2 justify-between gap-10">
                   <button type="button">
                     <img
