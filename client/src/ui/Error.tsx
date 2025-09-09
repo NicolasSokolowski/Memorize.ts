@@ -31,12 +31,12 @@ function Error({ error }: ErrorProps) {
   }, [errorMsgIndex, error.messages]);
   return (
     <div
-      className="absolute bottom-0 w-full overflow-hidden rounded-b-md bg-error transition-all duration-500 ease-in-out"
+      className="absolute bottom-0 flex w-full items-center justify-center overflow-hidden rounded-b-md bg-error transition-all duration-500 ease-in-out"
       style={{ height: msgHeight }}
     >
       <p
         ref={msgRef}
-        className="px-3 py-2 text-center font-patua text-sm text-white text-opacity-85"
+        className="px-3 py-2 text-center font-patua text-base text-white text-opacity-85 sm:text-sm"
       >
         {error.messages[errorMsgIndex]}
       </p>
