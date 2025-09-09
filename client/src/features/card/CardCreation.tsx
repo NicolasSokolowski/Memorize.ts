@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { createCard } from "../../store/card/cardThunks";
 import { ApiErrorResponse } from "../../types/api";
+import { errorInitialState } from "../../types/user";
 
 const initialState = {
   front: "",
@@ -12,26 +13,21 @@ interface CardCreationProp {
   deckId: number;
 }
 
-const errorsInitialState = {
-  front: {
-    message: ""
-  },
-  back: {
-    message: ""
-  }
-};
-
 function CardCreation({ deckId }: CardCreationProp) {
   const [cardData, setCardData] = useState(initialState);
   const [isCreating, setIsCreating] = useState(false);
   const [isInputFlipped, setIsInputFlipped] = useState(false);
-  const [error, setError] = useState(errorsInitialState);
+  const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
-    setError(errorsInitialState);
+    setError((prev) => ({
+      ...prev,
+      fields: prev.fields.filter((field) => field !== id),
+      messages: prev.messages.filter((message) => !message.includes(id))
+    }));
 
     setCardData((prev) => ({
       ...prev,
@@ -48,7 +44,7 @@ function CardCreation({ deckId }: CardCreationProp) {
   };
 
   const handleCancel = () => {
-    setError(errorsInitialState);
+    setError(errorInitialState);
     setCardData(initialState);
     setIsCreating(!isCreating);
     setIsInputFlipped(false);
@@ -66,20 +62,18 @@ function CardCreation({ deckId }: CardCreationProp) {
       setIsCreating(false);
     } catch (err: unknown) {
       const error = err as ApiErrorResponse;
+
       if (error.errors) {
-        for (const e of error.errors) {
-          if (e.field === "front") {
-            setIsInputFlipped(false);
-            setError((prev) => ({
-              ...prev,
-              front: { ...prev.front, message: e.message }
-            }));
-          } else if (e.field === "back") {
-            setError((prev) => ({
-              ...prev,
-              back: { ...prev.back, message: e.message }
-            }));
-          }
+        for (const apiError of error.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
         }
       }
     }
@@ -136,16 +130,6 @@ function CardCreation({ deckId }: CardCreationProp) {
                     </div>
                   </div>
                 </div>
-                {error.front.message && (
-                  <p className="mt-2 w-44 break-words pl-1 font-patua text-sm text-red-500">
-                    {error.front.message}
-                  </p>
-                )}
-                {error.back.message && (
-                  <p className="mt-2 w-44 break-words pl-1 font-patua text-sm text-red-500">
-                    {error.back.message}
-                  </p>
-                )}
                 <div className="flex w-full translate-y--2 justify-between gap-10">
                   <button type="button" onClick={handleCancel}>
                     <img
