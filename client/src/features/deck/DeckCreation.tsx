@@ -101,7 +101,7 @@ function DeckCreation() {
                     onChange={(e) => handleChange(e)}
                     autoComplete="off"
                     placeholder="Nom du deck"
-                    className="mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2 sm:mt-1"
+                    className={`${error.fields?.includes("name") ? "ring-2 ring-error" : ""} mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 focus:outline-none focus:ring-2 focus:ring-primary xs:h-10 xs:w-44 xs:pl-2 sm:mt-1`}
                   />
                 </div>
                 <div className="flex h-20 w-full translate-y--2 justify-between gap-10">
