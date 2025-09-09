@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { updateDeck } from "../../store/deck/deckThunk";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
+import { errorInitialState } from "../../types/user";
 
 const initialState = {
   name: ""
@@ -15,9 +16,7 @@ interface DeckModificationProps extends DeckProps {
 
 function DeckModification({ deck, onCancel }: DeckModificationProps) {
   const [deckData, setDeckData] = useState(initialState);
-  const [error, setError] = useState({
-    name: ""
-  });
+  const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -27,10 +26,21 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!deckData.name) return;
+    if (!deckData.name) {
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, "name"])],
+        messages: [...prev.messages, "Deck name is required"]
+      }));
+      return;
+    }
 
     if (deckData.name === deck.name) {
-      setError({ name: "Le nom est identique." });
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, "name"])],
+        messages: [...prev.messages, "Deck name is identical"]
+      }));
       return;
     }
 
@@ -42,21 +52,28 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
       const error = err as ApiErrorResponse;
 
       if (error.errors) {
-        for (const e of error.errors) {
-          if (e.field === "name") {
-            setError((prev) => ({ ...prev, name: e.message }));
-          }
+        for (const apiError of error.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
         }
       }
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+    const { id, value } = e.target;
 
     setError((prev) => ({
       ...prev,
-      name: ""
+      fields: prev.fields.filter((field) => field !== id),
+      messages: prev.messages.filter((message) => !message.includes(id))
     }));
 
     setDeckData((prev) => ({
@@ -68,7 +85,7 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
   return (
     <div className="flip-box-b-left size-full rounded-lg bg-tertiary shadow-custom-light">
       <div className="flex h-full flex-col justify-between">
-        <h3 className="mt-4 text-center font-patua text-2xl xs:text-xl">
+        <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
           Modifier
         </h3>
         <div className="flex h-full flex-col items-center justify-center">
@@ -82,16 +99,11 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
               value={deckData.name}
               onChange={(e) => handleChange(e)}
               placeholder="Nom du deck"
-              className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
+              className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
             />
-            {error.name && (
-              <p className="w-44 break-words pl-1 font-patua text-lg text-red-500 xs:text-sm">
-                {error.name}
-              </p>
-            )}
             <ChoiceButton
               width="20"
-              gap="gap-20 sm:gap-10"
+              gap="gap-20 xs:gap-10"
               onCancel={onCancel}
             />
           </form>
