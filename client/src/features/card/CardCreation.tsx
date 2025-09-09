@@ -3,6 +3,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { createCard } from "../../store/card/cardThunks";
 import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
+import Error from "../../ui/Error";
 
 const initialState = {
   front: "",
@@ -61,20 +62,22 @@ function CardCreation({ deckId }: CardCreationProp) {
       setIsInputFlipped(false);
       setIsCreating(false);
     } catch (err: unknown) {
-      const error = err as ApiErrorResponse;
+      const apiError = err as ApiErrorResponse;
 
-      if (error.errors) {
-        for (const apiError of error.errors) {
+      if (apiError.errors) {
+        for (const e of apiError.errors) {
           setError((prev) => ({
             ...prev,
-            fields: apiError.field
-              ? [...new Set([...prev.fields, apiError.field])]
+            fields: e.field
+              ? [...new Set([...prev.fields, e.field])]
               : prev.fields,
-            messages: apiError.message
-              ? [...prev.messages, apiError.message]
-              : prev.messages
+            messages: e.message ? [...prev.messages, e.message] : prev.messages
           }));
         }
+      }
+
+      if (error.fields[0]?.includes("front")) {
+        setIsInputFlipped(false);
       }
     }
   };
@@ -94,19 +97,22 @@ function CardCreation({ deckId }: CardCreationProp) {
         </div>
         <div className="flip-box-b-top mr-2 size-full rounded-lg bg-tertiary shadow-custom-light">
           <div className="flex h-full flex-col justify-between">
-            <h3 className="mt-4 text-center font-patua text-2xl xs:text-xl">
+            <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
               Créer
             </h3>
             <div className="flex h-full flex-col items-center justify-center">
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col items-center gap-4 xs:gap-2"
+                className="flex flex-col items-center gap-4 xs:gap-6"
               >
                 <div
-                  className={`flip-input ${isInputFlipped ? "flip" : ""} flex w-60 justify-center xs:w-44 `}
+                  className={`flip-input ${isInputFlipped ? "flip" : ""} flex w-60 justify-center xs:w-44`}
                 >
                   <div className="flip-input-inner">
-                    <div className="flip-input-a">
+                    <div className="flip-input-a font-patua text-textPrimary">
+                      <label className="ml-2" htmlFor="front">
+                        Face avant
+                      </label>
                       <input
                         id="front"
                         type="text"
@@ -114,7 +120,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
                         placeholder="Face avant"
-                        className="mb-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
+                        className="mb-2 mt-1 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
                       />
                     </div>
                     <div className="flip-input-b-top">
@@ -153,6 +159,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                   </button>
                 </div>
               </form>
+              {error.messages.length > 0 && <Error error={error} />}
             </div>
           </div>
         </div>
