@@ -4,15 +4,14 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { DeckProps } from "./DeckDetails";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
+import { errorInitialState } from "../../types/user";
 
 interface DeckModificationProps extends DeckProps {
   onCancel: () => void;
 }
 
 function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
-  const [error, setError] = useState({
-    message: ""
-  });
+  const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
 
   const cardsLength = useAppSelector((state) =>
@@ -30,8 +29,16 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
       const error = err as ApiErrorResponse;
 
       if (error.errors) {
-        for (const e of error.errors) {
-          setError((prev) => ({ ...prev, message: e.message }));
+        for (const apiError of error.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
         }
       }
     }
@@ -56,11 +63,6 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
               <p className="w-64 pl-2 text-center font-patua text-lg text-textPrimary xs:w-44 xs:text-base">
                 Cela entraînera la suppression de {cardsLength} carte
                 {cardsLength > 1 && "s"}. Êtes-vous sûr ?
-              </p>
-            )}
-            {error.message && (
-              <p className="w-64 break-words pl-1 text-center font-patua text-lg text-red-500 xs:w-44 xs:text-base">
-                {error.message}
               </p>
             )}
             <ChoiceButton
