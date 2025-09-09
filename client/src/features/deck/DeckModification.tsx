@@ -93,14 +93,19 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
             className="flex flex-col items-center gap-4 xs:gap-2"
             onSubmit={handleSubmit()}
           >
-            <input
-              id="name"
-              type="text"
-              value={deckData.name}
-              onChange={(e) => handleChange(e)}
-              placeholder="Nom du deck"
-              className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
-            />
+            <div className="flex flex-col font-patua text-lg text-textPrimary sm:text-base">
+              <label className="ml-2 " htmlFor="name">
+                Nom du deck
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={deckData.name}
+                onChange={(e) => handleChange(e)}
+                placeholder="Nom du deck"
+                className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2 sm:mt-1"
+              />
+            </div>
             <ChoiceButton
               width="20"
               gap="gap-20 xs:gap-10"
