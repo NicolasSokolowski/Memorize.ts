@@ -18,3 +18,9 @@ export const selectHardCards = () =>
   createSelector([selectCards], (cards) =>
     cards.filter((card: Card) => card.difficulty <= 15)
   );
+
+export const selectDeckCardsNumber = (deckId: number) =>
+  createSelector(
+    [selectCards],
+    (cards) => cards.filter((card: Card) => card.deck_id === deckId).length
+  );

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { deleteDeck } from "../../store/deck/deckThunk";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { DeckProps } from "./DeckDetails";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
+import { selectDeckCardsNumber } from "../../store/card/cardSelector";
 
 interface DeckModificationProps extends DeckProps {
   onCancel: () => void;
@@ -14,9 +15,11 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
 
-  const cardsLength = useAppSelector((state) =>
-    state.card.cards.filter((card) => card.deck_id === deck.id)
-  ).length;
+  const selectDeckCardsLength = useMemo(
+    () => selectDeckCardsNumber(deck.id),
+    [deck.id]
+  );
+  const cardsLength = useAppSelector(selectDeckCardsLength);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
