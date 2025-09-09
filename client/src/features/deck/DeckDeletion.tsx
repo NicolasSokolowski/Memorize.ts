@@ -1,23 +1,26 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { deleteDeck } from "../../store/deck/deckThunk";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { DeckProps } from "./DeckDetails";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
+import { errorInitialState } from "../../types/user";
+import { selectDeckCardsNumber } from "../../store/card/cardSelector";
+import Error from "../../ui/Error";
 
 interface DeckModificationProps extends DeckProps {
   onCancel: () => void;
 }
 
 function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
-  const [error, setError] = useState({
-    message: ""
-  });
+  const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
 
-  const cardsLength = useAppSelector((state) =>
-    state.card.cards.filter((card) => card.deck_id === deck.id)
-  ).length;
+  const selectDeckCardsLength = useMemo(
+    () => selectDeckCardsNumber(deck.id),
+    [deck.id]
+  );
+  const cardsLength = useAppSelector(selectDeckCardsLength);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,8 +33,16 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
       const error = err as ApiErrorResponse;
 
       if (error.errors) {
-        for (const e of error.errors) {
-          setError((prev) => ({ ...prev, message: e.message }));
+        for (const apiError of error.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
         }
       }
     }
@@ -58,17 +69,13 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
                 {cardsLength > 1 && "s"}. Êtes-vous sûr ?
               </p>
             )}
-            {error.message && (
-              <p className="w-64 break-words pl-1 text-center font-patua text-lg text-red-500 xs:w-44 xs:text-base">
-                {error.message}
-              </p>
-            )}
             <ChoiceButton
               width="20"
               gap="gap-20 sm:gap-10"
               onCancel={onCancel}
             />
           </form>
+          {error.messages.length > 0 && <Error error={error} />}
         </div>
       </div>
     </div>
