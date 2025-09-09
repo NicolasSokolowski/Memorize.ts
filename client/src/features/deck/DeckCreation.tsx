@@ -87,15 +87,23 @@ function DeckCreation() {
                 onSubmit={handleSubmit()}
                 className="flex flex-col items-center gap-4 xs:gap-2"
               >
-                <input
-                  id="name"
-                  type="text"
-                  value={deckData.name}
-                  onChange={(e) => handleChange(e)}
-                  autoComplete="off"
-                  placeholder="Nom du deck"
-                  className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
-                />
+                <div className="flex flex-col font-patua">
+                  <label
+                    className="ml-2 text-lg text-textPrimary sm:text-base"
+                    htmlFor="name"
+                  >
+                    Nom du deck
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    value={deckData.name}
+                    onChange={(e) => handleChange(e)}
+                    autoComplete="off"
+                    placeholder="Nom du deck"
+                    className="mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2 sm:mt-1"
+                  />
+                </div>
                 <div className="flex w-full translate-y--2 justify-between gap-10">
                   <button type="button">
                     <img
