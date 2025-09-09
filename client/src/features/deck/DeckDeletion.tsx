@@ -6,6 +6,7 @@ import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import { selectDeckCardsNumber } from "../../store/card/cardSelector";
+import Error from "../../ui/Error";
 
 interface DeckModificationProps extends DeckProps {
   onCancel: () => void;
@@ -74,6 +75,7 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
               onCancel={onCancel}
             />
           </form>
+          {error.messages.length > 0 && <Error error={error} />}
         </div>
       </div>
     </div>
