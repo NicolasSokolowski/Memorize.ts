@@ -168,7 +168,8 @@ export class CardController extends CoreController<
     if (checkIfCardExistsInDeck && checkIfCardExistsInDeck.id !== cardId) {
       throw new BadRequestError(
         "Front side already exists in this deck",
-        "DUPLICATE_ENTRY"
+        "DUPLICATE_ENTRY",
+        "front"
       );
     }
 

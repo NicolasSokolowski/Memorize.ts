@@ -110,7 +110,10 @@ function CardCreation({ deckId }: CardCreationProp) {
                 >
                   <div className="flip-input-inner">
                     <div className="flip-input-a font-patua text-textPrimary">
-                      <label className="ml-2 text-lg" htmlFor="front">
+                      <label
+                        className="ml-2 text-lg sm:text-base"
+                        htmlFor="front"
+                      >
                         Face avant
                       </label>
                       <input
@@ -124,7 +127,10 @@ function CardCreation({ deckId }: CardCreationProp) {
                       />
                     </div>
                     <div className="flip-input-b-top font-patua text-textPrimary">
-                      <label className="ml-2 text-lg" htmlFor="back">
+                      <label
+                        className="ml-2 text-lg sm:text-base"
+                        htmlFor="back"
+                      >
                         Face arrière
                       </label>
                       <input
