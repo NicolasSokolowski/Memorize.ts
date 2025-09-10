@@ -5,6 +5,7 @@ import { updateCard } from "../../store/card/cardThunks";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
+import Error from "../../ui/Error";
 
 type CardSide = "front" | "back";
 
@@ -42,7 +43,7 @@ function CardModification({
       setError((prev) => ({
         ...prev,
         fields: [...new Set([...prev.fields, "front"])],
-        messages: [...prev.messages, "Front side is required"]
+        messages: [...prev.messages, "front side is required"]
       }));
       return;
     }
@@ -51,16 +52,16 @@ function CardModification({
       setError((prev) => ({
         ...prev,
         fields: [...new Set([...prev.fields, "back"])],
-        messages: [...prev.messages, "Back side is required"]
+        messages: [...prev.messages, "back side is required"]
       }));
       return;
     }
 
-    if (cardData.front === card.front) {
+    if (side === "front" && cardData.front === card.front) {
       setError((prev) => ({
         ...prev,
         fields: [...new Set([...prev.fields, "name"])],
-        messages: [...prev.messages, "Front side is identical"]
+        messages: [...prev.messages, "front side is identical"]
       }));
       return;
     }
@@ -131,12 +132,17 @@ function CardModification({
                 className="mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2 sm:mt-1"
               />
             </div>
-            <ChoiceButton
-              width="20"
-              gap="gap-20 sm:gap-10"
-              onCancel={onCancel}
-            />
+            <div className="h-20">
+              <div className={`${error.messages.length > 0 && "hidden"}`}>
+                <ChoiceButton
+                  width="20"
+                  gap="gap-20 sm:gap-10"
+                  onCancel={onCancel}
+                />
+              </div>
+            </div>
           </form>
+          {error.messages.length > 0 && <Error error={error} />}
         </div>
       </div>
     </div>
