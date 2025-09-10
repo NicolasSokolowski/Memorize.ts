@@ -4,6 +4,8 @@ import { deleteCard } from "../../store/card/cardThunks";
 import { useAppDispatch } from "../../store/hooks";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
+import { errorInitialState } from "../../types/user";
+import Error from "../../ui/Error";
 
 interface CardDeletionProps {
   card: Card;
@@ -11,9 +13,7 @@ interface CardDeletionProps {
 }
 
 function CardDeletion({ card, onCancel }: CardDeletionProps) {
-  const [error, setError] = useState({
-    message: ""
-  });
+  const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,8 +29,16 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
       const error = err as ApiErrorResponse;
 
       if (error.errors) {
-        for (const e of error.errors) {
-          setError((prev) => ({ ...prev, message: e.message }));
+        for (const apiError of error.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
         }
       }
     }
@@ -53,17 +61,13 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
             <p className="w-60 pl-2 text-center font-patua text-lg text-textPrimary xs:w-44 xs:text-base">
               Voulez-vous vraiment supprimer ?
             </p>
-            {error.message && (
-              <p className="w-60 break-words pl-1 font-patua text-lg text-red-500 xs:w-44 xs:text-base">
-                {error.message}
-              </p>
-            )}
             <ChoiceButton
               width="20"
               gap="gap-20 sm:gap-10"
               onCancel={onCancel}
             />
           </form>
+          {error.messages.length > 0 && <Error error={error} />}
         </div>
       </div>
     </div>
