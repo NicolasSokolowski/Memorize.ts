@@ -120,7 +120,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
                         placeholder="Face avant"
-                        className="mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:mt-1 xs:h-10 xs:w-44 xs:pl-2"
+                        className={`${error.fields?.includes("front") ? "ring-2 ring-error" : ""} mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 focus:outline-none focus:ring-2 focus:ring-primary xs:mt-1 xs:h-10 xs:w-44 xs:pl-2`}
                       />
                     </div>
                     <div className="flip-input-b-top font-patua text-textPrimary">
@@ -134,7 +134,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
                         placeholder="Face arrière"
-                        className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:mt-1 xs:h-10 xs:w-44 xs:pl-2"
+                        className={`${error.fields?.includes("back") ? "ring-2 ring-error" : ""} mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 focus:outline-none focus:ring-2 focus:ring-primary xs:mt-1 xs:h-10 xs:w-44 xs:pl-2`}
                       />
                     </div>
                   </div>
