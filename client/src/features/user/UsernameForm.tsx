@@ -88,7 +88,7 @@ function UsernameForm({ onCancel }: onCancelProp) {
         <input
           id="username"
           type="text"
-          className="mb-5 mt-2 h-12 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
+          className={`${error.fields?.includes("username") ? "ring-2 ring-error" : ""} mb-5 mt-2 h-12 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
           value={usernameEdited}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
