@@ -4,6 +4,7 @@ import { updateUserInfos } from "../../store/user/userThunk";
 import { errorInitialState, onCancelProp } from "../../types/user";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
+import Error from "../../ui/Error";
 
 function UsernameForm({ onCancel }: onCancelProp) {
   const [usernameEdited, setUsernameEdited] = useState("");
@@ -37,8 +38,8 @@ function UsernameForm({ onCancel }: onCancelProp) {
     if (!usernameEdited) {
       setError((prev) => ({
         ...prev,
-        fields: [...new Set([...prev.fields, "name"])],
-        messages: [...prev.messages, "name is required"]
+        fields: [...new Set([...prev.fields, "username"])],
+        messages: [...prev.messages, "username is required"]
       }));
       return;
     }
@@ -46,8 +47,11 @@ function UsernameForm({ onCancel }: onCancelProp) {
     if (username === usernameEdited) {
       setError((prev) => ({
         ...prev,
-        fields: [...new Set([...prev.fields, "name"])],
-        messages: [...prev.messages, "name is identical to the previous one"]
+        fields: [...new Set([...prev.fields, "username"])],
+        messages: [
+          ...prev.messages,
+          "username is identical to the previous one"
+        ]
       }));
       return;
     }
@@ -95,8 +99,13 @@ function UsernameForm({ onCancel }: onCancelProp) {
           onChange={(e) => handleChange(e)}
           autoComplete="off"
         />
-        <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+        <div className="h-24">
+          <div className={`${error.messages.length > 0 && "hidden"}`}>
+            <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+          </div>
+        </div>
       </form>
+      {error.messages.length > 0 && <Error error={error} />}
     </div>
   );
 }
