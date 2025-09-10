@@ -41,7 +41,7 @@ function UserProfile() {
   return (
     <div className="scrollbar-hide h-full overflow-y-auto">
       <div className="mt-14 flex h-96 items-center justify-center sm:mt-0">
-        <div className="flex size-80 items-center justify-center rounded-full bg-tertiary shadow-custom-light">
+        <div className="flex size-80 animate-pop items-center justify-center rounded-full bg-tertiary shadow-custom-light transition-all duration-300">
           <div className="size-64 rounded-full bg-white shadow-inner-strong" />
         </div>
       </div>
