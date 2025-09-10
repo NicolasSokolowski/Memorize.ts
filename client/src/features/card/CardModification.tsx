@@ -38,7 +38,32 @@ function CardModification({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (cardData.front === card.front && cardData.back === card.back) return;
+    if (!cardData.front) {
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, "front"])],
+        messages: [...prev.messages, "Front side is required"]
+      }));
+      return;
+    }
+
+    if (!cardData.back) {
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, "back"])],
+        messages: [...prev.messages, "Back side is required"]
+      }));
+      return;
+    }
+
+    if (cardData.front === card.front) {
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, "name"])],
+        messages: [...prev.messages, "Front side is identical"]
+      }));
+      return;
+    }
 
     try {
       await dispatch(updateCard({ deckId, cardId, data: cardData })).unwrap();
@@ -80,7 +105,7 @@ function CardModification({
       className="size-full rounded-lg bg-tertiary shadow-custom-light"
       style={{ backfaceVisibility: "visible" }}
     >
-      <div className="flex h-full flex-col justify-between">
+      <div className="flex h-full flex-col justify-between font-patua text-textPrimary">
         <h3 className="mt-4 text-center font-patua text-2xl xs:text-xl">
           Modifier
         </h3>
@@ -89,15 +114,23 @@ function CardModification({
             className="flex flex-col items-center gap-4 xs:gap-2"
             onSubmit={handleSubmit}
           >
-            <input
-              id={side}
-              type="text"
-              value={cardData[side]}
-              onChange={handleChange}
-              autoComplete="off"
-              placeholder={side === "front" ? "Face avant" : "Face arrière"}
-              className="mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2"
-            />
+            <div className="flex flex-col">
+              <label
+                className="ml-2 text-lg sm:text-base"
+                htmlFor={side === "front" ? "front" : "back"}
+              >
+                {side === "front" ? "Face avant" : "Face arrière"}
+              </label>
+              <input
+                id={side}
+                type="text"
+                value={cardData[side]}
+                onChange={handleChange}
+                autoComplete="off"
+                placeholder={side === "front" ? "Face avant" : "Face arrière"}
+                className="mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xs:h-10 xs:w-44 xs:pl-2 sm:mt-1"
+              />
+            </div>
             <ChoiceButton
               width="20"
               gap="gap-20 sm:gap-10"
