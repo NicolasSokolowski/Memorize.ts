@@ -20,7 +20,7 @@ function NavBar() {
         </div>
         <div className="flex items-center justify-center">
           <div className="flex items-center justify-center rounded-full bg-primary shadow-inner-strong sm:size-40 lg:size-48">
-            <div className="rounded-full bg-white text-center shadow-inner-strong sm:size-32 lg:size-40"></div>
+            <div className="rounded-full bg-white shadow-inner-strong sm:size-32 lg:size-40"></div>
           </div>
         </div>
       </div>

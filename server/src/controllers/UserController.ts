@@ -230,7 +230,8 @@ export class UserController extends CoreController<
       if (checkIfEmailExists) {
         throw new BadRequestError(
           "Provided email is already used",
-          "EMAIL_ALREADY_EXISTS"
+          "EMAIL_ALREADY_EXISTS",
+          "email"
         );
       }
     } else {
