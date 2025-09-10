@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { updateUserInfos } from "../../store/user/userThunk";
 import { errorInitialState, onCancelProp } from "../../types/user";
@@ -11,12 +11,6 @@ function UsernameForm({ onCancel }: onCancelProp) {
   const [error, setError] = useState(errorInitialState);
   const username = useAppSelector((state) => state.user.user?.username);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (username) {
-      setUsernameEdited(username);
-    }
-  }, [username]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -89,12 +83,12 @@ function UsernameForm({ onCancel }: onCancelProp) {
           htmlFor="username"
           className="ml-1 font-patua text-xl text-textPrimary"
         >
-          Nom d'utilisateur
+          Nouveau nom d'utilisateur
         </label>
         <input
           id="username"
           type="text"
-          className="mb-5 mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
+          className="mb-5 mt-2 h-12 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
           value={usernameEdited}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
