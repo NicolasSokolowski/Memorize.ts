@@ -42,7 +42,7 @@ function UserProfile() {
     <div className="scrollbar-hide h-full overflow-y-auto">
       <div className="mt-14 flex h-96 items-center justify-center sm:mt-0">
         <div className="flex size-80 items-center justify-center rounded-full bg-tertiary shadow-custom-light">
-          <img className="size-64 rounded-full bg-white shadow-inner-strong" />
+          <div className="size-64 rounded-full bg-white shadow-inner-strong" />
         </div>
       </div>
       <div className="h-28 w-full font-patua text-xl sm:text-2xl">
@@ -71,7 +71,7 @@ function UserProfile() {
                 />
               )}
               <button
-                className={`h-16 w-96 rounded-md shadow-custom-light ${
+                className={`h-16 w-96 animate-pop rounded-md shadow-custom-light transition-all duration-500 ${
                   visibleForm === key
                     ? "bg-tertiary text-textPrimary"
                     : "bg-secondary text-white"
