@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { updateUserInfos } from "../../store/user/userThunk";
-import { onCancelProp } from "../../types/user";
+import { errorInitialState, onCancelProp } from "../../types/user";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 
 function UsernameForm({ onCancel }: onCancelProp) {
   const [usernameEdited, setUsernameEdited] = useState("");
-  const [error, setError] = useState({
-    message: ""
-  });
+  const [error, setError] = useState(errorInitialState);
   const username = useAppSelector((state) => state.user.user?.username);
   const dispatch = useAppDispatch();
 
@@ -20,8 +18,15 @@ function UsernameForm({ onCancel }: onCancelProp) {
   }, [username]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError({ message: "" });
-    setUsernameEdited(e.target.value);
+    const { id, value } = e.target;
+
+    setError((prev) => ({
+      ...prev,
+      fields: prev.fields.filter((field) => field !== id),
+      messages: prev.messages.filter((message) => !message.includes(id))
+    }));
+
+    setUsernameEdited(value);
   };
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,8 +34,21 @@ function UsernameForm({ onCancel }: onCancelProp) {
 
     if (!usernameEdited) return;
 
+    if (!usernameEdited) {
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, "name"])],
+        messages: [...prev.messages, "name is required"]
+      }));
+      return;
+    }
+
     if (username === usernameEdited) {
-      setError({ message: "Le nom est identique au précédent." });
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, "name"])],
+        messages: [...prev.messages, "name is identical to the previous one"]
+      }));
       return;
     }
 
@@ -38,11 +56,17 @@ function UsernameForm({ onCancel }: onCancelProp) {
       await dispatch(updateUserInfos({ username: usernameEdited })).unwrap();
       onCancel();
     } catch (err: unknown) {
-      const error = err as ApiErrorResponse;
+      const apiError = err as ApiErrorResponse;
 
-      if (error.errors) {
-        for (const e of error.errors) {
-          setError((prev) => ({ ...prev, message: e.message }));
+      if (apiError.errors) {
+        for (const e of apiError.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: e.field
+              ? [...new Set([...prev.fields, e.field])]
+              : prev.fields,
+            messages: e.message ? [...prev.messages, e.message] : prev.messages
+          }));
         }
       }
     }
@@ -71,11 +95,6 @@ function UsernameForm({ onCancel }: onCancelProp) {
           onChange={(e) => handleChange(e)}
           autoComplete="off"
         />
-        {error.message && (
-          <p className="break-words pl-2 font-patua text-red-500">
-            {error.message}
-          </p>
-        )}
         <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
       </form>
     </div>
