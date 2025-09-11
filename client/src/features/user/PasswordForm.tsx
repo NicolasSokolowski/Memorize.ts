@@ -186,7 +186,7 @@ function PasswordForm({ onCancel }: onCancelProp) {
               Modifier mon mot de passe
             </h3>
             <span className="mt-2 text-center text-xl">Succès !</span>
-            <p className="mx-12 my-8 break-words">
+            <p className="mx-12 my-8 break-words text-center">
               Votre mot de passe a été modifié !
               <br />
               <br />
