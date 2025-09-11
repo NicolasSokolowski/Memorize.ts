@@ -141,7 +141,7 @@ function PasswordForm({ onCancel }: onCancelProp) {
               id={cpId}
               name="currentPassword"
               type="password"
-              className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
+              className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary"
               value={passwordData.currentPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
@@ -153,7 +153,7 @@ function PasswordForm({ onCancel }: onCancelProp) {
               id={npId}
               name="newPassword"
               type="password"
-              className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
+              className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary"
               value={passwordData.newPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
@@ -165,7 +165,7 @@ function PasswordForm({ onCancel }: onCancelProp) {
               id={cnpId}
               type="password"
               name="confirmNewPassword"
-              className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
+              className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary"
               value={passwordData.confirmNewPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
