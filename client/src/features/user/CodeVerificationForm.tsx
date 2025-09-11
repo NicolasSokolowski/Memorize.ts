@@ -124,12 +124,16 @@ function CodeVerificationForm(props: CodeVerificationProps) {
               value={digit}
               onChange={(e) => handleCodeChange(index, e.target.value)}
               onKeyDown={(e) => handleCodeKeyDown(index, e)}
-              className={`${error.messages[0] ? "ring-2 ring-error" : "border-black"} h-16 w-12 rounded-lg border text-center text-4xl text-textPrimary shadow-inner-strong`}
+              className={`${error.messages[0] ? "ring-2 ring-error" : "border-black"} h-16 w-12 rounded-lg border text-center text-4xl text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
             />
           ))}
         </div>
-        <div className="mt-5 flex w-full flex-col justify-center text-center ">
-          <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+        <div className="h-20">
+          <div
+            className={`mt-5 flex w-full flex-col justify-center text-center ${error.messages.length > 0 && "hidden"}`}
+          >
+            <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+          </div>
         </div>
       </form>
       {error.messages.length > 0 && <Error error={error} />}
