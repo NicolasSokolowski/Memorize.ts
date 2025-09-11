@@ -94,7 +94,7 @@ function EmailForm({ onCancel }: onCancelProp) {
               }}
               autoComplete="off"
             />
-            <div className="h-20">
+            <div className="h-24">
               <div className={`${error.messages.length > 0 && "hidden"}`}>
                 <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
               </div>
