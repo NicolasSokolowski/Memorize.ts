@@ -29,7 +29,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/training/mode")}
-              className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} p-4 py-2 font-patua text-white shadow-custom-light lg:text-xl`}
+              className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} animate-pop p-4 py-2 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
               <span className="hidden sm:block">Entraînement</span>
               <img
@@ -43,7 +43,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/decks")}
-              className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${deckPage ? "bg-primary" : "bg-secondary"} px-4 py-2 font-patua text-white shadow-custom-light lg:text-xl`}
+              className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${deckPage ? "bg-primary" : "bg-secondary"} animate-pop px-4 py-2 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
               <span className="hidden sm:block">Mes decks</span>
               <img
@@ -57,7 +57,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/cards")}
-              className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${cardPage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-white shadow-custom-light lg:text-xl`}
+              className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${cardPage ? "bg-primary" : "bg-secondary"} animate-pop p-2 px-4 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
               <span className="hidden sm:block">Mes cartes</span>
               <img
@@ -71,7 +71,7 @@ function NavBar() {
           <li>
             <button
               onClick={() => navigate("/user/profile")}
-              className={`relative size-12 cursor-pointer items-center justify-center rounded-full sm:flex sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} p-2 px-4 font-patua text-white shadow-custom-light lg:text-xl`}
+              className={`relative size-12 cursor-pointer items-center justify-center rounded-full sm:flex sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} animate-pop p-2 px-4 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
               <span className="hidden sm:block">Mon profil</span>
               <img
