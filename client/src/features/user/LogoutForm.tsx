@@ -1,16 +1,36 @@
+import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { logout } from "../../store/user/userThunk";
-import { onCancelProp } from "../../types/user";
+import { ApiErrorResponse } from "../../types/api";
+import { errorInitialState, onCancelProp } from "../../types/user";
 import ChoiceButton from "../../ui/ChoiceButton";
+import Error from "../../ui/Error";
 
 function LogoutForm({ onCancel }: onCancelProp) {
+  const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await dispatch(logout());
-    onCancel();
+    try {
+      await dispatch(logout());
+      onCancel();
+    } catch (err: unknown) {
+      const apiError = err as ApiErrorResponse;
+
+      if (apiError.errors) {
+        for (const e of apiError.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: e.field
+              ? [...new Set([...prev.fields, e.field])]
+              : prev.fields,
+            messages: e.message ? [...prev.messages, e.message] : prev.messages
+          }));
+        }
+      }
+    }
   };
 
   return (
@@ -27,6 +47,7 @@ function LogoutForm({ onCancel }: onCancelProp) {
         </p>
         <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
       </form>
+      {error.messages.length > 0 && <Error error={error} />}
     </div>
   );
 }
