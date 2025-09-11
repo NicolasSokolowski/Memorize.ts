@@ -121,7 +121,7 @@ function LoginForm() {
                 value={userInfo.email}
                 onChange={(e) => handleChange(e)}
                 placeholder="Adresse e-mail"
-                className={`${error.messages[0]?.includes("email") ? "ring-2 ring-error" : ""} h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80`}
+                className={`${error.messages[0]?.includes("email") ? "ring-2 ring-error" : ""} h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-textPrimary shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 focus:outline-none focus:ring-2 focus:ring-primary xl:w-80`}
               />
             </div>
             <div className="flex flex-col items-start gap-2">
@@ -137,7 +137,7 @@ function LoginForm() {
                 value={userInfo.password}
                 onChange={(e) => handleChange(e)}
                 placeholder="Mot de passe"
-                className={`${error.messages[0]?.includes("password") ? "ring-2 ring-error" : ""} h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80`}
+                className={`${error.messages[0]?.includes("password") ? "ring-2 ring-error" : ""} h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 focus:outline-none focus:ring-2 focus:ring-primary xl:w-80`}
               />
             </div>
             <div className="flex flex-col gap-3">

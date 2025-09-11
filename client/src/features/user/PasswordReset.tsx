@@ -69,7 +69,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
         <input
           id="email"
           type="text"
-          className="mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
+          className={`${error.fields?.includes("email") ? "ring-2 ring-error" : ""} mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
           value={email}
           onChange={(e) => handleChange(e)}
           autoComplete="off"

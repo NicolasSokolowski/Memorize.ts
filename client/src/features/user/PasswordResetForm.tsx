@@ -88,7 +88,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
         <input
           id="newPassword"
           type="password"
-          className={`${error.messages.length > 0 ? "ring-2 ring-error" : ""} my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong`}
+          className={`${error.messages.length > 0 ? "ring-2 ring-error" : ""} my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
           value={newPassword.newPassword}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
@@ -102,7 +102,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
         <input
           id="passwordConfirmation"
           type="password"
-          className={`${error.messages.length > 0 ? "ring-2 ring-error" : ""} my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong`}
+          className={`${error.messages.length > 0 ? "ring-2 ring-error" : ""} my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
           value={newPassword.passwordConfirmation}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
@@ -128,7 +128,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
             </button>
           </div>
         ) : (
-          <div className="mt-5 flex h-24 flex-col items-center justify-end">
+          <div className="mt-5 flex h-24 flex-col items-center justify-center">
             <p className="mt-4 text-center font-patua text-base text-textPrimary">
               Succès : Un e-mail de confirmation vous a été envoyé. Vous pouvez
               pouvez dès à pouvez dès à présent vous connecter avec votre
