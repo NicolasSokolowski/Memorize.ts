@@ -313,7 +313,8 @@ export class UserController extends CoreController<
       if (!isCurrentPasswordValid) {
         throw new BadRequestError(
           "Current password is incorrect",
-          "INVALID_CURRENT_PASSWORD"
+          "INVALID_CURRENT_PASSWORD",
+          "currentPassword"
         );
       }
 

@@ -13,7 +13,7 @@ export default Joi.object({
   confirmNewPassword: Joi.string()
     .valid(Joi.ref("newPassword"))
     .messages({
-      "any.only": "Confirm password must match new password"
+      "any.only": "confirmNewPassword must match new password"
     })
     .when("newPassword", {
       is: Joi.exist(),

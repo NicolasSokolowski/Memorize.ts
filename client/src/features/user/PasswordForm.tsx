@@ -1,8 +1,10 @@
 import { useEffect, useId, useState } from "react";
 import axiosInstance from "../../services/axios.instance";
-import axios from "axios";
-import { onCancelProp } from "../../types/user";
+import { AxiosError } from "axios";
+import { errorInitialState, onCancelProp } from "../../types/user";
 import ChoiceButton from "../../ui/ChoiceButton";
+import { ApiErrorResponse } from "../../types/api";
+import Error from "../../ui/Error";
 
 const initialState = {
   currentPassword: "",
@@ -16,51 +18,84 @@ function PasswordForm({ onCancel }: onCancelProp) {
   const npId = useId();
   const cnpId = useId();
   const [passwordData, setPasswordData] = useState(initialState);
-  const [error, setError] = useState({
-    message: ""
-  });
+  const [error, setError] = useState(errorInitialState);
 
   useEffect(() => {
     if (passwordHasBeenChanged) {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         onCancel();
       }, 5000);
+
+      return () => clearTimeout(timeout);
     }
-  });
+  }, [passwordHasBeenChanged, onCancel]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
+    const { name, value } = e.target;
 
     setError((prev) => ({
       ...prev,
-      message: ""
+      fields: prev.fields.filter((field) => field !== name),
+      messages: prev.messages.filter((message) => !message.includes(name))
     }));
 
     setPasswordData((prev) => ({
       ...prev,
-      [id]: value
+      [name]: value
     }));
   };
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (
-      !passwordData.currentPassword ||
-      !passwordData.newPassword ||
-      !passwordData.confirmNewPassword
-    ) {
-      setError({ message: "Veuillez remplir tous les champs." });
+    const newFields: string[] = [];
+    const newMessages: string[] = [];
+
+    if (!passwordData.currentPassword) {
+      newFields.push("currentPassword");
+      newMessages.push("currentPassword is required");
+    }
+
+    if (!passwordData.newPassword) {
+      newFields.push("newPassword");
+      newMessages.push("newPassword is required");
+    }
+
+    if (!passwordData.confirmNewPassword) {
+      newFields.push("confirmNewPassword");
+      newMessages.push("confirmNewPassword is required");
+    }
+
+    if (newFields.length > 0) {
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, ...newFields])],
+        messages: [...prev.messages, ...newMessages]
+      }));
       return;
     }
 
     if (passwordData.currentPassword === passwordData.newPassword) {
-      setError({ message: "Le mot de passe est identique au précédent." });
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, "newPassword"])],
+        messages: [
+          ...prev.messages,
+          "currentPassword and newPassword are identical"
+        ]
+      }));
       return;
     }
 
     if (passwordData.newPassword !== passwordData.confirmNewPassword) {
-      setError({ message: "Les mots de passe sont différents." });
+      setError((prev) => ({
+        ...prev,
+        fields: [...new Set([...prev.fields, "confirmNewPassword"])],
+        messages: [
+          ...prev.messages,
+          "confirmNewPassword does not match newPassword"
+        ]
+      }));
       return;
     }
 
@@ -68,8 +103,20 @@ function PasswordForm({ onCancel }: onCancelProp) {
       await axiosInstance.patch("/profile/changepw", passwordData);
       setPasswordHasBeenChanged(true);
     } catch (err: unknown) {
-      if (axios.isAxiosError(err) && err.response?.data?.errors) {
-        setError({ message: err.response.data.errors[0].message });
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+
+      if (axiosError.response?.data.errors) {
+        for (const apiError of axiosError.response.data.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
+        }
       }
     }
   };
@@ -92,8 +139,9 @@ function PasswordForm({ onCancel }: onCancelProp) {
             </label>
             <input
               id={cpId}
+              name="currentPassword"
               type="password"
-              className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
+              className={`${error.fields?.includes("currentPassword") ? "ring-2 ring-error" : ""} my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
               value={passwordData.currentPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
@@ -103,8 +151,9 @@ function PasswordForm({ onCancel }: onCancelProp) {
             </label>
             <input
               id={npId}
+              name="newPassword"
               type="password"
-              className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
+              className={`${error.fields?.includes("newPassword") ? "ring-2 ring-error" : ""} my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
               value={passwordData.newPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
@@ -115,19 +164,19 @@ function PasswordForm({ onCancel }: onCancelProp) {
             <input
               id={cnpId}
               type="password"
-              className="my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong"
+              name="confirmNewPassword"
+              className={`${error.fields?.includes("confirmNewPassword") ? "ring-2 ring-error" : ""} my-2 h-8 rounded-lg pl-3 font-patua text-sm text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
               value={passwordData.confirmNewPassword}
               onChange={(e) => handleChange(e)}
               autoComplete="off"
             />
-            {error.message ? (
-              <p className="break-words pl-2 font-patua text-red-500">
-                {error.message}
-              </p>
-            ) : (
-              <ChoiceButton width="20" gap="gap-20" onCancel={onCancel} />
-            )}
+            <div className="h-20">
+              <div className={`${error.messages.length > 0 && "hidden"}`}>
+                <ChoiceButton width="20" gap="gap-20" onCancel={onCancel} />
+              </div>
+            </div>
           </form>
+          {error.messages.length > 0 && <Error error={error} />}
         </div>
       </div>
       {passwordHasBeenChanged && (
