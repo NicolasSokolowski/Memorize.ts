@@ -6,17 +6,18 @@ import {
   sendVerificationCode
 } from "../../store/user/userThunk";
 import CodeVerificationForm from "./CodeVerificationForm";
-import { onCancelProp } from "../../types/user";
+import { errorInitialState, onCancelProp } from "../../types/user";
 import ChoiceButton from "../../ui/ChoiceButton";
+import Error from "../../ui/Error";
 
 function EmailForm({ onCancel }: onCancelProp) {
   const [isNewEmailAvailable, setIsNewEmailAvailable] = useState(false);
   const [newEmail, setNewEmail] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(errorInitialState);
   const [isCodeValid, setIsCodeValid] = useState(false);
   const dispatch = useAppDispatch();
 
-  const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!newEmail) return;
@@ -36,9 +37,20 @@ function EmailForm({ onCancel }: onCancelProp) {
       }
       setIsNewEmailAvailable(response);
     } catch (err: unknown) {
-      const apiError = err as ApiErrorResponse;
-      if (apiError?.errors?.length) {
-        setError(apiError.errors[0].message);
+      const error = err as ApiErrorResponse;
+
+      if (error.errors) {
+        for (const apiError of error.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: apiError.field
+              ? [...new Set([...prev.fields, apiError.field])]
+              : prev.fields,
+            messages: apiError.message
+              ? [...prev.messages, apiError.message]
+              : prev.messages
+          }));
+        }
       }
     }
   };
@@ -57,13 +69,13 @@ function EmailForm({ onCancel }: onCancelProp) {
       className={`flip-card-inner ${isNewEmailAvailable ? "flip-vertical" : ""}`}
     >
       <div className="flip-card-front">
-        <div className="mb-6 flex  size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
+        <div className="relative mb-6 flex  size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
             Modifier mon adresse e-mail
           </h3>
           <form
             className="mx-12 flex flex-1 flex-col justify-center"
-            onSubmit={handleEmailSubmit}
+            onSubmit={handleSubmit}
           >
             <label
               htmlFor="email"
@@ -74,19 +86,21 @@ function EmailForm({ onCancel }: onCancelProp) {
             <input
               id="email"
               type="text"
-              className="mb-5 mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong"
+              className={`${error.fields?.includes("newEmail") ? "ring-2 ring-error" : ""} mb-5 mt-2 h-12 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
               value={newEmail}
               onChange={(e) => {
-                setError("");
+                setError(errorInitialState);
                 setNewEmail(e.target.value);
               }}
               autoComplete="off"
             />
-            {error && (
-              <div className="pl-3 font-patua text-red-500">{error}</div>
-            )}
-            <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+            <div className="h-20">
+              <div className={`${error.messages.length > 0 && "hidden"}`}>
+                <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+              </div>
+            </div>
           </form>
+          {error.messages.length > 0 && <Error error={error} />}
         </div>
       </div>
       {isNewEmailAvailable && (
