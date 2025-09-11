@@ -7,6 +7,8 @@ import {
   sendVerificationCode
 } from "../../store/user/userThunk";
 import ChoiceButton from "../../ui/ChoiceButton";
+import { errorInitialState } from "../../types/user";
+import Error from "../../ui/Error";
 
 type DeleteFormProps = {
   onCancel: () => void;
@@ -16,7 +18,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
   const [firstConfirmationCheck, setFirstConfirmationCheck] = useState(false);
   const [isCodeValid, setIsCodeValid] = useState(false);
   const [disconnectTimer, setDisconnectTimer] = useState(10);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,10 +32,19 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
         })
       ).unwrap();
       setFirstConfirmationCheck(true);
-    } catch (err) {
+    } catch (err: unknown) {
       const apiError = err as ApiErrorResponse;
-      if (apiError?.errors?.length) {
-        setError(apiError.errors[0].message);
+
+      if (apiError.errors) {
+        for (const e of apiError.errors) {
+          setError((prev) => ({
+            ...prev,
+            fields: e.field
+              ? [...new Set([...prev.fields, e.field])]
+              : prev.fields,
+            messages: e.message ? [...prev.messages, e.message] : prev.messages
+          }));
+        }
       }
     }
   };
@@ -58,22 +69,19 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
       className={`flip-card-inner ${firstConfirmationCheck ? "flip-vertical" : ""}`}
     >
       <div className="flip-card-front">
-        <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
+        <div className="relative mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
             Supprimer mon compte
           </h3>
           <div className="mx-12 flex flex-1 flex-col justify-center">
-            {error ? (
-              <div className="pl-3 font-patua text-red-500">{error}</div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                <p className="text-center font-patua text-xl text-textPrimary">
-                  Êtes-vous sûr de vouloir supprimer votre compte ?
-                </p>
-                <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
-              </form>
-            )}
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <p className="text-center font-patua text-xl text-textPrimary">
+                Êtes-vous sûr de vouloir supprimer votre compte ?
+              </p>
+              <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
+            </form>
           </div>
+          {error.messages.length > 0 && <Error error={error} />}
         </div>
       </div>
       {firstConfirmationCheck && (
