@@ -12,6 +12,8 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import AppInit from "./AppInit";
 import SearchBarLayout from "./ui/SearchBarLayout";
 import AllCardsList from "./features/card/AllCardsList";
+import "./i18n";
+import { Suspense } from "react";
 
 const router = createBrowserRouter([
   {
@@ -78,9 +80,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <AppInit>
-      <RouterProvider router={router} />
-    </AppInit>
+    <Suspense fallback="loading">
+      <AppInit>
+        <RouterProvider router={router} />
+      </AppInit>
+    </Suspense>
   );
 }
 
