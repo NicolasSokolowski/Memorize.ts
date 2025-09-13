@@ -4,6 +4,7 @@ import { AxiosError } from "axios";
 import { errorInitialState, onCancelProp } from "../../types/user";
 import Error from "../../ui/Error";
 import { ApiErrorResponse } from "../../types/api";
+import { useTranslation } from "react-i18next";
 
 function PasswordResetForm({ onCancel }: onCancelProp) {
   const [passwordHasBeenChanged, setPasswordHasBeenChanged] = useState(false);
@@ -12,6 +13,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
     passwordConfirmation: ""
   });
   const [error, setError] = useState(errorInitialState);
+  const { t } = useTranslation("auth");
 
   useEffect(() => {
     if (passwordHasBeenChanged) {
@@ -83,7 +85,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
           htmlFor="new-pw"
           className="ml-1 font-patua text-xl text-textPrimary"
         >
-          Nouveau mot de passe
+          {t("new password")}
         </label>
         <input
           id="newPassword"
@@ -97,7 +99,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
           htmlFor="passwordConfirmation"
           className="ml-1 font-patua text-xl text-textPrimary"
         >
-          Confirmation mot de passe
+          {t("password confirmation")}
         </label>
         <input
           id="passwordConfirmation"
@@ -130,9 +132,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
         ) : (
           <div className="mt-5 flex h-24 flex-col items-center justify-center">
             <p className="mt-4 text-center font-patua text-base text-textPrimary">
-              Succès : Un e-mail de confirmation vous a été envoyé. Vous pouvez
-              pouvez dès à pouvez dès à présent vous connecter avec votre
-              nouveau mot de passe.
+              {t("reset success")}
             </p>
           </div>
         )}
