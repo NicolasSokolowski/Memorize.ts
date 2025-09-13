@@ -22,6 +22,13 @@ interface Resources {
     delete: "Delete";
     modify: "Modify";
   };
+  deck: {
+    deckDeleteNoCards: "Do you really want to delete this deck ?";
+    deckDelete_one: "This will delete {{count}} card. Are you sure ?";
+    deckDelete_other: "This will delete {{count}} cards. Are you sure ?";
+    deckName: "Deck name";
+    myDecks: "My decks";
+  };
   home: {
     hero: {
       subtitle: "Study smarter. Remember longer. Build your own flashcard decks in seconds and practice at your own pace. Each session challenges you to recall what’s on the back of a card—then our smart system adapts the difficulty automatically. Quickly see what you’ve mastered and what still needs work, so you can focus on what matters most. Designed to make your progress clear, effective, and lasting—whether you’re preparing for exams, learning a new language, or mastering knowledge for life.";
