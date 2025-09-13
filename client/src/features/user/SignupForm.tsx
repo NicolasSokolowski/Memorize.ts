@@ -96,7 +96,7 @@ function SignupForm() {
 
         <div className="flex flex-col items-start gap-2">
           <label className="ml-2 text-xl" htmlFor="password">
-            Mot de passe
+            {t("auth.password")}
           </label>
           <input
             id="password"
@@ -109,7 +109,7 @@ function SignupForm() {
 
         <div className="flex flex-col items-start gap-1 xl:gap-2">
           <label className="ml-2 text-xl" htmlFor="username">
-            Nom d'utilisateur
+            {t("auth.username")}
           </label>
           <input
             id="username"
@@ -126,14 +126,16 @@ function SignupForm() {
             type="submit"
             className="mt-5 w-72 rounded-md bg-secondary p-3 shadow-custom-light xl:w-80"
           >
-            <span className="rounded-md text-3xl text-white">S'inscrire</span>
+            <span className="rounded-md text-3xl text-white">
+              {t("auth.buttons.signup")}
+            </span>
           </button>
           <div className="flex justify-start">
             <button
               className="text-sm text-secondary underline underline-offset-2"
               onClick={onClick}
             >
-              J'ai déjà un compte
+              {t("auth.hasAccount")}
             </button>
           </div>
         </div>
