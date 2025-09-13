@@ -1,8 +1,10 @@
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function NavBar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation("training");
 
   const deckPage =
     location.pathname.includes("/decks") &&
@@ -31,7 +33,7 @@ function NavBar() {
               onClick={() => navigate("/user/training/mode")}
               className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} animate-pop p-4 py-2 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
-              <span className="hidden sm:block">Entraînement</span>
+              <span className="hidden sm:block">{t("training")}</span>
               <img
                 src="/training.png"
                 alt="Training icon"

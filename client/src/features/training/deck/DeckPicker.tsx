@@ -3,6 +3,7 @@ import { Deck } from "../../../store/deck/deckSlice";
 import { useAppSelector } from "../../../store/hooks";
 import { useMemo } from "react";
 import { selectCardsByDeckId } from "../../../store/card/cardSelector";
+import { useTranslation } from "react-i18next";
 
 export interface DeckProps {
   deck: Deck;
@@ -15,6 +16,7 @@ function DeckPicker({ deck }: DeckProps) {
   );
   const cards = useAppSelector(selectDeckCards);
   const navigate = useNavigate();
+  const { t } = useTranslation("training");
 
   return (
     <div className="flex size-60 animate-pop flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/deck.png')] bg-cover pt-3 shadow-custom-light">
@@ -31,7 +33,9 @@ function DeckPicker({ deck }: DeckProps) {
             onClick={() => navigate("/training", { state: { cards } })}
           />
         ) : (
-          <span className="font-patua text-xl text-textPrimary">Deck vide</span>
+          <span className="font-patua text-xl text-textPrimary">
+            {t("emptyDeck")}
+          </span>
         )}
       </div>
     </div>

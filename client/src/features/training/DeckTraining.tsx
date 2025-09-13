@@ -5,6 +5,7 @@ import ScoreBoard from "./ScoreBoard";
 import { updateCardsStats } from "../../store/card/cardThunks";
 import { Card } from "../../store/card/cardSlice";
 import { shuffleArray } from "../../helpers/shuffleArray";
+import { useTranslation } from "react-i18next";
 
 export type UserAnswer = {
   id: number;
@@ -29,6 +30,7 @@ function DeckTraining() {
   const [cardsLeft, setCardsLeft] = useState(cards.length);
   const shuffledCardsRef = useRef<Card[]>([]);
   const currentCard = shuffledCardsRef.current?.[cardIndex];
+  const { t } = useTranslation("training");
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
@@ -100,14 +102,14 @@ function DeckTraining() {
           <div className="flex w-full">
             <div className="absolute left-0 top-0 flex h-32 w-full justify-between p-6 px-14 sm:p-8 sm:pt-6 md:pt-7 lg:pt-12 ">
               <span className="mt-2 font-patua text-xl text-textPrimary sm:mx-2 sm:text-2xl lg:mt-4 lg:text-2xl xl:text-3xl">
-                Cartes restantes : {cardsLeft}
+                {t("cardsLeftCount", { count: cardsLeft })}
               </span>
               <button
                 className="h-12 w-28 rounded-full bg-tertiary shadow-custom-light sm:h-12 sm:w-32 lg:h-14 xl:h-16 xl:w-40"
                 onClick={() => handleQuit()}
               >
                 <span className="font-patua text-xl text-secondary sm:text-2xl lg:text-2xl xl:text-3xl">
-                  Quitter
+                  {t("buttons.quit")}
                 </span>
               </button>
             </div>
