@@ -20,7 +20,7 @@ function SignupForm() {
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
 
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "errors"]);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,17 +35,38 @@ function SignupForm() {
       const axiosError = err as AxiosError<ApiErrorResponse>;
 
       if (axiosError.response?.data.errors) {
+        const newFields: string[] = [];
+        const newMessages: string[] = [];
+
         for (const apiError of axiosError.response.data.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: apiError.field
-              ? [...new Set([...prev.fields, apiError.field])]
-              : prev.fields,
-            messages: apiError.message
-              ? [...prev.messages, apiError.message]
-              : prev.messages
-          }));
+          let message = apiError.message;
+          const { label, limit } = apiError.context || {};
+          let labelCap;
+
+          if (label) {
+            labelCap = label.charAt(0).toUpperCase() + label.slice(1);
+          }
+
+          if (apiError.type && apiError.context) {
+            message = t(`errors:validation.${apiError.type}`, {
+              labelCap,
+              limit,
+              defaultValue: apiError.message
+            }) as string;
+          } else if (apiError.code) {
+            message = t(`errors:${apiError.code}`, {
+              defaultValue: apiError.message
+            });
+          }
+
+          if (apiError.field) newFields.push(apiError.field);
+          if (message) newMessages.push(message);
         }
+
+        setError({
+          fields: [...new Set(newFields)],
+          messages: newMessages
+        });
       }
     }
   };
@@ -56,7 +77,10 @@ function SignupForm() {
     setError((prev) => ({
       ...prev,
       fields: prev.fields.filter((field) => field !== id),
-      messages: prev.messages.filter((message) => !message.includes(id))
+      messages: prev.messages.filter(
+        (message) =>
+          !message.includes(id.charAt(0).toUpperCase() + message.slice(1))
+      )
     }));
 
     setUserInfo((prev) => ({
@@ -94,7 +118,7 @@ function SignupForm() {
 
         <div className="flex flex-col items-start gap-2">
           <label className="ml-2 text-xl" htmlFor="password">
-            {t("password")}
+            {t("auth:password")}
           </label>
           <input
             id="password"
@@ -107,7 +131,7 @@ function SignupForm() {
 
         <div className="flex flex-col items-start gap-1 xl:gap-2">
           <label className="ml-2 text-xl" htmlFor="username">
-            {t("username")}
+            {t("auth:username")}
           </label>
           <input
             id="username"
@@ -125,7 +149,7 @@ function SignupForm() {
             className="mt-5 w-72 rounded-md bg-secondary p-3 shadow-custom-light xl:w-80"
           >
             <span className="rounded-md text-3xl text-white">
-              {t("buttons.signup")}
+              {t("auth:buttons.signup")}
             </span>
           </button>
           <div className="flex justify-start">
