@@ -1,0 +1,22 @@
+{
+  "training": "Entraînement",
+  "dailyCards": "Cartes du jour",
+  "difficultCards": "Cartes difficiles",
+  "selectDeck": "Sélectionnez un deck",
+  "chooseDeck": "Choisir un deck",
+  "emptyDeck": "Deck vide",
+  "cardsLeft": "Cards restantes : {{cardsLeft}}",
+  "buttons": {
+    "quit": "Quitter"
+  },
+  "scoreBoard": {
+    "scoreBoard": "Tableau des scores",
+    "studiedCards": "Nombre de cartes révisées :",
+    "easyCards": "Nombre de cartes faciles :",
+    "mediumCards": "Nombre de cartes moyennes :",
+    "hardCards": "Nombre de cartes difficiles :",
+    "newCards": "Nombre de nouvelles cartes :",
+    "winningStreakCards": "Nombre de cartes en série de victoires :",
+    "successRate": "Taux de réussite :"
+  }
+}

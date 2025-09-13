@@ -1,0 +1,22 @@
+{
+  "training": "Training",
+  "dailyCards": "Daily cards",
+  "difficultCards": "Difficult cards",
+  "selectDeck": "Select a deck",
+  "chooseDeck": "Choose a deck",
+  "emptyDeck": "Empty deck",
+  "cardsLeft": "Cards left : {{cardsLeft}}",
+  "buttons": {
+    "quit": "Quit"
+  },
+  "scoreBoard": {
+    "scoreBoard": "Score board",
+    "studiedCards": "Number of cards studied :",
+    "easyCards": "Number of easy cards :",
+    "mediumCards": "Number of medium cards :",
+    "hardCards": "Number of difficult cards :",
+    "newCards": "Number of new cards :",
+    "winningStreakCards": "Number of cards in a winning streak :",
+    "successRate": "Success rate :"
+  }
+}

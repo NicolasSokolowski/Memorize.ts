@@ -27,6 +27,28 @@ interface Resources {
       subtitle: "Study smarter. Remember longer. Build your own flashcard decks in seconds and practice at your own pace. Each session challenges you to recall what’s on the back of a card—then our smart system adapts the difficulty automatically. Quickly see what you’ve mastered and what still needs work, so you can focus on what matters most. Designed to make your progress clear, effective, and lasting—whether you’re preparing for exams, learning a new language, or mastering knowledge for life.";
     };
   };
+  training: {
+    buttons: {
+      quit: "Quit";
+    };
+    cardsLeft: "Cards left : {{cardsLeft}}";
+    chooseDeck: "Choose a deck";
+    dailyCards: "Daily cards";
+    difficultCards: "Difficult cards";
+    emptyDeck: "Empty deck";
+    scoreBoard: {
+      easyCards: "Number of easy cards :";
+      hardCards: "Number of difficult cards :";
+      mediumCards: "Number of medium cards :";
+      newCards: "Number of new cards :";
+      scoreBoard: "Score board";
+      studiedCards: "Number of cards studied :";
+      successRate: "Success rate :";
+      winningStreakCards: "Number of cards in a winning streak :";
+    };
+    selectDeck: "Select a deck";
+    training: "Training";
+  };
 }
 
 export default Resources;
