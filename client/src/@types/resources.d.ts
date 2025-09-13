@@ -21,6 +21,7 @@ interface Resources {
     hasAccount: "I already have an account";
     hasNoAccount: "I don't have an account";
     logoutCheck: "Do you really want to disconnect ?";
+    myProfile: "My profile";
     "new password": "New password";
     newEmail: "New email address";
     newUsername: "New username";
