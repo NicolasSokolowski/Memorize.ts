@@ -20,7 +20,7 @@ function SignupForm() {
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
 
-  const { t } = useTranslation("home");
+  const { t } = useTranslation("auth");
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,9 +74,7 @@ function SignupForm() {
 
   return (
     <section className="relative min-h-[33rem] overflow-hidden rounded-md bg-tertiary font-patua text-textPrimary shadow-custom-light transition-all duration-300 xl:min-h-[36rem]">
-      <h2 className="m-5 text-center text-3xl xl:text-4xl">
-        {t("auth.register")}
-      </h2>
+      <h2 className="m-5 text-center text-3xl xl:text-4xl">{t("register")}</h2>
       <form
         className="flex flex-col items-center justify-center gap-2 p-3 xl:gap-3 xl:p-5"
         onSubmit={handleSubmit()}
@@ -96,7 +94,7 @@ function SignupForm() {
 
         <div className="flex flex-col items-start gap-2">
           <label className="ml-2 text-xl" htmlFor="password">
-            {t("auth.password")}
+            {t("password")}
           </label>
           <input
             id="password"
@@ -109,7 +107,7 @@ function SignupForm() {
 
         <div className="flex flex-col items-start gap-1 xl:gap-2">
           <label className="ml-2 text-xl" htmlFor="username">
-            {t("auth.username")}
+            {t("username")}
           </label>
           <input
             id="username"
@@ -127,7 +125,7 @@ function SignupForm() {
             className="mt-5 w-72 rounded-md bg-secondary p-3 shadow-custom-light xl:w-80"
           >
             <span className="rounded-md text-3xl text-white">
-              {t("auth.buttons.signup")}
+              {t("buttons.signup")}
             </span>
           </button>
           <div className="flex justify-start">
@@ -135,7 +133,7 @@ function SignupForm() {
               className="text-sm text-secondary underline underline-offset-2"
               onClick={onClick}
             >
-              {t("auth.hasAccount")}
+              {t("hasAccount")}
             </button>
           </div>
         </div>
