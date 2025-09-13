@@ -1,21 +1,38 @@
 interface Resources {
   auth: {
+    accountDeletedConfirmationMsg: "Your account has been deleted.<br /><br />You will soon receive a confirmation email concerning this deletion. You are going to be disconnect in {{count}} s.";
     buttons: {
+      delete: "Delete my account";
+      logout: "Logout";
+      modifyEmail: "Modify my email address";
+      modifyPassword: "Modify my password";
+      modifyUsername: "Modify my username";
       signin: "Sign in";
       signup: "Sign up";
     };
     code: "Please enter the code you received on your mail :";
     connection: "Connection";
+    currentPassword: "Current password";
+    deleteAccountCheck: "Do you really want to delete your account ?";
+    email: "Email address";
+    emailChangedConfirmationMsg: "Your email address has been modified.<br /><br />You will soon receive a confirmation email concerning this modification.";
+    emailCol: "Email address :";
     forgottenPassword: "Forgot password ?";
     hasAccount: "I already have an account";
     hasNoAccount: "I don't have an account";
+    logoutCheck: "Do you really want to disconnect ?";
     "new password": "New password";
+    newEmail: "New email address";
+    newUsername: "New username";
     password: "Password";
     "password confirmation": "Password confirmation";
     "password reset": "Password reset";
+    passwordChangedConfirmationMsg: "Your password has been modified. <br /><br />You will soon receive a confirmation email concerning this modification. You can already use your new password to sign in !";
     register: "Register";
     "reset success": "Success : A confirmation e-mail has been sent to you. You can already sign in with your new password.";
+    success: "Success !";
     username: "Username";
+    usernameCol: "Username :";
   };
   card: {
     allCards: "All cards";
