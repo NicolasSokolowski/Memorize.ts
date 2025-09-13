@@ -6,6 +6,7 @@ import { setHasAccount } from "../../store/user/userSlice";
 import { ApiErrorResponse } from "../../types/api";
 import Error from "../../ui/Error";
 import { errorInitialState } from "../../types/user";
+import { useTranslation } from "react-i18next";
 
 const initialState = {
   email: "",
@@ -18,6 +19,8 @@ function SignupForm() {
   const [error, setError] = useState(errorInitialState);
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
+
+  const { t } = useTranslation("home");
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,16 +73,16 @@ function SignupForm() {
   };
 
   return (
-    <section className="relative min-h-[33rem] overflow-hidden rounded-md bg-tertiary shadow-custom-light transition-all duration-300 xl:min-h-[36rem]">
-      <h2 className="m-5 text-center font-patua text-3xl xl:text-4xl">
-        Inscription
+    <section className="relative min-h-[33rem] overflow-hidden rounded-md bg-tertiary font-patua text-textPrimary shadow-custom-light transition-all duration-300 xl:min-h-[36rem]">
+      <h2 className="m-5 text-center text-3xl xl:text-4xl">
+        {t("auth.register")}
       </h2>
       <form
         className="flex flex-col items-center justify-center gap-2 p-3 xl:gap-3 xl:p-5"
         onSubmit={handleSubmit()}
       >
         <div className="flex flex-col items-start gap-2">
-          <label className="ml-2 font-patua text-xl" htmlFor="email">
+          <label className="ml-2 text-xl" htmlFor="email">
             E-mail
           </label>
           <input
@@ -88,12 +91,12 @@ function SignupForm() {
             value={userInfo.email}
             onChange={handleChange}
             placeholder="Adresse e-mail"
-            className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("email") ? "ring-2 ring-error" : ""} focus:outline-none focus:ring-2 focus:ring-primary`}
+            className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("email") ? "ring-2 ring-error" : ""} text-textPrimary focus:outline-none focus:ring-2 focus:ring-primary`}
           />
         </div>
 
         <div className="flex flex-col items-start gap-2">
-          <label className="ml-2 font-patua text-xl" htmlFor="password">
+          <label className="ml-2 text-xl" htmlFor="password">
             Mot de passe
           </label>
           <input
@@ -102,12 +105,12 @@ function SignupForm() {
             value={userInfo.password}
             onChange={handleChange}
             placeholder="Mot de passe"
-            className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("password") ? "ring-2 ring-error" : ""} focus:outline-none focus:ring-2 focus:ring-primary`}
+            className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("password") ? "ring-2 ring-error" : ""} text-textPrimary focus:outline-none focus:ring-2 focus:ring-primary`}
           />
         </div>
 
         <div className="flex flex-col items-start gap-1 xl:gap-2">
-          <label className="ml-2 font-patua text-xl" htmlFor="username">
+          <label className="ml-2 text-xl" htmlFor="username">
             Nom d'utilisateur
           </label>
           <input
@@ -116,7 +119,7 @@ function SignupForm() {
             value={userInfo.username}
             onChange={handleChange}
             placeholder="Nom d'utilisateur"
-            className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 font-patua text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("username") ? "ring-2 ring-error" : ""} focus:outline-none focus:ring-2 focus:ring-primary`}
+            className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("username") ? "ring-2 ring-error" : ""} text-textPrimary focus:outline-none focus:ring-2 focus:ring-primary`}
             autoComplete="off"
           />
         </div>
@@ -126,13 +129,11 @@ function SignupForm() {
             type="submit"
             className="mt-5 w-72 rounded-md bg-secondary p-3 shadow-custom-light xl:w-80"
           >
-            <span className="rounded-md font-patua text-3xl text-white">
-              S'inscrire
-            </span>
+            <span className="rounded-md text-3xl text-white">S'inscrire</span>
           </button>
           <div className="flex justify-start">
             <button
-              className="font-patua text-sm text-secondary underline underline-offset-2"
+              className="text-sm text-secondary underline underline-offset-2"
               onClick={onClick}
             >
               J'ai déjà un compte
