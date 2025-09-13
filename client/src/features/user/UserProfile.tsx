@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAppSelector } from "../../store/hooks";
 import FormSelector from "./FormSelector";
+import { useTranslation } from "react-i18next";
 
 export type UserModification = "none" | EditActions;
 type EditActions =
@@ -10,18 +11,11 @@ type EditActions =
   | "logout"
   | "delete-user";
 
-const actions: { key: EditActions; label: string }[] = [
-  { key: "edit-username", label: "Modifier mon nom d'utilisateur" },
-  { key: "edit-email", label: "Modifier mon adresse e-mail" },
-  { key: "edit-password", label: "Modifier mon mot de passe" },
-  { key: "logout", label: "Me déconnecter" },
-  { key: "delete-user", label: "Supprimer mon compte" }
-];
-
 function UserProfile() {
   const [visibleForm, setVisibleForm] = useState<UserModification>("none");
   const [isEditing, setIsEditing] = useState(false);
   const user = useAppSelector((state) => state.user.user);
+  const { t } = useTranslation("auth");
 
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     const value = e.currentTarget.value as EditActions;
@@ -37,6 +31,13 @@ function UserProfile() {
       setIsEditing(true);
     }
   };
+  const actions: EditActions[] = [
+    "edit-username",
+    "edit-email",
+    "edit-password",
+    "logout",
+    "delete-user"
+  ];
 
   return (
     <div className="scrollbar-hide h-full overflow-y-auto">
@@ -48,18 +49,18 @@ function UserProfile() {
       <div className="h-28 w-full font-patua text-xl sm:text-2xl">
         <div className="flex h-12 w-full items-center justify-center sm:flex-none">
           <span className="text-textPrimary">
-            Nom d'utilisateur : <span>{user?.username}</span>
+            {t("usernameCol")} <span>{user?.username}</span>
           </span>
         </div>
         <div className="mx-auto flex h-12 w-full items-center justify-center sm:flex-none">
           <span className="break-words text-center text-textPrimary">
-            Adresse e-mail : <span>{user?.email}</span>
+            {t("emailCol")} <span>{user?.email}</span>
           </span>
         </div>
       </div>
       <div className="mx-16 mb-12 flex justify-center sm:mb-8">
         <div className="mb-8 flex w-96 flex-col gap-4 lg:mx-4 lg:w-112">
-          {actions.map(({ key, label }) => (
+          {actions.map((key) => (
             <div key={key}>
               {visibleForm === key && (
                 <FormSelector
@@ -79,7 +80,9 @@ function UserProfile() {
                 value={key}
                 onClick={handleEdit}
               >
-                <span className="font-patua text-xl">{label}</span>
+                <span className="font-patua text-xl">
+                  {t(`buttons.${key}`)}
+                </span>
               </button>
             </div>
           ))}

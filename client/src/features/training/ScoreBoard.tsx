@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "../../store/card/cardSlice";
 import { UserAnswer } from "./DeckTraining";
+import { useTranslation } from "react-i18next";
 
 type ScoreBoardProps = {
   cards: Card[];
@@ -10,6 +11,7 @@ type ScoreBoardProps = {
 
 function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation("training");
 
   const winningCards = cardsToUpdate.filter((updatedCard) => {
     const originalCard = cards.find((c) => c.id === updatedCard.id);
@@ -37,12 +39,12 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
   return (
     <div className="flex w-4/5 flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light">
       <span className="p-8 text-center text-4xl md:text-5xl lg:text-6xl xl:p-14 xl:text-7xl">
-        Tableau des scores
+        {t("scoreBoard.scoreBoard")}
       </span>
       <div className="flex flex-col items-center justify-between text-xl md:text-2xl lg:text-3xl xl:text-4xl">
         <div className="flex w-full justify-between">
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
-            Nombre de cartes révisées :
+            {t("scoreBoard.studiedCards")}
           </div>
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(cardsToUpdate.length).padStart(2, "0")}
@@ -50,7 +52,7 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
         </div>
         <div className="flex w-full justify-between">
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
-            Nombre de cartes faciles :
+            {t("scoreBoard.easyCards")}
           </div>
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(easyCount).padStart(2, "0")}
@@ -58,7 +60,7 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
         </div>
         <div className="flex w-full justify-between">
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
-            Nombre de cartes moyennes :
+            {t("scoreBoard.mediumCards")}
           </div>
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(mediumCount).padStart(2, "0")}
@@ -66,7 +68,7 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
         </div>
         <div className="flex w-full justify-between">
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
-            Nombre de cartes difficiles :
+            {t("scoreBoard.hardCards")}
           </div>
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(hardCount).padStart(2, "0")}
@@ -74,7 +76,7 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
         </div>
         <div className="mt-10 flex w-full justify-between">
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
-            Nombre de nouvelles cartes :
+            {t("scoreBoard.newCards")}
           </div>
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(newCardsCount).padStart(2, "0")}
@@ -82,7 +84,7 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
         </div>
         <div className="flex w-full justify-between">
           <div className="mx-8 mb-6 p-1 sm:mx-10 sm:p-2 md:mx-16 md:mb-0 lg:mx-20 xl:mx-24">
-            Nombre de cartes en série de victoires :
+            {t("scoreBoard.winningStreakCards")}
           </div>
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(winStreakCount).padStart(2, "0")}
@@ -90,7 +92,7 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
         </div>
         <div className="flex w-full justify-between">
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
-            Taux de réussite :
+            {t("scoreBoard.successRate")}
           </div>
           <div className="mx-8 p-1 sm:mx-10 sm:p-2 md:mx-16 lg:mx-20 xl:mx-24">
             {String(successRate).padStart(2, "0")}%
@@ -103,7 +105,7 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
           onClick={onReplay}
         >
           <span className="text-2xl text-tertiary md:text-2xl lg:text-4xl">
-            Rejouer
+            {t("buttons.replay")}
           </span>
         </button>
         <button
@@ -111,7 +113,7 @@ function ScoreBoard({ cards, cardsToUpdate, onReplay }: ScoreBoardProps) {
           onClick={() => navigate("/user/training/mode")}
         >
           <span className="text-2xl text-tertiary md:text-2xl lg:text-4xl">
-            Quitter
+            {t("buttons.quit")}
           </span>
         </button>
       </div>

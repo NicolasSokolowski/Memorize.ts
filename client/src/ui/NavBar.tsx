@@ -1,8 +1,10 @@
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function NavBar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation(["deck", "card", "auth", "training"]);
 
   const deckPage =
     location.pathname.includes("/decks") &&
@@ -31,7 +33,7 @@ function NavBar() {
               onClick={() => navigate("/user/training/mode")}
               className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} animate-pop p-4 py-2 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
-              <span className="hidden sm:block">Entraînement</span>
+              <span className="hidden sm:block">{t("training:training")}</span>
               <img
                 src="/training.png"
                 alt="Training icon"
@@ -45,7 +47,7 @@ function NavBar() {
               onClick={() => navigate("/user/decks")}
               className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${deckPage ? "bg-primary" : "bg-secondary"} animate-pop px-4 py-2 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
-              <span className="hidden sm:block">Mes decks</span>
+              <span className="hidden sm:block">{t("deck:myDecks")} </span>
               <img
                 src="/deck.png"
                 alt="Deck icon"
@@ -59,7 +61,7 @@ function NavBar() {
               onClick={() => navigate("/user/cards")}
               className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${cardPage ? "bg-primary" : "bg-secondary"} animate-pop p-2 px-4 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
-              <span className="hidden sm:block">Mes cartes</span>
+              <span className="hidden sm:block">{t("card:myCards")}</span>
               <img
                 src="/card.png"
                 alt="Card icon"
@@ -73,7 +75,7 @@ function NavBar() {
               onClick={() => navigate("/user/profile")}
               className={`relative size-12 cursor-pointer items-center justify-center rounded-full sm:flex sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} animate-pop p-2 px-4 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
-              <span className="hidden sm:block">Mon profil</span>
+              <span className="hidden sm:block">{t("auth:myProfile")}</span>
               <img
                 src="/profile.png"
                 alt="Deck icon"

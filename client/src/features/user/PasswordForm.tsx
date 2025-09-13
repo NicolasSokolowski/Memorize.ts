@@ -5,6 +5,7 @@ import { errorInitialState, onCancelProp } from "../../types/user";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { ApiErrorResponse } from "../../types/api";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 const initialState = {
   currentPassword: "",
@@ -19,6 +20,7 @@ function PasswordForm({ onCancel }: onCancelProp) {
   const cnpId = useId();
   const [passwordData, setPasswordData] = useState(initialState);
   const [error, setError] = useState(errorInitialState);
+  const { t } = useTranslation("auth");
 
   useEffect(() => {
     if (passwordHasBeenChanged) {
@@ -128,14 +130,14 @@ function PasswordForm({ onCancel }: onCancelProp) {
       <div className="flip-card-front">
         <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-            Modifier mon mot de passe
+            {t("buttons.edit-password")}
           </h3>
           <form
             onSubmit={handleSubmit()}
             className="mx-12 flex flex-1 flex-col justify-center"
           >
             <label htmlFor={cpId} className="ml-1 font-patua text-textPrimary">
-              Mot de passe actuel
+              {t("currentPassword")}
             </label>
             <input
               id={cpId}
@@ -147,7 +149,7 @@ function PasswordForm({ onCancel }: onCancelProp) {
               autoComplete="off"
             />
             <label htmlFor={npId} className="ml-1 font-patua text-textPrimary">
-              Nouveau mot de passe
+              {t("newPassword")}
             </label>
             <input
               id={npId}
@@ -159,7 +161,7 @@ function PasswordForm({ onCancel }: onCancelProp) {
               autoComplete="off"
             />
             <label htmlFor={cnpId} className="ml-1 font-patua text-textPrimary">
-              Confirmation de mot de passe
+              {t("passwordConfirmation")}
             </label>
             <input
               id={cnpId}
@@ -183,16 +185,11 @@ function PasswordForm({ onCancel }: onCancelProp) {
         <div className="flip-card-back">
           <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light lg:mx-4">
             <h3 className="m-4 text-center text-2xl">
-              Modifier mon mot de passe
+              {t("buttons.edit-password")}
             </h3>
-            <span className="mt-2 text-center text-xl">Succès !</span>
+            <span className="mt-2 text-center text-xl">{t("success")}</span>
             <p className="mx-12 my-8 break-words text-center">
-              Votre mot de passe a été modifié !
-              <br />
-              <br />
-              Vous allez recevoir un e-mail de confirmation de modification.
-              Vous pouvez dès à présent utiliser votre nouveau mot de passe pour
-              vous connecter !
+              {t("passwordChangedConfirmationMsg")}
             </p>
           </div>
         </div>

@@ -5,12 +5,14 @@ import { errorInitialState, onCancelProp } from "../../types/user";
 import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 function UsernameForm({ onCancel }: onCancelProp) {
   const [usernameEdited, setUsernameEdited] = useState("");
   const [error, setError] = useState(errorInitialState);
   const username = useAppSelector((state) => state.user.user?.username);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("auth");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -73,7 +75,7 @@ function UsernameForm({ onCancel }: onCancelProp) {
   return (
     <div className="mb-6 flex  size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
       <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-        Modifier mon nom
+        {t("buttons.edit-username")}
       </h3>
       <form
         onSubmit={handleSubmit()}
@@ -83,7 +85,7 @@ function UsernameForm({ onCancel }: onCancelProp) {
           htmlFor="username"
           className="ml-1 font-patua text-xl text-textPrimary"
         >
-          Nouveau nom d'utilisateur
+          {t("newUsername")}
         </label>
         <input
           id="username"

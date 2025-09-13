@@ -4,12 +4,14 @@ import { RootState } from "../store/store";
 import { useEffect, useMemo, useState } from "react";
 import { Deck } from "../store/deck/deckSlice";
 import { Card } from "../store/card/cardSlice";
+import { useTranslation } from "react-i18next";
 
 function SearchBarLayout() {
   const { deckId } = useParams<{ deckId: string }>();
   const deckIdNumber = parseInt(deckId!, 10);
   const [searchedItem, setSearchedItem] = useState("");
   const location = useLocation();
+  const { t } = useTranslation("card");
 
   const cardsLocation = location.pathname.includes("/cards");
 
@@ -65,7 +67,7 @@ function SearchBarLayout() {
                 </span>
               ) : (
                 <span className="font-patua text-sm text-textPrimary sm:ml-2 lg:ml-5 lg:text-lg">
-                  Toutes les cartes
+                  {t("allCards")}
                 </span>
               )}
             </div>

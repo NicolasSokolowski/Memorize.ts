@@ -9,6 +9,7 @@ import CodeVerificationForm from "./CodeVerificationForm";
 import { errorInitialState, onCancelProp } from "../../types/user";
 import ChoiceButton from "../../ui/ChoiceButton";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 function EmailForm({ onCancel }: onCancelProp) {
   const [isNewEmailAvailable, setIsNewEmailAvailable] = useState(false);
@@ -16,6 +17,7 @@ function EmailForm({ onCancel }: onCancelProp) {
   const [error, setError] = useState(errorInitialState);
   const [isCodeValid, setIsCodeValid] = useState(false);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("auth");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,7 +73,7 @@ function EmailForm({ onCancel }: onCancelProp) {
       <div className="flip-card-front">
         <div className="relative mb-6 flex  size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-            Modifier mon adresse e-mail
+            {t("buttons.edit-email")}
           </h3>
           <form
             className="mx-12 flex flex-1 flex-col justify-center"
@@ -81,7 +83,7 @@ function EmailForm({ onCancel }: onCancelProp) {
               htmlFor="email"
               className="ml-1 font-patua text-xl text-textPrimary"
             >
-              Nouvelle adresse e-mail
+              {t("newEmail")}
             </label>
             <input
               id="email"
@@ -111,7 +113,7 @@ function EmailForm({ onCancel }: onCancelProp) {
             <div className="flip-card-back-face">
               <div className="mb-6 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
                 <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-                  Modifier mon adresse e-mail
+                  {t("buttons.edit-email")}
                 </h3>
                 <CodeVerificationForm
                   onCancel={onCancel}
@@ -124,16 +126,14 @@ function EmailForm({ onCancel }: onCancelProp) {
             <div className="flip-card-back-of-back">
               <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light lg:mx-4">
                 <h3 className="m-4 text-center text-2xl">
-                  Modifier mon adresse e-mail
+                  {t("buttons.edit-email")}
                 </h3>
                 <div className="flex h-full flex-col items-center justify-center">
-                  <span className="mt-2 text-center text-xl">Succès !</span>
+                  <span className="mt-2 text-center text-xl">
+                    {t("success")}
+                  </span>
                   <p className="mx-12 my-8 break-words text-center text-lg">
-                    Votre adresse e-mail a été modifiée.
-                    <br />
-                    <br />
-                    Vous allez recevoir un e-mail de confirmation de
-                    modification.
+                    {t("emailChangedConfirmationMsg")}
                   </p>
                 </div>
               </div>

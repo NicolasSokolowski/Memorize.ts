@@ -1,0 +1,7 @@
+{
+  "myDecks": "Mes decks",
+  "deckName": "Nom du deck",
+  "deckDelete_one": "Cela entraînera la suppression de {{count}} carte. Êtes-vous sûr ?",
+  "deckDelete_other": "Cela entraînera la suppression de {{count}} cartes. Êtes-vous sûr ?",
+  "deckDeleteNoCards": "Voulez-vous vraiment supprimer ?"
+}

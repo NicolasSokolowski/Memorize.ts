@@ -6,6 +6,7 @@ import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 interface CardDeletionProps {
   card: Card;
@@ -15,6 +16,7 @@ interface CardDeletionProps {
 function CardDeletion({ card, onCancel }: CardDeletionProps) {
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation(["common", "card"]);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,7 +53,7 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
     >
       <div className="flex h-full flex-col justify-between">
         <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
-          Supprimer
+          {t("common:delete")}
         </h3>
         <div className="flex h-full flex-col items-center justify-center">
           <form
@@ -59,7 +61,7 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
             onSubmit={handleSubmit()}
           >
             <p className="w-60 pl-2 text-center font-patua text-lg text-textPrimary xs:w-44 xs:text-base">
-              Voulez-vous vraiment supprimer ?
+              {t("card:deleteCard")}
             </p>
             <ChoiceButton
               width="20"

@@ -3,11 +3,13 @@ import LoginForm from "../features/user/LoginForm";
 import { useAppSelector } from "../store/hooks";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function Home() {
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const user = useAppSelector((state) => state.user.user);
   const navigate = useNavigate();
+  const { t } = useTranslation("home");
 
   useEffect(() => {
     if (user) {
@@ -31,17 +33,8 @@ function Home() {
         </div>
         <div className="relative flex w-full flex-col justify-start">
           <div className="h-full lg:w-2/4">
-            <article className="m-6 flex items-center text-center font-patua text-xl lg:m-2 lg:ml-0 lg:mr-16 lg:h-144 lg:text-lg xl:text-xl 2xl:text-2xl">
-              Apprenez plus intelligemment, pas plus longtemps. Créez vos
-              propres decks de révision, ajoutez-y des cartes en quelques
-              secondes, et entraînez-vous à votre rythme. Lors d'une session, la
-              face avant s’affiche : à vous de deviner ce qui se trouve au dos.
-              Une fois révélé, notre système analyse vos réponses et adapte la
-              difficulté de chaque carte automatiquement. Séparez ce qui est
-              assimilé de ce qui ne l’est pas. Vous vous concentrez sur
-              l’essentiel, et votre progression devient vraiment visible.
-              Simple, efficace, et pensé pour durer — que ce soit pour vos
-              études, une nouvelle langue ou un savoir à ancrer durablement.
+            <article className="m-6 flex items-center text-center font-patua text-xl text-textPrimary lg:m-2 lg:ml-0 lg:mr-16 lg:h-144 lg:text-lg xl:text-xl 2xl:text-2xl">
+              {t("hero.subtitle")}
             </article>
           </div>
           <div

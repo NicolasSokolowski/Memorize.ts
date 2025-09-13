@@ -7,12 +7,14 @@ import {
   selectDailyCards,
   selectHardCards
 } from "../../store/card/cardSelector";
+import { useTranslation } from "react-i18next";
 
 function DeckModeSelection() {
   const [dailyCardsLeft, setDailyCardsLeft] = useState(false);
   const [hardCardsLeft, setHardCardsLeft] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation("training");
 
   const memoDailyCards = useMemo(() => selectDailyCards(), []);
   const dailyCards = useAppSelector(memoDailyCards);
@@ -45,12 +47,12 @@ function DeckModeSelection() {
   return (
     <div className="flex size-full flex-col">
       <h1 className="flex items-center justify-center pb-10 pt-24 font-patua text-4xl text-textPrimary sm:p-10 sm:pb-12 md:py-14 md:text-5xl lg:p-16 lg:pb-20 lg:text-6xl xl:p-24 xl:text-7xl">
-        Sélectionnez un deck
+        {t("selectDeck")}
       </h1>
       <div className="grid grid-cols-[repeat(auto-fit,_21rem)] items-center justify-center gap-8 pb-20">
         <div className="flex size-80 animate-pop flex-col justify-between rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light">
           <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
-            Cartes du jour
+            {t("dailyCards")}
           </div>
           <div className="flex h-16 w-full items-center justify-center">
             {dailyCards.length > 0 ? (
@@ -61,8 +63,7 @@ function DeckModeSelection() {
                     navigate("/training", { state: { cards: dailyCards } })
                   }
                 >
-                  {dailyCards.length} carte{dailyCards.length > 1 ? "s" : ""}{" "}
-                  restante{dailyCards.length > 1 ? "s" : ""}
+                  {t("dailyCardsCount", { count: 5 })}
                 </span>
               ) : (
                 <img
@@ -77,14 +78,14 @@ function DeckModeSelection() {
               )
             ) : (
               <span className="font-patua text-xl text-textPrimary">
-                Terminé !
+                {t("finished")}
               </span>
             )}
           </div>
         </div>
         <div className="flex size-80 animate-pop flex-col justify-between rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light">
           <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
-            Cartes difficiles
+            {t("difficultCards")}
           </div>
           <div className="flex h-16 w-full items-center justify-center">
             {hardCards.length > 0 ? (
@@ -95,7 +96,7 @@ function DeckModeSelection() {
                     navigate("/training", { state: { cards: hardCards } })
                   }
                 >
-                  {hardCards.length} carte{hardCards.length > 1 ? "s" : ""}
+                  {t("difficultCardsCount", { count: hardCards.length })}
                 </span>
               ) : (
                 <img
@@ -110,7 +111,7 @@ function DeckModeSelection() {
               )
             ) : (
               <span className="font-patua text-xl text-textPrimary">
-                Terminé !
+                {t("finished")}
               </span>
             )}
           </div>
@@ -124,11 +125,11 @@ function DeckModeSelection() {
           }}
         >
           <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
-            Choisir un deck
+            {t("chooseDeck")}
           </div>
           {decks.length === 0 && (
             <div className="flex h-16 w-full items-center justify-center font-patua text-xl text-textPrimary">
-              Pas de deck
+              {t("noDecks")}
             </div>
           )}
         </div>

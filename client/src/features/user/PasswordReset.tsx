@@ -8,6 +8,7 @@ import {
 import { useAppDispatch } from "../../store/hooks";
 import { errorInitialState, onCancelProp } from "../../types/user";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 function PasswordReset({ onCancel }: onCancelProp) {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
   const [isCodeValid, setIsCodeValid] = useState(false);
   const dispatch = useAppDispatch();
   const [error, setError] = useState(errorInitialState);
+  const { t } = useTranslation("auth");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(errorInitialState);
@@ -57,14 +59,14 @@ function PasswordReset({ onCancel }: onCancelProp) {
   return (
     <div className="relative flex min-h-[33rem] flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light xl:min-h-[36rem]">
       <h3 className="m-4 text-center text-xl xl:text-2xl">
-        Réinitialisation du mot de passe
+        {t("passwordReset")}
       </h3>
       <div className="mx-12 mt-8 flex h-20 flex-1 flex-col">
         <label
           htmlFor="email"
           className="ml-3 font-patua text-xl text-textPrimary"
         >
-          Adresse e-mail
+          E-mail
         </label>
         <input
           id="email"

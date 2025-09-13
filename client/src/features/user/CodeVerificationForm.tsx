@@ -5,6 +5,7 @@ import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 type CodeVerificationProps = {
   onCancel: () => void;
@@ -30,6 +31,7 @@ function CodeVerificationForm(props: CodeVerificationProps) {
   const dispatch = useAppDispatch();
   const { onCancel, setIsCodeValid, requestType } = props;
   const data = "data" in props ? props.data : undefined;
+  const { t } = useTranslation("auth");
 
   const handleCodeChange = (index: number, value: string) => {
     setError(errorInitialState);
@@ -112,7 +114,7 @@ function CodeVerificationForm(props: CodeVerificationProps) {
         onSubmit={handleCodeSubmit}
       >
         <div className="ml-1 text-center font-patua text-xl text-textPrimary">
-          Veuillez saisir le code reçu sur votre e-mail :
+          {t("code")}
         </div>
         <div className="mt-4 flex justify-center gap-2 font-patua">
           {code.map((digit, index) => (

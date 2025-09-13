@@ -6,6 +6,7 @@ import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 type CardSide = "front" | "back";
 
@@ -31,6 +32,7 @@ function CardModification({
   const [cardData, setCardData] = useState(initialState);
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation(["common", "card"]);
 
   useEffect(() => {
     setCardData({ front: card.front, back: card.back });
@@ -108,7 +110,7 @@ function CardModification({
     >
       <div className="flex h-full flex-col justify-between font-patua text-textPrimary">
         <h3 className="mt-4 text-center font-patua text-2xl xs:text-xl">
-          Modifier
+          {t("common:modify")}
         </h3>
         <div className="flex h-full flex-col items-center justify-center">
           <form
@@ -120,7 +122,7 @@ function CardModification({
                 className="ml-2 text-lg sm:text-base"
                 htmlFor={side === "front" ? "front" : "back"}
               >
-                {side === "front" ? "Face avant" : "Face arrière"}
+                {side === "front" ? t("card:frontSide") : t("card:backSide")}
               </label>
               <input
                 id={side}
@@ -128,7 +130,6 @@ function CardModification({
                 value={cardData[side]}
                 onChange={handleChange}
                 autoComplete="off"
-                placeholder={side === "front" ? "Face avant" : "Face arrière"}
                 className={`${
                   error.fields?.includes("front") ||
                   error.fields?.includes("back")

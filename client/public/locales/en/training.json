@@ -1,0 +1,30 @@
+{
+  "training": "Training",
+  "dailyCards": "Daily cards",
+  "dailyCardsCount_one": "{{count}} card left",
+  "dailyCardsCount_other": "{{count}} cards left",
+  "difficultCards": "Difficult cards",
+  "difficultCardsCount_one": "{{count}} card",
+  "difficultCardsCount_other": "{{count}} cards",
+  "selectDeck": "Select a deck",
+  "chooseDeck": "Choose a deck",
+  "emptyDeck": "Empty deck",
+  "cardsLeftCount_one": "One card left",
+  "cardsLeftCount_other": "Cards left : {{count}}",
+  "noDecks": "No decks",
+  "finished": "Finished !",
+  "buttons": {
+    "quit": "Quit",
+    "replay": "Replay"
+  },
+  "scoreBoard": {
+    "scoreBoard": "Score board",
+    "studiedCards": "Number of cards studied :",
+    "easyCards": "Number of easy cards :",
+    "mediumCards": "Number of medium cards :",
+    "hardCards": "Number of difficult cards :",
+    "newCards": "Number of new cards :",
+    "winningStreakCards": "Number of cards in a winning streak :",
+    "successRate": "Success rate :"
+  }
+}

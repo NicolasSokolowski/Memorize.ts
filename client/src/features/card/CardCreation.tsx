@@ -4,6 +4,7 @@ import { createCard } from "../../store/card/cardThunks";
 import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 const initialState = {
   front: "",
@@ -20,6 +21,7 @@ function CardCreation({ deckId }: CardCreationProp) {
   const [isInputFlipped, setIsInputFlipped] = useState(false);
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation(["common", "card"]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -98,7 +100,7 @@ function CardCreation({ deckId }: CardCreationProp) {
         <div className="flip-box-b-top mr-2 size-full rounded-lg bg-tertiary shadow-custom-light">
           <div className="flex h-full flex-col justify-between">
             <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
-              Créer
+              {t("common:create")}
             </h3>
             <div className="flex h-full flex-col items-center justify-center">
               <form
@@ -114,7 +116,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                         className="ml-2 text-lg sm:text-base"
                         htmlFor="front"
                       >
-                        Face avant
+                        {t("card:frontSide")}
                       </label>
                       <input
                         id="front"
@@ -122,7 +124,6 @@ function CardCreation({ deckId }: CardCreationProp) {
                         value={cardData.front}
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
-                        placeholder="Face avant"
                         className={`${error.fields?.includes("front") ? "ring-2 ring-error" : ""} mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 focus:outline-none focus:ring-2 focus:ring-primary xs:mt-1 xs:h-10 xs:w-44 xs:pl-2`}
                       />
                     </div>
@@ -131,7 +132,7 @@ function CardCreation({ deckId }: CardCreationProp) {
                         className="ml-2 text-lg sm:text-base"
                         htmlFor="back"
                       >
-                        Face arrière
+                        {t("card:backSide")}
                       </label>
                       <input
                         id="back"
@@ -139,7 +140,6 @@ function CardCreation({ deckId }: CardCreationProp) {
                         value={cardData.back}
                         onChange={(e) => handleChange(e)}
                         autoComplete="off"
-                        placeholder="Face arrière"
                         className={`${error.fields?.includes("back") ? "ring-2 ring-error" : ""} mt-2 h-14 w-60 rounded-lg pl-4 font-patua shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 focus:outline-none focus:ring-2 focus:ring-primary xs:mt-1 xs:h-10 xs:w-44 xs:pl-2`}
                       />
                     </div>

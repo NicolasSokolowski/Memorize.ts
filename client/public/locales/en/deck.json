@@ -1,0 +1,7 @@
+{
+  "myDecks": "My decks",
+  "deckName": "Deck name",
+  "deckDelete_one": "This will delete {{count}} card. Are you sure ?",
+  "deckDelete_other": "This will delete {{count}} cards. Are you sure ?",
+  "deckDeleteNoCards": "Do you really want to delete this deck ?"
+}

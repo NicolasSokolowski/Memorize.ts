@@ -1,0 +1,26 @@
+{
+  "validation" : {
+    "any.required": "{{labelCap}} est requis",
+    "string.min": "{{labelCap}} doit avoir au moins {{limit}} caractères",
+    "string.max": "{{labelCap}} doit avoir au maximum {{limit}} caractères",
+    "string.email": "{{labelCap}} doit être un email valide",
+    "string.empty": "{{labelCap}} ne peut pas être vide",
+    "string.passwordComplexity": "{{labelCap}} doit contenir au minimum une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial",
+    "any.only": "Le nouveau mot de passe et sa confirmation sont différents",
+    "string.pattern.base": "{{labelCap}} ne correspond pas au format attendu"
+  },
+  "EMAIL_ALREADY_EXISTS": "L'adresse e-mail est déjà utilisée",
+  "EXPIRED_CODE": "Code expiré",
+  "INVALID_CODE": "Code invalide",
+  "UNKNOWN": "Erreur inconnue",
+  "VERIFICATION_CODE_SEND_FAILED": "Erreur lors de l'envoi du code",
+  "INVALID_DATA": "Données invalides",
+  "INVALID_PARAMETER": "Paramètre invalide",
+  "PASSWORD_ERROR": "Erreur interne",
+  "CREDENTIALS_ERROR": "Email ou mot de passe invalide",
+  "INVALID_CURRENT_PASSWORD": "Mot de passe actuel incorrect",
+  "NOT_FOUND": "Non trouvé",
+  "ACCESS_DENIED": "Accès refusé",
+  "DATABASE_ERROR": "Erreur de connexion à la base de données",
+  "UNAUTHORIZED": "Accès non autorisé"
+}
