@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { AxiosError } from "axios";
 import axiosInstance from "../../services/axios.instance";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setHasAccount } from "../../store/user/userSlice";
-import { ApiErrorResponse } from "../../types/api";
 import Error from "../../ui/Error";
 import { errorInitialState } from "../../types/user";
 import { useTranslation } from "react-i18next";
+import { handleApiError } from "../../helpers/handleApiError";
 
 const initialState = {
   email: "",
@@ -32,42 +31,8 @@ function SignupForm() {
       setUserInfo(initialState);
       setError(errorInitialState);
     } catch (err: unknown) {
-      const axiosError = err as AxiosError<ApiErrorResponse>;
-
-      if (axiosError.response?.data.errors) {
-        const newFields: string[] = [];
-        const newMessages: string[] = [];
-
-        for (const apiError of axiosError.response.data.errors) {
-          let message = apiError.message;
-          const { label, limit } = apiError.context || {};
-          let labelCap;
-
-          if (label) {
-            labelCap = label.charAt(0).toUpperCase() + label.slice(1);
-          }
-
-          if (apiError.type && apiError.context) {
-            message = t(`errors:validation.${apiError.type}`, {
-              labelCap,
-              limit,
-              defaultValue: apiError.message
-            }) as string;
-          } else if (apiError.code) {
-            message = t(`errors:${apiError.code}`, {
-              defaultValue: apiError.message
-            });
-          }
-
-          if (apiError.field) newFields.push(apiError.field);
-          if (message) newMessages.push(message);
-        }
-
-        setError({
-          fields: [...new Set(newFields)],
-          messages: newMessages
-        });
-      }
+      const parsedError = handleApiError(err, t);
+      setError(parsedError);
     }
   };
 
@@ -126,6 +91,7 @@ function SignupForm() {
             value={userInfo.password}
             onChange={handleChange}
             className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("password") ? "ring-2 ring-error" : ""} text-textPrimary focus:outline-none focus:ring-2 focus:ring-primary`}
+            autoComplete="off"
           />
         </div>
 
