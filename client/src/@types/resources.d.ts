@@ -4,7 +4,7 @@ interface Resources {
       signin: "Sign in";
       signup: "Sign up";
     };
-    code: "Please enter the code you received on your e-mail :";
+    code: "Please enter the code you received on your mail :";
     connection: "Connection";
     forgottenPassword: "Forgot password ?";
     hasAccount: "I already have an account";
@@ -16,6 +16,11 @@ interface Resources {
     register: "Register";
     "reset success": "Success : A confirmation e-mail has been sent to you. You can already sign in with your new password.";
     username: "Username";
+  };
+  common: {
+    create: "Create";
+    delete: "Delete";
+    modify: "Modify";
   };
   home: {
     hero: {
