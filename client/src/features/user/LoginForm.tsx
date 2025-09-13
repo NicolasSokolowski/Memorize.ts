@@ -6,6 +6,7 @@ import PasswordReset from "./PasswordReset";
 import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 const initialState = {
   email: "",
@@ -19,6 +20,7 @@ function LoginForm() {
   const [error, setError] = useState(errorInitialState);
   const hasAccount = useAppSelector((state) => state.user.hasAccount);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("home");
 
   const onCancel = () => {
     setActiveAction("none");
@@ -102,7 +104,7 @@ function LoginForm() {
       <div className="flip-card-front">
         <section className="relative min-h-[33rem] overflow-hidden rounded-md border-gray-300 bg-tertiary shadow-custom-light xl:min-h-[36rem]">
           <h2 className="m-5 text-center font-patua text-3xl text-textPrimary xl:text-4xl">
-            Connexion
+            {t("auth.connection")}
           </h2>
           <form
             className="flex flex-col items-center justify-center gap-4 p-3 xl:gap-6 xl:p-5"
@@ -129,7 +131,7 @@ function LoginForm() {
                 className="ml-2 font-patua text-xl text-textPrimary"
                 htmlFor="password-log"
               >
-                Mot de passe
+                {t("auth.password")}
               </label>
               <input
                 id="password-log"
@@ -146,7 +148,7 @@ function LoginForm() {
                 className="mt-5 w-72 rounded-md bg-secondary p-3 shadow-custom-light xl:w-80"
               >
                 <span className="rounded-md font-patua text-3xl text-white">
-                  Connexion
+                  {t("auth.buttons.signin")}
                 </span>
               </button>
               <div className="flex justify-between">
@@ -155,7 +157,7 @@ function LoginForm() {
                   className="font-patua text-sm text-secondary underline underline-offset-2"
                   onClick={onClick}
                 >
-                  Je n'ai pas de compte
+                  {t("auth.hasNoAccount")}
                 </button>
                 <button
                   type="button"
@@ -166,7 +168,7 @@ function LoginForm() {
                     setUserInfo(initialState);
                   }}
                 >
-                  Mot de passe oublié ?
+                  {t("auth.forgottenPassword")}
                 </button>
               </div>
             </div>
