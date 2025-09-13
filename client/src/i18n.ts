@@ -10,7 +10,7 @@ i18next
   .init({
     debug: true,
     fallbackLng: "en",
-    ns: ["common", "home", "auth", "training", "deck"],
+    ns: ["common", "home", "auth", "training", "deck", "card"],
     backend: {
       loadPath: "/locales/{{lng}}/{{ns}}.json"
     },

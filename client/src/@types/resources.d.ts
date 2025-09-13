@@ -17,6 +17,13 @@ interface Resources {
     "reset success": "Success : A confirmation e-mail has been sent to you. You can already sign in with your new password.";
     username: "Username";
   };
+  card: {
+    allCards: "All cards";
+    backSide: "Back side";
+    deleteCard: "Do you really want to delete this card ?";
+    frontSide: "Front side";
+    myCards: "My cards";
+  };
   common: {
     create: "Create";
     delete: "Delete";
