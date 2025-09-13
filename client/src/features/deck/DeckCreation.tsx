@@ -4,6 +4,7 @@ import { createDeck } from "../../store/deck/deckThunk";
 import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 const initialState = {
   name: ""
@@ -14,6 +15,7 @@ function DeckCreation() {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation(["common", "deck"]);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,7 +85,7 @@ function DeckCreation() {
         <div className="flip-box-b-top mr-2 size-full rounded-lg bg-tertiary shadow-custom-light">
           <div className="flex h-full flex-col justify-between">
             <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
-              Créer
+              {t("common:create")}
             </h3>
             <div className="flex h-full flex-col items-center justify-center">
               <form
@@ -92,7 +94,7 @@ function DeckCreation() {
               >
                 <div className="flex flex-col font-patua text-lg text-textPrimary sm:text-base">
                   <label className="ml-2 " htmlFor="name">
-                    Nom du deck
+                    {t("deck:deckName")}
                   </label>
                   <input
                     id="name"
@@ -100,7 +102,6 @@ function DeckCreation() {
                     value={deckData.name}
                     onChange={(e) => handleChange(e)}
                     autoComplete="off"
-                    placeholder="Nom du deck"
                     className={`${error.fields?.includes("name") ? "ring-2 ring-error" : ""} mt-2 h-14 w-60 rounded-lg pl-4 shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 focus:outline-none focus:ring-2 focus:ring-primary xs:h-10 xs:w-44 xs:pl-2 sm:mt-1`}
                   />
                 </div>

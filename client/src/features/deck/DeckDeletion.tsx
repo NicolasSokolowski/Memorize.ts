@@ -7,6 +7,7 @@ import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import { selectDeckCardsNumber } from "../../store/card/cardSelector";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 interface DeckModificationProps extends DeckProps {
   onCancel: () => void;
@@ -15,6 +16,7 @@ interface DeckModificationProps extends DeckProps {
 function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation(["common", "deck"]);
 
   const selectDeckCardsLength = useMemo(
     () => selectDeckCardsNumber(deck.id),
@@ -52,7 +54,7 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
     <div className="flip-box-b-right size-full rounded-lg bg-tertiary shadow-custom-light">
       <div className="flex h-full flex-col justify-between">
         <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
-          Supprimer
+          {t("common:delete")}
         </h3>
         <div className="flex h-full flex-col items-center justify-center">
           <form
@@ -61,12 +63,11 @@ function DeckDeletion({ deck, onCancel }: DeckModificationProps) {
           >
             {cardsLength === 0 ? (
               <p className="w-64 pl-2 text-center font-patua text-lg text-textPrimary xs:w-44 xs:text-base">
-                Voulez-vous vraiment supprimer ?
+                {t("deck:deckDeleteNoCards")}
               </p>
             ) : (
               <p className="w-64 pl-2 text-center font-patua text-lg text-textPrimary xs:w-44 xs:text-base">
-                Cela entraînera la suppression de {cardsLength} carte
-                {cardsLength > 1 && "s"}. Êtes-vous sûr ?
+                {t("deck:deckDelete", { count: cardsLength })}
               </p>
             )}
             <ChoiceButton

@@ -6,6 +6,7 @@ import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 const initialState = {
   name: ""
@@ -19,6 +20,7 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
   const [deckData, setDeckData] = useState(initialState);
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation(["common", "deck"]);
 
   useEffect(() => {
     setDeckData({ name: deck.name });
@@ -93,7 +95,7 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
     <div className="flip-box-b-left size-full rounded-lg bg-tertiary shadow-custom-light">
       <div className="flex h-full flex-col justify-between">
         <h3 className="mt-4 text-center font-patua text-2xl text-textPrimary xs:text-xl">
-          Modifier
+          {t("common:modify")}
         </h3>
         <div className="flex h-full flex-col items-center justify-center">
           <form
@@ -102,7 +104,7 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
           >
             <div className="flex flex-col font-patua text-lg text-textPrimary sm:text-base">
               <label className="ml-2 " htmlFor="name">
-                Nom du deck
+                {t("deck:deckName")}
               </label>
               <input
                 id="name"

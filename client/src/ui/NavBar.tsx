@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 function NavBar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation("training");
+  const { t } = useTranslation(["deck", "training"]);
 
   const deckPage =
     location.pathname.includes("/decks") &&
@@ -33,7 +33,7 @@ function NavBar() {
               onClick={() => navigate("/user/training/mode")}
               className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${trainingPage ? "bg-primary" : "bg-secondary"} animate-pop p-4 py-2 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
-              <span className="hidden sm:block">{t("training")}</span>
+              <span className="hidden sm:block">{t("training:training")}</span>
               <img
                 src="/training.png"
                 alt="Training icon"
@@ -47,7 +47,7 @@ function NavBar() {
               onClick={() => navigate("/user/decks")}
               className={`relative flex size-12 cursor-pointer items-center justify-center rounded-full sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${deckPage ? "bg-primary" : "bg-secondary"} animate-pop px-4 py-2 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
-              <span className="hidden sm:block">Mes decks</span>
+              <span className="hidden sm:block">{t("deck:myDecks")} </span>
               <img
                 src="/deck.png"
                 alt="Deck icon"
