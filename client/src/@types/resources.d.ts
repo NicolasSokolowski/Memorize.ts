@@ -54,6 +54,32 @@ interface Resources {
     deckName: "Deck name";
     myDecks: "My decks";
   };
+  errors: {
+    ACCESS_DENIED: "Access denied";
+    CREDENTIALS_ERROR: "Invalid Email or password";
+    DATABASE_ERROR: "Error while trying to connect to the database";
+    EMAIL_ALREADY_EXISTS: "Email address is already in use";
+    EXPIRED_CODE: "Expired code";
+    INVALID_CODE: "Invalid code";
+    INVALID_CURRENT_PASSWORD: "Current password is incorrect";
+    INVALID_DATA: "Invalid data";
+    INVALID_PARAMETER: "Invalid parameter";
+    NOT_FOUND: "Not found";
+    PASSWORD_ERROR: "Internal error";
+    UNAUTHORIZED: "Unauthorized";
+    UNKNOWN: "Unknown error";
+    VERIFICATION_CODE_SEND_FAILED: "Error while trying to send code";
+    validation: {
+      "any.only": "New password and it's confirmation are different";
+      "any.required": "{{labelCap}} is required";
+      "string.email": "{{labelCap}} must be a valid email address";
+      "string.empty": "{{labelCap}} cannot be empty";
+      "string.max": "{{labelCap}} must be at most {{limit}} characters long";
+      "string.min": "{{labelCap}} must be at least {{limit}} characters long";
+      "string.passwordComplexity": "{{labelCap}} must contain at least one uppercase letter, one lowercase letter, one digit, and one special character";
+      "string.pattern.base": "{{labelCap}} does not match the required format";
+    };
+  };
   home: {
     hero: {
       subtitle: "Study smarter. Remember longer. Build your own flashcard decks in seconds and practice at your own pace. Each session challenges you to recall what’s on the back of a card—then our smart system adapts the difficulty automatically. Quickly see what you’ve mastered and what still needs work, so you can focus on what matters most. Designed to make your progress clear, effective, and lasting—whether you’re preparing for exams, learning a new language, or mastering knowledge for life.";
