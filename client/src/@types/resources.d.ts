@@ -1,8 +1,17 @@
 interface Resources {
-  auth: {
-    password: "Password";
-    signup: "Sign up";
-    username: "Username";
+  home: {
+    auth: {
+      buttons: {
+        signup: "Sign up";
+      };
+      hasAccount: "I already have an account";
+      password: "Password";
+      register: "Register";
+      username: "Username";
+    };
+    hero: {
+      subtitle: "Study smarter. Remember longer. Build your own flashcard decks in seconds and practice at your own pace. Each session challenges you to recall what’s on the back of a card—then our smart system adapts the difficulty automatically. Quickly see what you’ve mastered and what still needs work, so you can focus on what matters most. Designed to make your progress clear, effective, and lasting—whether you’re preparing for exams, learning a new language, or mastering knowledge for life.";
+    };
   };
 }
 
