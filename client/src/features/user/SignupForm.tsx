@@ -90,7 +90,6 @@ function SignupForm() {
             type="text"
             value={userInfo.email}
             onChange={handleChange}
-            placeholder="Adresse e-mail"
             className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("email") ? "ring-2 ring-error" : ""} text-textPrimary focus:outline-none focus:ring-2 focus:ring-primary`}
           />
         </div>
@@ -104,7 +103,6 @@ function SignupForm() {
             type="password"
             value={userInfo.password}
             onChange={handleChange}
-            placeholder="Mot de passe"
             className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("password") ? "ring-2 ring-error" : ""} text-textPrimary focus:outline-none focus:ring-2 focus:ring-primary`}
           />
         </div>
@@ -118,7 +116,6 @@ function SignupForm() {
             type="text"
             value={userInfo.username}
             onChange={handleChange}
-            placeholder="Nom d'utilisateur"
             className={`h-12 w-72 rounded-md border-gray-300 bg-white p-2 pl-3 text-black shadow-inner-strong placeholder:text-black/20 placeholder:text-opacity-70 xl:w-80 ${error.fields.includes("username") ? "ring-2 ring-error" : ""} text-textPrimary focus:outline-none focus:ring-2 focus:ring-primary`}
             autoComplete="off"
           />
