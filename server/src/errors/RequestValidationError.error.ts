@@ -19,11 +19,13 @@ export class RequestValidationError extends CustomError {
     return this.errors.map((err) => {
       const field = err.path?.[0] as string | undefined;
 
-      if (err.type === "any.required") {
-        return { message: `Missing field ${err.path}`, field, code: this.code };
-      }
-
-      return { message: err.message, code: this.code, field };
+      return {
+        message: err.message,
+        code: this.code,
+        field,
+        type: err.type,
+        context: err.context
+      };
     });
   }
 }
