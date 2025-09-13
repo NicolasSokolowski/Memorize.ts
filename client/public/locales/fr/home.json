@@ -1,18 +1,5 @@
 {
   "hero": {
     "subtitle": "Apprenez plus intelligemment. Retenez plus longtemps. Créez vos propres flashcards en quelques secondes et révisez à votre rythme. Chaque session vous met au défi de retrouver la bonne réponse, puis notre système adapte automatiquement la difficulté. Voyez rapidement ce que vous maîtrisez déjà et ce qui reste à travailler, pour vous concentrer sur l’essentiel. Simple, efficace et durable — que ce soit pour vos examens, une nouvelle langue ou des connaissances à ancrer pour de bon."
-  },
-  "auth": {
-    "register": "Inscription",
-    "password": "Mot de passe",
-    "username": "Nom d'utilisateur",
-    "buttons": {
-      "signup": "S'inscrire",
-      "signin": "Se connecter"
-    },
-    "hasAccount": "J'ai déjà un compte",
-    "hasNoAccount": "Je n'ai pas de compte",
-    "forgottenPassword": "Mot de passe oublié ?",
-    "connection": "Connexion"
   }
 }
