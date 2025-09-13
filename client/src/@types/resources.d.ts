@@ -1,12 +1,12 @@
 interface Resources {
   auth: {
-    accountDeletedConfirmationMsg: "Your account has been deleted.<br /><br />You will soon receive a confirmation email concerning this deletion. You are going to be disconnect in {{count}} s.";
+    accountDeletedConfirmationMsg: "Your account has been deleted. You will soon receive a confirmation email concerning this deletion. You are going to be disconnect in {{count}} s.";
     buttons: {
-      delete: "Delete my account";
+      "delete-user": "Delete my account";
+      "edit-email": "Modify my email address";
+      "edit-password": "Modify my password";
+      "edit-username": "Modify my username";
       logout: "Logout";
-      modifyEmail: "Modify my email address";
-      modifyPassword: "Modify my password";
-      modifyUsername: "Modify my username";
       signin: "Sign in";
       signup: "Sign up";
     };
@@ -15,22 +15,22 @@ interface Resources {
     currentPassword: "Current password";
     deleteAccountCheck: "Do you really want to delete your account ?";
     email: "Email address";
-    emailChangedConfirmationMsg: "Your email address has been modified.<br /><br />You will soon receive a confirmation email concerning this modification.";
+    emailChangedConfirmationMsg: "Your email address has been modified. You will soon receive a confirmation email concerning this modification.";
     emailCol: "Email address :";
     forgottenPassword: "Forgot password ?";
     hasAccount: "I already have an account";
     hasNoAccount: "I don't have an account";
     logoutCheck: "Do you really want to disconnect ?";
     myProfile: "My profile";
-    "new password": "New password";
     newEmail: "New email address";
+    newPassword: "New password";
     newUsername: "New username";
     password: "Password";
-    "password confirmation": "Password confirmation";
-    "password reset": "Password reset";
-    passwordChangedConfirmationMsg: "Your password has been modified. <br /><br />You will soon receive a confirmation email concerning this modification. You can already use your new password to sign in !";
+    passwordChangedConfirmationMsg: "Your password has been modified. You will soon receive a confirmation email concerning this modification. You can already use your new password to sign in !";
+    passwordConfirmation: "Password confirmation";
+    passwordReset: "Password reset";
     register: "Register";
-    "reset success": "Success : A confirmation e-mail has been sent to you. You can already sign in with your new password.";
+    resetSuccess: "Success : A confirmation e-mail has been sent to you. You can already sign in with your new password.";
     success: "Success !";
     username: "Username";
     usernameCol: "Username :";

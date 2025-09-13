@@ -9,6 +9,7 @@ import {
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 type DeleteFormProps = {
   onCancel: () => void;
@@ -20,6 +21,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
   const [disconnectTimer, setDisconnectTimer] = useState(10);
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("auth");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,12 +73,12 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
       <div className="flip-card-front">
         <div className="relative mb-6 flex size-full flex-col rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-            Supprimer mon compte
+            {t("buttons.delete-user")}
           </h3>
           <div className="mx-12 flex flex-1 flex-col justify-center">
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <p className="text-center font-patua text-xl text-textPrimary">
-                Êtes-vous sûr de vouloir supprimer votre compte ?
+                {t("deleteAccountCheck")}
               </p>
               <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
             </form>
@@ -92,7 +94,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
             <div className="flip-card-back-face">
               <div className="mb-6 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
                 <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-                  Supprimer mon compte
+                  {t("buttons.delete-user")}
                 </h3>
                 <CodeVerificationForm
                   onCancel={onCancel}
@@ -104,17 +106,14 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
             <div className="flip-card-back-of-back">
               <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light lg:mx-4">
                 <h3 className="mt-4 text-center text-2xl">
-                  Supprimer mon compte
+                  {t("buttons.delete-user")}
                 </h3>
                 <div className="flex h-full flex-col items-center justify-center">
-                  <span className="text-center text-xl">Succès !</span>
+                  <span className="text-center text-xl">{t("success")}</span>
                   <p className="mx-12 my-8 break-words text-center">
-                    Votre compte a été supprimé.
-                    <br />
-                    <br />
-                    Vous allez recevoir un e-mail de confirmation de
-                    suppression. Vous allez être déconnecté dans{" "}
-                    {disconnectTimer} s.
+                    {t("accountDeletedConfirmationMsg", {
+                      count: disconnectTimer
+                    })}
                   </p>
                 </div>
               </div>

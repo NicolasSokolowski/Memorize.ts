@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 function NavBar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation(["deck", "card", "training"]);
+  const { t } = useTranslation(["deck", "card", "auth", "training"]);
 
   const deckPage =
     location.pathname.includes("/decks") &&
@@ -75,7 +75,7 @@ function NavBar() {
               onClick={() => navigate("/user/profile")}
               className={`relative size-12 cursor-pointer items-center justify-center rounded-full sm:flex sm:h-14 sm:w-full sm:justify-between sm:rounded-lg ${profilePage ? "bg-primary" : "bg-secondary"} animate-pop p-2 px-4 font-patua text-white shadow-custom-light transition-all duration-500 lg:text-xl`}
             >
-              <span className="hidden sm:block">Mon profil</span>
+              <span className="hidden sm:block">{t("auth:myProfile")}</span>
               <img
                 src="/profile.png"
                 alt="Deck icon"

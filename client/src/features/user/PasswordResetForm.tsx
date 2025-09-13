@@ -85,7 +85,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
           htmlFor="new-pw"
           className="ml-1 font-patua text-xl text-textPrimary"
         >
-          {t("new password")}
+          {t("newPassword")}
         </label>
         <input
           id="newPassword"
@@ -99,7 +99,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
           htmlFor="passwordConfirmation"
           className="ml-1 font-patua text-xl text-textPrimary"
         >
-          {t("password confirmation")}
+          {t("passwordConfirmation")}
         </label>
         <input
           id="passwordConfirmation"
@@ -132,7 +132,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
         ) : (
           <div className="mt-5 flex h-24 flex-col items-center justify-center">
             <p className="mt-4 text-center font-patua text-base text-textPrimary">
-              {t("reset success")}
+              {t("resetSuccess")}
             </p>
           </div>
         )}

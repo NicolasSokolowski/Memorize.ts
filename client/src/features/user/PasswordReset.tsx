@@ -59,7 +59,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
   return (
     <div className="relative flex min-h-[33rem] flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light xl:min-h-[36rem]">
       <h3 className="m-4 text-center text-xl xl:text-2xl">
-        {t("password reset")}
+        {t("passwordReset")}
       </h3>
       <div className="mx-12 mt-8 flex h-20 flex-1 flex-col">
         <label

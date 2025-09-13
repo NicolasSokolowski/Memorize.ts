@@ -5,10 +5,12 @@ import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState, onCancelProp } from "../../types/user";
 import ChoiceButton from "../../ui/ChoiceButton";
 import Error from "../../ui/Error";
+import { useTranslation } from "react-i18next";
 
 function LogoutForm({ onCancel }: onCancelProp) {
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("auth");
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,14 +38,14 @@ function LogoutForm({ onCancel }: onCancelProp) {
   return (
     <div className="mb-6 flex size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
       <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-        Me déconnecter
+        {t("buttons.logout")}
       </h3>
       <form
         onSubmit={handleSubmit()}
         className="mx-12 flex flex-1 flex-col justify-center gap-5"
       >
         <p className="text-center font-patua text-xl text-textPrimary">
-          Êtes-vous sûr de vouloir vous déconnecter ?
+          {t("logoutCheck")}
         </p>
         <ChoiceButton width="24" gap="gap-20" onCancel={onCancel} />
       </form>
