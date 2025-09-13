@@ -33,7 +33,7 @@ function Home() {
         </div>
         <div className="relative flex w-full flex-col justify-start">
           <div className="h-full lg:w-2/4">
-            <article className="m-6 flex items-center text-center font-patua text-xl lg:m-2 lg:ml-0 lg:mr-16 lg:h-144 lg:text-lg xl:text-xl 2xl:text-2xl">
+            <article className="m-6 flex items-center text-center font-patua text-xl text-textPrimary lg:m-2 lg:ml-0 lg:mr-16 lg:h-144 lg:text-lg xl:text-xl 2xl:text-2xl">
               {t("hero.subtitle")}
             </article>
           </div>

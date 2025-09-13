@@ -2,9 +2,13 @@ interface Resources {
   home: {
     auth: {
       buttons: {
+        signin: "Sign in";
         signup: "Sign up";
       };
+      connection: "Connection";
+      forgottenPassword: "Forgot password ?";
       hasAccount: "I already have an account";
+      hasNoAccount: "I don't have an account";
       password: "Password";
       register: "Register";
       username: "Username";

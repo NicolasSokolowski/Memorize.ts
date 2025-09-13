@@ -7,8 +7,12 @@
     "password": "Password",
     "username": "Username",
     "buttons": {
-      "signup": "Sign up"
+      "signup": "Sign up",
+      "signin": "Sign in"
     },
-    "hasAccount": "I already have an account"
+    "hasAccount": "I already have an account",
+    "hasNoAccount": "I don't have an account",
+    "forgottenPassword": "Forgot password ?",
+    "connection": "Connection"
   }
 }

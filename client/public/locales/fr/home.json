@@ -7,8 +7,12 @@
     "password": "Mot de passe",
     "username": "Nom d'utilisateur",
     "buttons": {
-      "signup": "S'inscrire"
+      "signup": "S'inscrire",
+      "signin": "Se connecter"
     },
-    "hasAccount": "J'ai déjà un compte"
+    "hasAccount": "J'ai déjà un compte",
+    "hasNoAccount": "Je n'ai pas de compte",
+    "forgottenPassword": "Mot de passe oublié ?",
+    "connection": "Connexion"
   }
 }
