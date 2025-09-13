@@ -1,13 +1,21 @@
 {
   "training": "Entraînement",
   "dailyCards": "Cartes du jour",
+  "dailyCardsCount_one": "{{count}} carte restante",
+  "dailyCardsCount_other": "{{count}} cartes restantes",
   "difficultCards": "Cartes difficiles",
+  "difficultCardsCount_one": "{{count}} carte",
+  "difficultCardsCount_other": "{{count}} cartes",
   "selectDeck": "Sélectionnez un deck",
   "chooseDeck": "Choisir un deck",
   "emptyDeck": "Deck vide",
-  "cardsLeft": "Cards restantes : {{cardsLeft}}",
+  "cardsLeftCount_one": "Une carte restante",
+  "cardsLeftCount_other": "Cartes restantes : {{count}}",
+  "noDecks": "Pas de decks",
+  "finished": "Terminé !",
   "buttons": {
-    "quit": "Quitter"
+    "quit": "Quitter",
+    "replay": "Rejouer"
   },
   "scoreBoard": {
     "scoreBoard": "Tableau des scores",

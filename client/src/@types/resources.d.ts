@@ -30,12 +30,20 @@ interface Resources {
   training: {
     buttons: {
       quit: "Quit";
+      replay: "Replay";
     };
-    cardsLeft: "Cards left : {{cardsLeft}}";
+    cardsLeftCount_one: "One card left";
+    cardsLeftCount_other: "Cards left : {{count}}";
     chooseDeck: "Choose a deck";
     dailyCards: "Daily cards";
+    dailyCardsCount_one: "{{count}} card left";
+    dailyCardsCount_other: "{{count}} cards left";
     difficultCards: "Difficult cards";
+    difficultCardsCount_one: "{{count}} card";
+    difficultCardsCount_other: "{{count}} cards";
     emptyDeck: "Empty deck";
+    finished: "Finished !";
+    noDecks: "No decks";
     scoreBoard: {
       easyCards: "Number of easy cards :";
       hardCards: "Number of difficult cards :";
