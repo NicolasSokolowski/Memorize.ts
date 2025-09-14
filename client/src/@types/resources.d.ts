@@ -70,7 +70,9 @@ interface Resources {
     UNKNOWN: "Unknown error";
     VERIFICATION_CODE_SEND_FAILED: "Error while trying to send code";
     allFields: "All fields are required";
+    back: "Back side";
     email: "Email address";
+    front: "Front side";
     name: "Name";
     newPassword: "New password";
     password: "Password";
@@ -80,7 +82,7 @@ interface Resources {
       "any.only": "New password and it's confirmation are different";
       "any.required": "{{label}} is required";
       empty: "{{label}} cannot be empty";
-      noChange: "{{label}} is identical to it's previous value";
+      noChange: "{{label}} is identical to its previous value";
       "string.email": "{{label}} must be a valid email address";
       "string.empty": "{{label}} cannot be empty";
       "string.max": "{{label}} must be at most {{limit}} characters long";

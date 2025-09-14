@@ -4,6 +4,8 @@
   "email": "L'adresse e-mail",
   "newPassword": "Le nouveau mot de passe",
   "name": "Le nom",
+  "front": "La face avant",
+  "back": "La face arrière",
   "allFields": "Tous les champs sont requis",
   "passwordMisMatch": "Les mots de passe ne correspondent pas",
   "validation" : {

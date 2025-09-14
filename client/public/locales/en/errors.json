@@ -4,6 +4,8 @@
   "email": "Email address",
   "newPassword": "New password",
   "name": "Name",
+  "front": "Front side",
+  "back": "Back side",
   "allFields": "All fields are required",
   "passwordMisMatch": "Passwords doesn't match",
   "validation" : {

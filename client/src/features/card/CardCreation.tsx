@@ -5,6 +5,7 @@ import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
+import { createHandleChange } from "../../helpers/createHandleChange";
 
 const initialState = {
   front: "",
@@ -21,27 +22,24 @@ function CardCreation({ deckId }: CardCreationProp) {
   const [isInputFlipped, setIsInputFlipped] = useState(false);
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
-  const { t } = useTranslation(["common", "card"]);
+  const { t } = useTranslation(["common", "card", "errors"]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    setError((prev) => ({
-      ...prev,
-      fields: prev.fields.filter((field) => field !== id),
-      messages: prev.messages.filter((message) => !message.includes(id))
-    }));
-
-    setCardData((prev) => ({
-      ...prev,
-      [id]: value
-    }));
-  };
+  const handleChange = createHandleChange(setCardData, setError);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (!cardData.front) return;
+    if (!cardData.front) {
+      setError({
+        ...error,
+        fields: [...error.fields, "front"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.string.empty", { label: t("errors:front") })
+        ]
+      });
+      return;
+    }
 
     setIsInputFlipped(true);
   };
@@ -56,7 +54,17 @@ function CardCreation({ deckId }: CardCreationProp) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!cardData.front || !cardData.back) return;
+    if (!cardData.back) {
+      setError({
+        ...error,
+        fields: [...error.fields, "back"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.string.empty", { label: t("errors:back") })
+        ]
+      });
+      return;
+    }
 
     try {
       await dispatch(createCard({ deckId, data: cardData })).unwrap();
