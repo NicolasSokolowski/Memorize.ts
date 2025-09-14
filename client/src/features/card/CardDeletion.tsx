@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Card } from "../../store/card/cardSlice";
 import { deleteCard } from "../../store/card/cardThunks";
 import { useAppDispatch } from "../../store/hooks";
-import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
+import { handleApiError } from "../../helpers/handleApiError";
 
 interface CardDeletionProps {
   card: Card;
@@ -16,7 +16,7 @@ interface CardDeletionProps {
 function CardDeletion({ card, onCancel }: CardDeletionProps) {
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
-  const { t } = useTranslation(["common", "card"]);
+  const { t } = useTranslation(["common", "card", "errors"]);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,21 +28,8 @@ function CardDeletion({ card, onCancel }: CardDeletionProps) {
 
       onCancel();
     } catch (err: unknown) {
-      const error = err as ApiErrorResponse;
-
-      if (error.errors) {
-        for (const apiError of error.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: apiError.field
-              ? [...new Set([...prev.fields, apiError.field])]
-              : prev.fields,
-            messages: apiError.message
-              ? [...prev.messages, apiError.message]
-              : prev.messages
-          }));
-        }
-      }
+      const parsedError = handleApiError(err, t);
+      setError(parsedError);
     }
   };
 
