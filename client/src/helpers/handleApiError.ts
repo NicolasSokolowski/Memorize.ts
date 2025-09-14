@@ -20,11 +20,13 @@ export function handleApiError<TNS extends Namespace>(
     for (const apiError of axiosError.response.data.errors) {
       let message = apiError.message;
       const { label, limit } = apiError.context || {};
-      const capitalizedLabel = label
-        ? label.charAt(0).toUpperCase() + label.slice(1)
-        : undefined;
 
       if (apiError.type && apiError.context) {
+        const capitalizedLabel = label
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (t(`auth:${label}` as any) as string)
+          : undefined;
+
         message = t(`errors:validation.${apiError.type}`, {
           label: capitalizedLabel,
           limit,
