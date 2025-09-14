@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { createDeck } from "../../store/deck/deckThunk";
-import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
+import { handleApiError } from "../../helpers/handleApiError";
+import { createHandleChange } from "../../helpers/createHandleChange";
 
 const initialState = {
   name: ""
@@ -15,12 +16,22 @@ function DeckCreation() {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
-  const { t } = useTranslation(["common", "deck"]);
+  const { t } = useTranslation(["common", "deck", "errors"]);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!deckData.name) return;
+    if (!deckData.name) {
+      setError({
+        ...error,
+        fields: [...error.fields, "name"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.string.empty", { label: t("errors:name") })
+        ]
+      });
+      return;
+    }
 
     try {
       await dispatch(createDeck(deckData)).unwrap();
@@ -28,38 +39,12 @@ function DeckCreation() {
       setDeckData(initialState);
       setIsCreating(false);
     } catch (err: unknown) {
-      const error = err as ApiErrorResponse;
-
-      if (error.errors) {
-        for (const apiError of error.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: apiError.field
-              ? [...new Set([...prev.fields, apiError.field])]
-              : prev.fields,
-            messages: apiError.message
-              ? [...prev.messages, apiError.message]
-              : prev.messages
-          }));
-        }
-      }
+      const parsedError = handleApiError(err, t);
+      setError(parsedError);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    setError((prev) => ({
-      ...prev,
-      fields: prev.fields.filter((field) => field !== id),
-      messages: prev.messages.filter((message) => !message.includes(id))
-    }));
-
-    setDeckData((prev) => ({
-      ...prev,
-      name: value
-    }));
-  };
+  const handleChange = createHandleChange(setDeckData, setError);
 
   const handleCancel = () => {
     setDeckData(initialState);

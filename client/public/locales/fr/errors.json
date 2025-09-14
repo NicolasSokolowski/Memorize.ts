@@ -3,6 +3,7 @@
   "username": "Le nom d'utilisateur",
   "email": "L'adresse e-mail",
   "newPassword": "Le nouveau mot de passe",
+  "name": "Le nom",
   "allFields": "Tous les champs sont requis",
   "passwordMisMatch": "Les mots de passe ne correspondent pas",
   "validation" : {
@@ -11,6 +12,7 @@
     "string.max": "{{label}} doit avoir au maximum {{limit}} caractères",
     "string.email": "{{label}} doit être un e-mail valide",
     "string.empty": "{{label}} ne peut pas être vide",
+    "empty": "{{label}} ne peut pas être vide",
     "string.passwordComplexity": "{{label}} doit contenir au minimum une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial",
     "any.only": "Le nouveau mot de passe et sa confirmation sont différents",
     "string.pattern.base": "{{label}} ne correspond pas au format attendu"

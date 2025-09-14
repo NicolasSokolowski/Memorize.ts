@@ -71,6 +71,7 @@ interface Resources {
     VERIFICATION_CODE_SEND_FAILED: "Error while trying to send code";
     allFields: "All fields are required";
     email: "Email address";
+    name: "Name";
     newPassword: "New password";
     password: "Password";
     passwordMisMatch: "Passwords doesn't match";
@@ -78,6 +79,7 @@ interface Resources {
     validation: {
       "any.only": "New password and it's confirmation are different";
       "any.required": "{{label}} is required";
+      empty: "{{label}} cannot be empty";
       "string.email": "{{label}} must be a valid email address";
       "string.empty": "{{label}} cannot be empty";
       "string.max": "{{label}} must be at most {{limit}} characters long";
