@@ -1,11 +1,7 @@
 import { AxiosError } from "axios";
 import { Namespace, TFunction } from "i18next";
 import { ApiErrorResponse } from "../types/api";
-
-interface ParsedError {
-  fields: string[];
-  messages: string[];
-}
+import { ParsedError } from "../@types/parsedError";
 
 export function handleApiError<TNS extends Namespace>(
   err: unknown,

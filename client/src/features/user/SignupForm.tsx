@@ -6,6 +6,7 @@ import Error from "../../ui/Error";
 import { errorInitialState } from "../../types/user";
 import { useTranslation } from "react-i18next";
 import { handleApiError } from "../../helpers/handleApiError";
+import { createHandleChange } from "../../helpers/createHandleChange";
 
 const initialState = {
   email: "",
@@ -36,19 +37,7 @@ function SignupForm() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    setError((prev) => ({
-      fields: prev.fields.filter((field) => field !== id),
-      messages: prev.messages.filter((_, i) => prev.fields[i] !== id)
-    }));
-
-    setUserInfo((prev) => ({
-      ...prev,
-      [id]: value
-    }));
-  };
+  const handleChange = createHandleChange(setUserInfo, setError);
 
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
