@@ -13,6 +13,7 @@
     "string.email": "{{label}} must be a valid email address",
     "string.empty": "{{label}} cannot be empty",
     "empty": "{{label}} cannot be empty",
+    "noChange": "{{label}} is identical to its previous value",
     "string.passwordComplexity": "{{label}} must contain at least one uppercase letter, one lowercase letter, one digit, and one special character",
     "any.only": "New password and it's confirmation are different",
     "string.pattern.base": "{{label}} does not match the required format"
