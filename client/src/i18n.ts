@@ -17,6 +17,9 @@ i18next
     detection: {
       order: ["localStorage", "cookie", "navigator"],
       caches: ["localStorage"]
+    },
+    interpolation: {
+      escapeValue: false
     }
   });
 
