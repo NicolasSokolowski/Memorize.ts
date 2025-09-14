@@ -1,4 +1,7 @@
 {
+  "password": "Password",
+  "username": "Username",
+  "email": "Email address",
   "validation" : {
     "any.required": "{{label}} is required",
     "string.min": "{{label}} must be at least {{limit}} characters long",

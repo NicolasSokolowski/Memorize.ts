@@ -40,12 +40,8 @@ function SignupForm() {
     const { id, value } = e.target;
 
     setError((prev) => ({
-      ...prev,
       fields: prev.fields.filter((field) => field !== id),
-      messages: prev.messages.filter(
-        (message) =>
-          !message.includes(id.charAt(0).toUpperCase() + message.slice(1))
-      )
+      messages: prev.messages.filter((_, i) => prev.fields[i] !== id)
     }));
 
     setUserInfo((prev) => ({

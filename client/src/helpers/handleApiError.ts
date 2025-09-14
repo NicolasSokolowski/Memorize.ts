@@ -24,7 +24,7 @@ export function handleApiError<TNS extends Namespace>(
       if (apiError.type && apiError.context) {
         const capitalizedLabel = label
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (t(`auth:${label}` as any) as string)
+            (t(`errors:${label}` as any) as string)
           : undefined;
 
         message = t(`errors:validation.${apiError.type}`, {
@@ -44,7 +44,7 @@ export function handleApiError<TNS extends Namespace>(
   }
 
   return {
-    fields: [...new Set(fields)],
+    fields,
     messages
   };
 }

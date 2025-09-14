@@ -69,15 +69,18 @@ interface Resources {
     UNAUTHORIZED: "Unauthorized";
     UNKNOWN: "Unknown error";
     VERIFICATION_CODE_SEND_FAILED: "Error while trying to send code";
+    email: "Email address";
+    password: "Password";
+    username: "Username";
     validation: {
       "any.only": "New password and it's confirmation are different";
-      "any.required": "{{labelCap}} is required";
-      "string.email": "{{labelCap}} must be a valid email address";
-      "string.empty": "{{labelCap}} cannot be empty";
-      "string.max": "{{labelCap}} must be at most {{limit}} characters long";
-      "string.min": "{{labelCap}} must be at least {{limit}} characters long";
-      "string.passwordComplexity": "{{labelCap}} must contain at least one uppercase letter, one lowercase letter, one digit, and one special character";
-      "string.pattern.base": "{{labelCap}} does not match the required format";
+      "any.required": "{{label}} is required";
+      "string.email": "{{label}} must be a valid email address";
+      "string.empty": "{{label}} cannot be empty";
+      "string.max": "{{label}} must be at most {{limit}} characters long";
+      "string.min": "{{label}} must be at least {{limit}} characters long";
+      "string.passwordComplexity": "{{label}} must contain at least one uppercase letter, one lowercase letter, one digit, and one special character";
+      "string.pattern.base": "{{label}} does not match the required format";
     };
   };
   home: {
