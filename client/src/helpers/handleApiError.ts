@@ -20,7 +20,7 @@ export function handleApiError<TNS extends Namespace>(
 
         if (apiError.type && apiError.context) {
           const translatedLabel = label
-            ? (t(`errors:${label}` as any) as string)
+            ? t(`errors:${label}`, { defaultValue: label })
             : undefined;
 
           message = t(`errors:validation.${apiError.type}`, {
@@ -54,7 +54,7 @@ export function handleApiError<TNS extends Namespace>(
 
       if (apiError.type && apiError.context) {
         const translatedLabel = label
-          ? (t(`errors:${label}` as any) as string)
+          ? t(`errors:${label}`, { defaultValue: label })
           : undefined;
 
         message = t(`errors:validation.${apiError.type}`, {

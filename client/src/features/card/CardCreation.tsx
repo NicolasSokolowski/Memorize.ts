@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { createCard } from "../../store/card/cardThunks";
-import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
 import { createHandleChange } from "../../helpers/createHandleChange";
+import { handleApiError } from "../../helpers/handleApiError";
 
 const initialState = {
   front: "",
@@ -72,23 +72,17 @@ function CardCreation({ deckId }: CardCreationProp) {
       setIsInputFlipped(false);
       setIsCreating(false);
     } catch (err: unknown) {
-      const apiError = err as ApiErrorResponse;
+      const parsedError = handleApiError(err, t);
 
-      if (apiError.errors) {
-        for (const e of apiError.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: e.field
-              ? [...new Set([...prev.fields, e.field])]
-              : prev.fields,
-            messages: e.message ? [...prev.messages, e.message] : prev.messages
-          }));
-
-          if (e.field === "front") {
-            setIsInputFlipped(false);
-          }
-        }
+      if (parsedError.fields.includes("front")) {
+        setIsInputFlipped(false);
       }
+
+      setError({
+        ...error,
+        fields: [...error.fields, ...parsedError.fields],
+        messages: [...error.messages, ...parsedError.messages]
+      });
     }
   };
 
