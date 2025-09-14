@@ -1,10 +1,7 @@
 import { useState } from "react";
 import CodeVerificationForm from "./CodeVerificationForm";
 import PasswordResetForm from "./PasswordResetForm";
-import {
-  ApiErrorResponse,
-  sendVerificationCode
-} from "../../store/user/userThunk";
+import { sendVerificationCode } from "../../store/user/userThunk";
 import { useAppDispatch } from "../../store/hooks";
 import { errorInitialState, onCancelProp } from "../../types/user";
 import Error from "../../ui/Error";
