@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { CardProps } from "./CardDetails";
 import { useAppDispatch } from "../../store/hooks";
 import { updateCard } from "../../store/card/cardThunks";
-import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
+import { createHandleChange } from "../../helpers/createHandleChange";
+import { handleApiError } from "../../helpers/handleApiError";
 
 type CardSide = "front" | "back";
 
@@ -32,7 +33,7 @@ function CardModification({
   const [cardData, setCardData] = useState(initialState);
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
-  const { t } = useTranslation(["common", "card"]);
+  const { t } = useTranslation(["common", "card", "errors"]);
 
   useEffect(() => {
     setCardData({ front: card.front, back: card.back });
@@ -42,29 +43,40 @@ function CardModification({
     e.preventDefault();
 
     if (!cardData.front) {
-      setError((prev) => ({
-        ...prev,
-        fields: [...new Set([...prev.fields, "front"])],
-        messages: [...prev.messages, "front side is required"]
-      }));
+      setError({
+        ...error,
+        fields: [...error.fields, "front"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.string.empty", { label: t("errors:front") })
+        ]
+      });
       return;
     }
 
     if (!cardData.back) {
-      setError((prev) => ({
-        ...prev,
-        fields: [...new Set([...prev.fields, "back"])],
-        messages: [...prev.messages, "back side is required"]
-      }));
+      setError({
+        ...error,
+        fields: [...error.fields, "back"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.string.empty", { label: t("errors:back") })
+        ]
+      });
       return;
     }
 
     if (side === "front" && cardData.front === card.front) {
-      setError((prev) => ({
-        ...prev,
-        fields: [...new Set([...prev.fields, "name"])],
-        messages: [...prev.messages, "front side is identical"]
-      }));
+      setError({
+        ...error,
+        fields: [...error.fields, "front"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.noChange", {
+            label: t("errors:front")
+          })
+        ]
+      });
       return;
     }
 
@@ -72,36 +84,12 @@ function CardModification({
       await dispatch(updateCard({ deckId, cardId, data: cardData })).unwrap();
       onCancel();
     } catch (err: unknown) {
-      const apiError = err as ApiErrorResponse;
-
-      if (apiError.errors) {
-        for (const e of apiError.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: e.field
-              ? [...new Set([...prev.fields, e.field])]
-              : prev.fields,
-            messages: e.message ? [...prev.messages, e.message] : prev.messages
-          }));
-        }
-      }
+      const parsedError = handleApiError(err, t);
+      setError(parsedError);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    setError((prev) => ({
-      ...prev,
-      fields: prev.fields.filter((field) => field !== id),
-      messages: prev.messages.filter((message) => !message.includes(id))
-    }));
-
-    setCardData((prev) => ({
-      ...prev,
-      [side]: value
-    }));
-  };
+  const handleChange = createHandleChange(setCardData, setError);
 
   return (
     <div
