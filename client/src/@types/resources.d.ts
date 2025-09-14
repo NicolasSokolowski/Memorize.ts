@@ -69,8 +69,11 @@ interface Resources {
     UNAUTHORIZED: "Unauthorized";
     UNKNOWN: "Unknown error";
     VERIFICATION_CODE_SEND_FAILED: "Error while trying to send code";
+    allFields: "All fields are required";
     email: "Email address";
+    newPassword: "New password";
     password: "Password";
+    passwordMisMatch: "Passwords doesn't match";
     username: "Username";
     validation: {
       "any.only": "New password and it's confirmation are different";

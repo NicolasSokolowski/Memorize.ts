@@ -2,6 +2,9 @@
   "password": "Le mot de passe",
   "username": "Le nom d'utilisateur",
   "email": "L'adresse e-mail",
+  "newPassword": "Le nouveau mot de passe",
+  "allFields": "Tous les champs sont requis",
+  "passwordMisMatch": "Les mots de passe ne correspondent pas",
   "validation" : {
     "any.required": "{{label}} est requis",
     "string.min": "{{label}} doit avoir au moins {{limit}} caractères",
