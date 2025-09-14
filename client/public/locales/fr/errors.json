@@ -6,7 +6,7 @@
     "any.required": "{{label}} est requis",
     "string.min": "{{label}} doit avoir au moins {{limit}} caractères",
     "string.max": "{{label}} doit avoir au maximum {{limit}} caractères",
-    "string.email": "{{label}} doit être un email valide",
+    "string.email": "{{label}} doit être un e-mail valide",
     "string.empty": "{{label}} ne peut pas être vide",
     "string.passwordComplexity": "{{label}} doit contenir au minimum une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial",
     "any.only": "Le nouveau mot de passe et sa confirmation sont différents",

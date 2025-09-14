@@ -44,7 +44,7 @@ export function handleApiError<TNS extends Namespace>(
   }
 
   return {
-    fields: [...new Set(fields)],
+    fields,
     messages
   };
 }
