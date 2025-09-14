@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { login } from "../../store/user/userThunk";
 import { setHasAccount } from "../../store/user/userSlice";
 import PasswordReset from "./PasswordReset";
-import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";

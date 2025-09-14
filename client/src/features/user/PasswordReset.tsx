@@ -7,18 +7,22 @@ import { errorInitialState, onCancelProp } from "../../types/user";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
 import { handleApiError } from "../../helpers/handleApiError";
+import { createHandleChange } from "../../helpers/createHandleChange";
+
+const initialState = {
+  email: ""
+};
 
 function PasswordReset({ onCancel }: onCancelProp) {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(initialState);
   const [emailHasBeenSent, setEmailHasBeenSent] = useState(false);
   const [isCodeValid, setIsCodeValid] = useState(false);
   const dispatch = useAppDispatch();
   const [error, setError] = useState(errorInitialState);
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "errors"]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError(errorInitialState);
-    setEmail(e.target.value);
+    createHandleChange(setEmail, setError)(e);
     setEmailHasBeenSent(false);
     setIsCodeValid(false);
   };
@@ -31,7 +35,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
         sendVerificationCode({
           requestType: "PASSWORD_RESET",
           subject: "Réinitialisation de votre mot de passe",
-          data: { email }
+          data: email
         })
       ).unwrap();
       setEmailHasBeenSent(true);
@@ -44,7 +48,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
   return (
     <div className="relative flex min-h-[33rem] flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light xl:min-h-[36rem]">
       <h3 className="m-4 text-center text-xl xl:text-2xl">
-        {t("passwordReset")}
+        {t("auth:passwordReset")}
       </h3>
       <div className="mx-12 mt-8 flex h-20 flex-1 flex-col">
         <label
@@ -57,7 +61,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
           id="email"
           type="text"
           className={`${error.fields?.includes("email") ? "ring-2 ring-error" : ""} mt-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
-          value={email}
+          value={email.email}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
         />
@@ -96,7 +100,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
                 onCancel={onCancel}
                 setIsCodeValid={setIsCodeValid}
                 requestType="PASSWORD_RESET"
-                data={{ email }}
+                data={email}
               />
             ) : (
               <PasswordResetForm onCancel={onCancel} />
