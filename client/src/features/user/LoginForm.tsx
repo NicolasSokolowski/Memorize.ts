@@ -7,6 +7,7 @@ import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
+import { handleApiError } from "../../helpers/handleApiError";
 
 const initialState = {
   email: "",
@@ -47,21 +48,8 @@ function LoginForm() {
 
       setUserInfo(initialState);
     } catch (err: unknown) {
-      const error = err as ApiErrorResponse;
-
-      if (error.errors) {
-        for (const apiError of error.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: apiError.field
-              ? [...new Set([...prev.fields, apiError.field])]
-              : prev.fields,
-            messages: apiError.message
-              ? [...prev.messages, apiError.message]
-              : prev.messages
-          }));
-        }
-      }
+      const parsedError = handleApiError(err, t);
+      setError(parsedError);
     }
   };
 
