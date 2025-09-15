@@ -43,11 +43,12 @@ export class UserController extends CoreController<
   };
 
   signup = async (req: Request, res: Response): Promise<void> => {
-    const { email, password, username } = req.body;
+    const language = req.headers["accept-language"] || "en";
+    const { userInfo, subject } = req.body;
 
     const isEmailUsed = await this.datamapper.findBySpecificField(
       this.field,
-      email
+      userInfo.email
     );
 
     if (isEmailUsed) {
@@ -60,7 +61,7 @@ export class UserController extends CoreController<
 
     try {
       await this.datamapper.pool.query("BEGIN");
-      const hashedPassword = await Password.toHash(password);
+      const hashedPassword = await Password.toHash(userInfo.password);
 
       if (!hashedPassword) {
         throw new BadRequestError(
@@ -76,9 +77,9 @@ export class UserController extends CoreController<
       }
 
       const newUserData = {
-        email,
+        email: userInfo.email,
         password: hashedPassword,
-        username,
+        username: userInfo.username,
         role_id: default_role.id
       };
 
@@ -90,7 +91,8 @@ export class UserController extends CoreController<
 
       await EmailService.sendEmail({
         to: newUser.email,
-        subject: "Création de compte",
+        subject,
+        language,
         template: "accountCreation",
         context: { username: newUser.username }
       });
@@ -290,6 +292,7 @@ export class UserController extends CoreController<
   };
 
   changePassword = async (req: Request, res: Response): Promise<void> => {
+    const language = req.headers["accept-language"] || "en";
     const userEmail = req.user?.email;
     const { currentPassword, newPassword } = req.body;
 
@@ -339,6 +342,7 @@ export class UserController extends CoreController<
       await EmailService.sendEmail({
         to: user.email,
         subject: "Modification de votre mot de passe",
+        language,
         template: "userModification",
         context: { username: user.username, object: "mot de passe" }
       });
@@ -356,10 +360,11 @@ export class UserController extends CoreController<
   };
 
   resetPassword = async (req: Request, res: Response): Promise<void> => {
+    const language = req.headers["accept-language"] || "en";
     const userEmail = req.user?.email;
-    const { newPassword, passwordConfirmation } = req.body;
+    const { passwordData, subject, object } = req.body;
 
-    if (newPassword !== passwordConfirmation) {
+    if (passwordData.newPassword !== passwordData.passwordConfirmation) {
       throw new BadRequestError(
         "New password and confirmation password are different",
         "CREDENTIALS_ERROR"
@@ -377,7 +382,7 @@ export class UserController extends CoreController<
 
     try {
       await this.datamapper.pool.query("BEGIN");
-      const hashedNewPassword = await Password.toHash(newPassword);
+      const hashedNewPassword = await Password.toHash(passwordData.newPassword);
 
       if (!hashedNewPassword) {
         throw new BadRequestError(
@@ -397,9 +402,10 @@ export class UserController extends CoreController<
 
       await EmailService.sendEmail({
         to: user.email,
-        subject: "Modification de votre mot de passe",
+        subject,
+        language,
         template: "userModification",
-        context: { username: user.username, object: "mot de passe" }
+        context: { username: user.username, object }
       });
       await this.datamapper.pool.query("COMMIT");
 

@@ -9,6 +9,7 @@ type EmailData = {
   to: string;
   subject: string;
   template: string;
+  language: string;
   context: Record<string, string>;
 };
 
@@ -24,6 +25,7 @@ export class EmailService {
 
   private static async renderTemplate(
     template: string,
+    language: string,
     context: Record<string, string>
   ) {
     const filePath = path.join(
@@ -34,15 +36,22 @@ export class EmailService {
       "src",
       "templates",
       "emails",
+      `${language}`,
       `${template}.html`
     );
     const content = await readFile(filePath, "utf-8");
     return ejs.render(content, context);
   }
 
-  static async sendEmail({ to, subject, template, context }: EmailData) {
+  static async sendEmail({
+    to,
+    subject,
+    language,
+    template,
+    context
+  }: EmailData) {
     try {
-      const html = await this.renderTemplate(template, context);
+      const html = await this.renderTemplate(template, language, context);
 
       await this.transporter.sendMail({
         from: `"Memorize" <${process.env.EMAIL_USER}>`,

@@ -20,12 +20,20 @@ import { Token } from "../helpers/Token";
 interface EmailChangePayload {
   data: {
     newEmail: string;
+    subject: string;
+    object: string;
+  };
+}
+
+interface AccountDeletionPayload {
+  data: {
+    subject: string;
   };
 }
 
 type RequestPayloads = {
   EMAIL_CHANGE: EmailChangePayload;
-  ACCOUNT_DELETE: null;
+  ACCOUNT_DELETE: AccountDeletionPayload;
   PASSWORD_RESET: null;
 };
 
@@ -41,6 +49,7 @@ export class CodeController extends CoreController<
   }
 
   sendVerificationCode = async (req: Request, res: Response): Promise<void> => {
+    const language = req.headers["accept-language"] || "en";
     const { requestType, subject, email } = req.body;
     let userEmail: string | undefined;
 
@@ -101,6 +110,7 @@ export class CodeController extends CoreController<
       await EmailService.sendEmail({
         to: userEmail,
         subject,
+        language,
         template: "verification",
         context: {
           username: user.username,
@@ -126,6 +136,7 @@ export class CodeController extends CoreController<
   };
 
   verifyCodeValidity = async (req: Request, res: Response): Promise<void> => {
+    const language = req.headers["accept-language"] || "en";
     const { requestType } = req.body;
 
     try {
@@ -139,7 +150,7 @@ export class CodeController extends CoreController<
         throw new BadRequestError("Unknown request type", "UNKNOWN");
       }
 
-      const result = await handler(user, req.body, res);
+      const result = await handler(user, req.body, language, res);
 
       await this.datamapper.pool.query("COMMIT");
 
@@ -205,19 +216,21 @@ export class CodeController extends CoreController<
     [K in keyof RequestPayloads]: (
       user: UserData,
       body: RequestPayloads[K],
+      language: string,
       res?: Response
     ) => Promise<Partial<{ email: string; success: boolean }>>;
   } = {
-    EMAIL_CHANGE: async (user, { data }, res) => {
+    EMAIL_CHANGE: async (user, { data }, language, res) => {
       const updatedUser = await userDatamapper.update(
         { ...user, email: data.newEmail },
         user.email
       );
       await EmailService.sendEmail({
         to: data.newEmail,
-        subject: "Modification de votre adresse e-mail",
+        subject: data.subject,
+        language,
         template: "userModification",
-        context: { username: user.username, object: "adresse e-mail" }
+        context: { username: user.username, object: data.object }
       });
       const userRole = await roleDatamapper.findByPk(user.role_id);
       const userPayload = {
@@ -234,11 +247,12 @@ export class CodeController extends CoreController<
       });
       return { email: updatedUser.email };
     },
-    ACCOUNT_DELETE: async (user, _, res) => {
+    ACCOUNT_DELETE: async (user, { data }, language, res) => {
       await userDatamapper.delete(user.id);
       await EmailService.sendEmail({
         to: user.email,
-        subject: "Suppression de votre compte",
+        subject: data.subject,
+        language,
         template: "accountDeletion",
         context: { username: user.username }
       });
@@ -250,7 +264,7 @@ export class CodeController extends CoreController<
       });
       return { success: true };
     },
-    PASSWORD_RESET: async (user, _, res) => {
+    PASSWORD_RESET: async (user, _, __, res) => {
       const userRole = await roleDatamapper.findByPk(user.role_id);
       const userPayload = {
         email: user.email,
