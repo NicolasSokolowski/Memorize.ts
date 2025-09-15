@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { DeckProps } from "./DeckDetails";
 import { useAppDispatch } from "../../store/hooks";
 import { updateDeck } from "../../store/deck/deckThunk";
-import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import { errorInitialState } from "../../types/user";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
+import { handleApiError } from "../../helpers/handleApiError";
+import { createHandleChange } from "../../helpers/createHandleChange";
 
 const initialState = {
   name: ""
@@ -20,7 +21,7 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
   const [deckData, setDeckData] = useState(initialState);
   const [error, setError] = useState(errorInitialState);
   const dispatch = useAppDispatch();
-  const { t } = useTranslation(["common", "deck"]);
+  const { t } = useTranslation(["common", "deck", "errors"]);
 
   useEffect(() => {
     setDeckData({ name: deck.name });
@@ -30,20 +31,26 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
     e.preventDefault();
 
     if (!deckData.name) {
-      setError((prev) => ({
-        ...prev,
-        fields: [...new Set([...prev.fields, "name"])],
-        messages: [...prev.messages, "Deck name is required"]
-      }));
+      setError({
+        ...error,
+        fields: [...error.fields, "name"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.string.empty", { label: t("errors:name") })
+        ]
+      });
       return;
     }
 
     if (deckData.name === deck.name) {
-      setError((prev) => ({
-        ...prev,
-        fields: [...new Set([...prev.fields, "name"])],
-        messages: [...prev.messages, "Deck name is identical"]
-      }));
+      setError({
+        ...error,
+        fields: [...error.fields, "name"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.noChange", { label: t("errors:name") })
+        ]
+      });
       return;
     }
 
@@ -52,38 +59,12 @@ function DeckModification({ deck, onCancel }: DeckModificationProps) {
 
       onCancel();
     } catch (err: unknown) {
-      const error = err as ApiErrorResponse;
-
-      if (error.errors) {
-        for (const apiError of error.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: apiError.field
-              ? [...new Set([...prev.fields, apiError.field])]
-              : prev.fields,
-            messages: apiError.message
-              ? [...prev.messages, apiError.message]
-              : prev.messages
-          }));
-        }
-      }
+      const parsedError = handleApiError(err, t);
+      setError(parsedError);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    setError((prev) => ({
-      ...prev,
-      fields: prev.fields.filter((field) => field !== id),
-      messages: prev.messages.filter((message) => !message.includes(id))
-    }));
-
-    setDeckData((prev) => ({
-      ...prev,
-      name: value
-    }));
-  };
+  const handleChange = createHandleChange(setDeckData, setError);
 
   const handleCancel = () => {
     setDeckData(deck);

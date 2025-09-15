@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../services/axios.instance";
-import { AxiosError } from "axios";
 import { errorInitialState, onCancelProp } from "../../types/user";
 import Error from "../../ui/Error";
-import { ApiErrorResponse } from "../../types/api";
 import { useTranslation } from "react-i18next";
+import { handleApiError } from "../../helpers/handleApiError";
+import { createHandleChange } from "../../helpers/createHandleChange";
 
 function PasswordResetForm({ onCancel }: onCancelProp) {
   const [passwordHasBeenChanged, setPasswordHasBeenChanged] = useState(false);
@@ -13,7 +13,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
     passwordConfirmation: ""
   });
   const [error, setError] = useState(errorInitialState);
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "errors"]);
 
   useEffect(() => {
     if (passwordHasBeenChanged) {
@@ -23,16 +23,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
     }
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    setError(errorInitialState);
-
-    setNewPassword((prev) => ({
-      ...prev,
-      [id]: value
-    }));
-  };
+  const handleChange = createHandleChange(setNewPassword, setError);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,7 +31,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
     if (!newPassword.newPassword || !newPassword.passwordConfirmation) {
       setError({
         ...error,
-        messages: [...error.messages, "Tous les champs sont requis"]
+        messages: [...error.messages, t("errors:allFields")]
       });
       return;
     }
@@ -48,7 +39,8 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
     if (newPassword.newPassword !== newPassword.passwordConfirmation) {
       setError({
         ...error,
-        messages: [...error.messages, "Les mots de passe sont différents"]
+        fields: [...error.fields, "newPassword"],
+        messages: [...error.messages, t("errors:passwordMisMatch")]
       });
       return;
     }
@@ -57,21 +49,8 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
       await axiosInstance.patch("/profile/resetpw", newPassword);
       setPasswordHasBeenChanged(true);
     } catch (err: unknown) {
-      const axiosError = err as AxiosError<ApiErrorResponse>;
-
-      if (axiosError.response?.data.errors) {
-        for (const apiError of axiosError.response.data.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: apiError.field
-              ? [...new Set([...prev.fields, apiError.field])]
-              : prev.fields,
-            messages: apiError.message
-              ? [...prev.messages, apiError.message]
-              : prev.messages
-          }));
-        }
-      }
+      const parsedError = handleApiError(err, t);
+      setError(parsedError);
     }
   };
 
@@ -85,7 +64,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
           htmlFor="new-pw"
           className="ml-1 font-patua text-xl text-textPrimary"
         >
-          {t("newPassword")}
+          {t("auth:newPassword")}
         </label>
         <input
           id="newPassword"
@@ -99,7 +78,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
           htmlFor="passwordConfirmation"
           className="ml-1 font-patua text-xl text-textPrimary"
         >
-          {t("passwordConfirmation")}
+          {t("auth:passwordConfirmation")}
         </label>
         <input
           id="passwordConfirmation"
