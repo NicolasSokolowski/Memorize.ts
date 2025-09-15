@@ -8,7 +8,6 @@ i18next
   .use(HttpApi)
   .use(LanguageDetector)
   .init({
-    debug: true,
     fallbackLng: "en",
     ns: ["common", "home", "auth", "training", "deck", "card", "errors"],
     backend: {
