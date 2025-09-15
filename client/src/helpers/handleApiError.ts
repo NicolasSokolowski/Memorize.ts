@@ -30,6 +30,9 @@ export function handleApiError<TNS extends Namespace>(
           }) as string;
         } else if (apiError.code) {
           message = t(`errors:${apiError.code}`, {
+            label: apiError.field
+              ? t(`errors:${apiError.field}`, { defaultValue: apiError.field })
+              : undefined,
             defaultValue: apiError.message
           }) as string;
         }
@@ -64,6 +67,9 @@ export function handleApiError<TNS extends Namespace>(
         }) as string;
       } else if (apiError.code) {
         message = t(`errors:${apiError.code}`, {
+          label: apiError.field
+            ? t(`errors:${apiError.field}`, { defaultValue: apiError.field })
+            : undefined,
           defaultValue: apiError.message
         }) as string;
       }
