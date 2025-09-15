@@ -146,9 +146,7 @@ export class CodeController extends CoreController<
       res.status(200).json({ ...result });
     } catch (err) {
       await this.datamapper.pool.query("ROLLBACK");
-      res
-        .status(400)
-        .json({ success: false, errors: [{ message: err.message }] });
+      throw err;
     }
   };
 
