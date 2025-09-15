@@ -63,7 +63,7 @@ function DeckModeSelection() {
                     navigate("/training", { state: { cards: dailyCards } })
                   }
                 >
-                  {t("dailyCardsCount", { count: 5 })}
+                  {t("dailyCardsCount", { count: dailyCards.length })}
                 </span>
               ) : (
                 <img
