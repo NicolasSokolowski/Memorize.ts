@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
-  ApiErrorResponse,
   checkIfEmailIsAvailable,
   sendVerificationCode
 } from "../../store/user/userThunk";
@@ -10,23 +9,56 @@ import { errorInitialState, onCancelProp } from "../../types/user";
 import ChoiceButton from "../../ui/ChoiceButton";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
+import { handleApiError } from "../../helpers/handleApiError";
+import { createHandleChange } from "../../helpers/createHandleChange";
+
+const initialState = {
+  newEmail: ""
+};
 
 function EmailForm({ onCancel }: onCancelProp) {
+  const [user, setUser] = useState(initialState);
   const [isNewEmailAvailable, setIsNewEmailAvailable] = useState(false);
-  const [newEmail, setNewEmail] = useState("");
   const [error, setError] = useState(errorInitialState);
   const [isCodeValid, setIsCodeValid] = useState(false);
   const dispatch = useAppDispatch();
-  const { t } = useTranslation("auth");
+  const currentEmail = useAppSelector((state) => state.user.user?.email);
+  const { t } = useTranslation(["auth", "errors"]);
+
+  const handleChange = createHandleChange(setUser, setError);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!newEmail) return;
+    if (!user.newEmail) {
+      setError({
+        ...error,
+        fields: [...error.fields, "newEmail"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.string.empty", { label: t("errors:newEmail") })
+        ]
+      });
+      return;
+    }
+
+    if (currentEmail === user.newEmail) {
+      setError({
+        ...error,
+        fields: [...error.fields, "newEmail"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.noChange", {
+            label: t("errors:email")
+          })
+        ]
+      });
+      return;
+    }
 
     try {
       const response = await dispatch(
-        checkIfEmailIsAvailable({ newEmail })
+        checkIfEmailIsAvailable({ newEmail: user.newEmail })
       ).unwrap();
       if (response) {
         setIsNewEmailAvailable(true);
@@ -39,21 +71,8 @@ function EmailForm({ onCancel }: onCancelProp) {
       }
       setIsNewEmailAvailable(response);
     } catch (err: unknown) {
-      const error = err as ApiErrorResponse;
-
-      if (error.errors) {
-        for (const apiError of error.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: apiError.field
-              ? [...new Set([...prev.fields, apiError.field])]
-              : prev.fields,
-            messages: apiError.message
-              ? [...prev.messages, apiError.message]
-              : prev.messages
-          }));
-        }
-      }
+      const parsedError = handleApiError(err, t);
+      setError(parsedError);
     }
   };
 
@@ -80,20 +99,17 @@ function EmailForm({ onCancel }: onCancelProp) {
             onSubmit={handleSubmit}
           >
             <label
-              htmlFor="email"
+              htmlFor="newEmail"
               className="ml-1 font-patua text-xl text-textPrimary"
             >
               {t("newEmail")}
             </label>
             <input
-              id="email"
+              id="newEmail"
               type="text"
               className={`${error.fields?.includes("newEmail") ? "ring-2 ring-error" : ""} mb-5 mt-2 h-12 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
-              value={newEmail}
-              onChange={(e) => {
-                setError(errorInitialState);
-                setNewEmail(e.target.value);
-              }}
+              value={user.newEmail}
+              onChange={(e) => handleChange(e)}
               autoComplete="off"
             />
             <div className="h-24">
@@ -119,7 +135,7 @@ function EmailForm({ onCancel }: onCancelProp) {
                   onCancel={onCancel}
                   setIsCodeValid={setIsCodeValid}
                   requestType="EMAIL_CHANGE"
-                  data={{ newEmail }}
+                  data={{ newEmail: user.newEmail }}
                 />
               </div>
             </div>

@@ -74,6 +74,7 @@ interface Resources {
     email: "Email address";
     front: "Front side";
     name: "Name";
+    newEmail: "New email";
     newPassword: "New password";
     password: "Password";
     passwordMisMatch: "Passwords doesn't match";
