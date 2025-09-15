@@ -5,7 +5,6 @@ export const verifyCodeSchema = Joi.object({
     .valid("EMAIL_CHANGE", "PASSWORD_RESET", "ACCOUNT_DELETE")
     .required(),
   code: Joi.string().length(4).required(),
-
   data: Joi.when("requestType", {
     is: "EMAIL_CHANGE",
     then: Joi.object({
@@ -13,6 +12,12 @@ export const verifyCodeSchema = Joi.object({
         "string.base": "Email must be a string",
         "string.email": "Email must be a valid email address",
         "string.empty": "Email cannot be empty"
+      }),
+      subject: Joi.string().messages({
+        "string.base": "Subject must be a string"
+      }),
+      object: Joi.string().messages({
+        "string.base": "Subject must be a string"
       })
     }).required(),
     otherwise: Joi.when("requestType", {
@@ -24,7 +29,15 @@ export const verifyCodeSchema = Joi.object({
           "string.empty": "Email cannot be empty"
         })
       }).required(),
-      otherwise: Joi.forbidden()
+      otherwise: Joi.when("requestType", {
+        is: "ACCOUNT_DELETE",
+        then: Joi.object({
+          subject: Joi.string().messages({
+            "string.base": "Subject must be a string"
+          })
+        }).required(),
+        otherwise: Joi.forbidden()
+      })
     })
   })
 });

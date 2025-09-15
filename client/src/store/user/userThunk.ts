@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../services/axios.instance";
 import { User } from "./userSlice";
 import axios from "axios";
+import i18next from "i18next";
 
 export type ApiError = {
   field?: string;
@@ -156,7 +157,11 @@ export const sendVerificationCode = createAsyncThunk<
       };
     }
 
-    await axiosInstance.post(`/auth/code/${path}`, data);
+    await axiosInstance.post(`/auth/code/${path}`, data, {
+      headers: {
+        "Accept-Language": i18next.language
+      }
+    });
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.data?.errors) {
       return rejectWithValue(err.response.data);
@@ -169,13 +174,12 @@ export type VerifyCodeData =
   | {
       requestType: "EMAIL_CHANGE";
       code: string;
-      data: { newEmail: string };
+      data: { newEmail: string; subject: string; object: string };
     }
   | {
       requestType: "ACCOUNT_DELETE";
       code: string;
-      // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-      data?: {};
+      data: { subject: string };
     }
   | {
       requestType: "PASSWORD_RESET";
@@ -193,11 +197,19 @@ export const verifyCodeValidity = createAsyncThunk<
   const path = requestType === "PASSWORD_RESET" ? "check/reset" : "check";
 
   try {
-    const response = await axiosInstance.post(`/auth/code/${path}`, {
-      requestType,
-      code,
-      data
-    });
+    const response = await axiosInstance.post(
+      `/auth/code/${path}`,
+      {
+        requestType,
+        code,
+        data
+      },
+      {
+        headers: {
+          "Accept-Language": i18next.language
+        }
+      }
+    );
 
     return response.data;
   } catch (err) {

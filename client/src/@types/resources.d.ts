@@ -1,6 +1,8 @@
 interface Resources {
   auth: {
+    accountCreation: "Account creation";
     accountDeletedConfirmationMsg: "Your account has been deleted. You will soon receive a confirmation email concerning this deletion. You are going to be disconnect in {{count}} s.";
+    accountDeletion: "Account deletion";
     buttons: {
       "delete-user": "Delete my account";
       "edit-email": "Modify my email address";
@@ -17,6 +19,7 @@ interface Resources {
     email: "Email address";
     emailChangedConfirmationMsg: "Your email address has been modified. You will soon receive a confirmation email concerning this modification.";
     emailCol: "Email address :";
+    emailModification: "Email modification";
     forgottenPassword: "Forgot password ?";
     hasAccount: "I already have an account";
     hasNoAccount: "I don't have an account";
@@ -28,6 +31,7 @@ interface Resources {
     password: "Password";
     passwordChangedConfirmationMsg: "Your password has been modified. You will soon receive a confirmation email concerning this modification. You can already use your new password to sign in !";
     passwordConfirmation: "Password confirmation";
+    passwordModification: "Password modification";
     passwordReset: "Password reset";
     register: "Register";
     resetSuccess: "Success : A confirmation e-mail has been sent to you. You can already sign in with your new password.";

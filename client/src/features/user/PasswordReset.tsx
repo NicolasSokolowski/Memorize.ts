@@ -34,7 +34,7 @@ function PasswordReset({ onCancel }: onCancelProp) {
       await dispatch(
         sendVerificationCode({
           requestType: "PASSWORD_RESET",
-          subject: "Réinitialisation de votre mot de passe",
+          subject: t("auth:passwordReset"),
           data: email
         })
       ).unwrap();

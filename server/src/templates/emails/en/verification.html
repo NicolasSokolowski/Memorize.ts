@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @tailwind components;
+      @tailwind utilities;
+    </style>
+  </head>
+  <body>
+    <table class="table-auto border-collapse w-full max-w-xl mx-auto font-arial text-textPrimary bg-tertiary" role="presentation" cellpadding="0" cellspacing="0">
+      <tr>
+        <td>
+          <table class="table-auto bg-primary w-[80%] mx-auto px-10 pt-5 pb-5 shadow-inner-sides" role="presentation" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>
+                <table class="mx-auto">
+                  <tr>
+                    <td>
+                      <img src="http://localhost:5050/public/card.png" alt="Card logo" class="w-32 ml-[-2rem]"/>
+                    </td>
+                    <td>
+                      <h1 class="text-4xl">Memorize</h1>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table role="presentation" cellpadding="0" cellspacing="0" class="pt-10">
+                  <tr>
+                    <td>
+                      <table role="presentation" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td>
+                            Hello <%= username %>,
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="pt-5">
+                            You made a<%= ["email", "account"].some((word) => request.toLowerCase().includes(word)) ? "n" : "" %> <%= request %> request.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="pt-4">
+                            Here is the code you need to enter to complete the process:
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table class="mx-auto border-collapse" role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td>
+                      <p class="w-6 px-4 mx-2 p-2 rounded-lg shadow-inner-strong text-5xl text-center bg-white">
+                        <span><%= numberOne %></span>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="w-6 px-4 mx-2 p-2 rounded-lg shadow-inner-strong text-5xl text-center bg-white">
+                        <span><%= numberTwo %></span>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="w-6 px-4 mx-2 p-2 rounded-lg shadow-inner-strong text-5xl text-center bg-white">
+                        <span><%= numberThree %></span>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="w-6 px-4 mx-2 p-2 rounded-lg shadow-inner-strong text-5xl text-center bg-white">
+                        <span><%= numberFour %></span>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table class="mx-auto border-collapse" role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td>
+                      This code is valid for 15 minutes.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pt-4 pb-5">
+                      Didn't make any request ? We recommend that you change your password.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr >
+              <td>
+                <table class="mx-auto mt-10 border-collapse" role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td>
+                      2025 - Memorize
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
