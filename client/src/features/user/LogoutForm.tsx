@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { logout } from "../../store/user/userThunk";
-import { ApiErrorResponse } from "../../types/api";
 import { errorInitialState, onCancelProp } from "../../types/user";
 import ChoiceButton from "../../ui/ChoiceButton";
 import Error from "../../ui/Error";
