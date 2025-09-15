@@ -72,12 +72,14 @@ interface Resources {
     VERIFICATION_CODE_SEND_FAILED: "Error while trying to send code";
     allFields: "All fields are required";
     back: "Back side";
+    currentPassword: "Current password";
     email: "Email address";
     front: "Front side";
     name: "Name";
     newEmail: "New email";
     newPassword: "New password";
     password: "Password";
+    passwordConfirmation: "Password confirmation";
     passwordMisMatch: "Passwords doesn't match";
     username: "Username";
     validation: {

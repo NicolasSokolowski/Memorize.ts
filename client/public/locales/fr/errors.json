@@ -4,6 +4,8 @@
   "email": "L'adresse e-mail",
   "newEmail": "La nouvelle adresse e-mail",
   "newPassword": "Le nouveau mot de passe",
+  "currentPassword": "Le mot de passe actuel",
+  "passwordConfirmation": "La confirmation du mot de passe",
   "name": "Le nom",
   "front": "La face avant",
   "back": "La face arrière",

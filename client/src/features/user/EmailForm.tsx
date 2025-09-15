@@ -92,7 +92,7 @@ function EmailForm({ onCancel }: onCancelProp) {
       <div className="flip-card-front">
         <div className="relative mb-6 flex  size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
           <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-            {t("buttons.edit-email")}
+            {t("auth:buttons.edit-email")}
           </h3>
           <form
             className="mx-12 flex flex-1 flex-col justify-center"
@@ -102,7 +102,7 @@ function EmailForm({ onCancel }: onCancelProp) {
               htmlFor="newEmail"
               className="ml-1 font-patua text-xl text-textPrimary"
             >
-              {t("newEmail")}
+              {t("auth:newEmail")}
             </label>
             <input
               id="newEmail"
@@ -142,14 +142,14 @@ function EmailForm({ onCancel }: onCancelProp) {
             <div className="flip-card-back-of-back">
               <div className="mb-6 flex size-full flex-col rounded-lg bg-tertiary font-patua text-textPrimary shadow-custom-light lg:mx-4">
                 <h3 className="m-4 text-center text-2xl">
-                  {t("buttons.edit-email")}
+                  {t("auth:buttons.edit-email")}
                 </h3>
                 <div className="flex h-full flex-col items-center justify-center">
                   <span className="mt-2 text-center text-xl">
-                    {t("success")}
+                    {t("auth:success")}
                   </span>
                   <p className="mx-12 my-8 break-words text-center text-lg">
-                    {t("emailChangedConfirmationMsg")}
+                    {t("auth:emailChangedConfirmationMsg")}
                   </p>
                 </div>
               </div>

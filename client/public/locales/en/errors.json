@@ -4,6 +4,8 @@
   "email": "Email address",
   "newEmail": "New email",
   "newPassword": "New password",
+  "currentPassword": "Current password",
+  "passwordConfirmation": "Password confirmation",
   "name": "Name",
   "front": "Front side",
   "back": "Back side",
