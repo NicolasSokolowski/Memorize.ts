@@ -2,80 +2,65 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { updateUserInfos } from "../../store/user/userThunk";
 import { errorInitialState, onCancelProp } from "../../types/user";
-import { ApiErrorResponse } from "../../types/api";
 import ChoiceButton from "../../ui/ChoiceButton";
 import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
+import { handleApiError } from "../../helpers/handleApiError";
+import { createHandleChange } from "../../helpers/createHandleChange";
+
+const initialState = {
+  username: ""
+};
 
 function UsernameForm({ onCancel }: onCancelProp) {
-  const [usernameEdited, setUsernameEdited] = useState("");
+  const [user, setUser] = useState(initialState);
   const [error, setError] = useState(errorInitialState);
   const username = useAppSelector((state) => state.user.user?.username);
   const dispatch = useAppDispatch();
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "errors"]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    setError((prev) => ({
-      ...prev,
-      fields: prev.fields.filter((field) => field !== id),
-      messages: prev.messages.filter((message) => !message.includes(id))
-    }));
-
-    setUsernameEdited(value);
-  };
+  const handleChange = createHandleChange(setUser, setError);
 
   const handleSubmit = () => async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!usernameEdited) return;
-
-    if (!usernameEdited) {
-      setError((prev) => ({
-        ...prev,
-        fields: [...new Set([...prev.fields, "username"])],
-        messages: [...prev.messages, "username is required"]
-      }));
+    if (!user.username) {
+      setError({
+        ...error,
+        fields: [...error.fields, "username"],
+        messages: [
+          ...error.messages,
+          t("errors:validation.string.empty", { label: t("errors:username") })
+        ]
+      });
       return;
     }
 
-    if (username === usernameEdited) {
-      setError((prev) => ({
-        ...prev,
-        fields: [...new Set([...prev.fields, "username"])],
+    if (username === user.username) {
+      setError({
+        ...error,
+        fields: [...error.fields, "username"],
         messages: [
-          ...prev.messages,
-          "username is identical to the previous one"
+          ...error.messages,
+          t("errors:validation.noChange", { label: t("errors:username") })
         ]
-      }));
+      });
       return;
     }
 
     try {
-      await dispatch(updateUserInfos({ username: usernameEdited })).unwrap();
+      await dispatch(updateUserInfos({ username: user.username })).unwrap();
       onCancel();
     } catch (err: unknown) {
-      const apiError = err as ApiErrorResponse;
-
-      if (apiError.errors) {
-        for (const e of apiError.errors) {
-          setError((prev) => ({
-            ...prev,
-            fields: e.field
-              ? [...new Set([...prev.fields, e.field])]
-              : prev.fields,
-            messages: e.message ? [...prev.messages, e.message] : prev.messages
-          }));
-        }
-      }
+      const parsedError = handleApiError(err, t);
+      setError(parsedError);
     }
   };
 
   return (
     <div className="mb-6 flex  size-full flex-col justify-start rounded-lg bg-tertiary shadow-custom-light lg:mx-4">
       <h3 className="m-4 text-center font-patua text-2xl text-textPrimary">
-        {t("buttons.edit-username")}
+        {t("auth:buttons.edit-username")}
       </h3>
       <form
         onSubmit={handleSubmit()}
@@ -85,13 +70,13 @@ function UsernameForm({ onCancel }: onCancelProp) {
           htmlFor="username"
           className="ml-1 font-patua text-xl text-textPrimary"
         >
-          {t("newUsername")}
+          {t("auth:newUsername")}
         </label>
         <input
           id="username"
           type="text"
           className={`${error.fields?.includes("username") ? "ring-2 ring-error" : ""} mb-5 mt-2 h-12 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
-          value={usernameEdited}
+          value={user.username}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
         />
