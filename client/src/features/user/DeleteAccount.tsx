@@ -28,7 +28,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
       await dispatch(
         sendVerificationCode({
           requestType: "ACCOUNT_DELETE",
-          subject: "Suppression de votre compte"
+          subject: t("auth:accountDeletion")
         })
       ).unwrap();
       setFirstConfirmationCheck(true);
@@ -87,6 +87,7 @@ function DeleteAccount({ onCancel }: DeleteFormProps) {
                   onCancel={onCancel}
                   setIsCodeValid={setIsCodeValid}
                   requestType="ACCOUNT_DELETE"
+                  data={{ subject: t("accountDeletion") }}
                 />
               </div>
             </div>

@@ -13,10 +13,11 @@ type CodeVerificationProps = {
 } & (
   | {
       requestType: "EMAIL_CHANGE";
-      data: { newEmail: string };
+      data: { newEmail: string; subject: string; object: string };
     }
   | {
       requestType: "ACCOUNT_DELETE";
+      data: { subject: string };
     }
   | {
       requestType: "PASSWORD_RESET";
@@ -74,7 +75,8 @@ function CodeVerificationForm(props: CodeVerificationProps) {
         await dispatch(
           verifyCodeValidity({
             requestType,
-            code: jointCode
+            code: jointCode,
+            data: props.data
           })
         ).unwrap();
       } else if (requestType === "PASSWORD_RESET") {

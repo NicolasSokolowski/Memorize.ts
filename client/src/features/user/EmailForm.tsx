@@ -65,7 +65,7 @@ function EmailForm({ onCancel }: onCancelProp) {
         await dispatch(
           sendVerificationCode({
             requestType: "EMAIL_CHANGE",
-            subject: "Modification de votre adresse e-mail"
+            subject: t("emailModification")
           })
         );
       }
@@ -135,7 +135,11 @@ function EmailForm({ onCancel }: onCancelProp) {
                   onCancel={onCancel}
                   setIsCodeValid={setIsCodeValid}
                   requestType="EMAIL_CHANGE"
-                  data={{ newEmail: user.newEmail }}
+                  data={{
+                    newEmail: user.newEmail,
+                    subject: t("emailModification"),
+                    object: t("email").toLowerCase()
+                  }}
                 />
               </div>
             </div>

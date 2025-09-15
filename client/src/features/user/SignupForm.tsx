@@ -7,6 +7,7 @@ import { errorInitialState } from "../../types/user";
 import { useTranslation } from "react-i18next";
 import { handleApiError } from "../../helpers/handleApiError";
 import { createHandleChange } from "../../helpers/createHandleChange";
+import i18next from "i18next";
 
 const initialState = {
   email: "",
@@ -26,7 +27,15 @@ function SignupForm() {
     e.preventDefault();
 
     try {
-      await axiosInstance.post("/users", userInfo);
+      await axiosInstance.post(
+        "/users",
+        { userInfo, subject: t("auth:accountCreation") },
+        {
+          headers: {
+            "Accept-Language": i18next.language
+          }
+        }
+      );
 
       dispatch(setHasAccount(!hasAccount));
       setUserInfo(initialState);

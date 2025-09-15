@@ -5,6 +5,7 @@ import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
 import { handleApiError } from "../../helpers/handleApiError";
 import { createHandleChange } from "../../helpers/createHandleChange";
+import i18next from "i18next";
 
 function PasswordResetForm({ onCancel }: onCancelProp) {
   const [passwordHasBeenChanged, setPasswordHasBeenChanged] = useState(false);
@@ -46,7 +47,19 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
     }
 
     try {
-      await axiosInstance.patch("/profile/resetpw", newPassword);
+      await axiosInstance.patch(
+        "/profile/resetpw",
+        {
+          passwordData: newPassword,
+          subject: t("auth:passwordModification"),
+          object: t("auth:password").toLowerCase()
+        },
+        {
+          headers: {
+            "Accept-Language": i18next.language
+          }
+        }
+      );
       setPasswordHasBeenChanged(true);
     } catch (err: unknown) {
       const parsedError = handleApiError(err, t);
