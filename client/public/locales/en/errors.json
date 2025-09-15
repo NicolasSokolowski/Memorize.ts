@@ -21,6 +21,7 @@
     "any.only": "New password and it's confirmation are different",
     "string.pattern.base": "{{label}} does not match the required format"
   },
+  "DUPLICATE_ENTRY": "{{label}} already exists",
   "EMAIL_ALREADY_EXISTS": "Email address is already in use",
   "EXPIRED_CODE": "Expired code",
   "INVALID_CODE": "Invalid code",

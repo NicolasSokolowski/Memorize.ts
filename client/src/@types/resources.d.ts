@@ -58,6 +58,7 @@ interface Resources {
     ACCESS_DENIED: "Access denied";
     CREDENTIALS_ERROR: "Invalid Email or password";
     DATABASE_ERROR: "Error while trying to connect to the database";
+    DUPLICATE_ENTRY: "{{label}} already exists";
     EMAIL_ALREADY_EXISTS: "Email address is already in use";
     EXPIRED_CODE: "Expired code";
     INVALID_CODE: "Invalid code";
@@ -83,7 +84,7 @@ interface Resources {
       "any.only": "New password and it's confirmation are different";
       "any.required": "{{label}} is required";
       empty: "{{label}} cannot be empty";
-      noChange: "{{label}} is identical to its previous value";
+      noChange: "{{label}} is identical to its current value";
       "string.email": "{{label}} must be a valid email address";
       "string.empty": "{{label}} cannot be empty";
       "string.max": "{{label}} must be at most {{limit}} characters long";
