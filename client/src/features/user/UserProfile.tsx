@@ -46,8 +46,8 @@ function UserProfile() {
   ];
 
   return (
-    <div className="scrollbar-hide h-full overflow-y-auto">
-      <div className="mb-4 mt-20 flex h-100 flex-col items-center gap-8 sm:mt-6 md:justify-start  lg:ml-20 lg:h-80 lg:flex-row lg:gap-12">
+    <div className="scrollbar-hide min-h-full overflow-y-auto">
+      <div className="mb-4 mt-20 flex h-100 flex-col items-center gap-8 sm:mt-4 md:justify-start  lg:ml-20 lg:h-80 lg:flex-row lg:gap-12">
         <div className="flex size-64 animate-pop items-center justify-center rounded-full bg-tertiary shadow-custom-light transition-all duration-300">
           <div className="size-52 rounded-full bg-white shadow-inner-strong" />
         </div>
@@ -101,20 +101,22 @@ function UserProfile() {
           className="hidden size-96 lg:block"
         />
       </div>
-      <div className="mb-24 flex h-16 w-96 font-patua text-xl text-textPrimary lg:ml-20">
-        <div className="flex w-1/3 items-center justify-center">
-          <label htmlFor="language">Langue :</label>
-        </div>
-        <div className="flex w-2/3 justify-end">
-          <select
-            id="language"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="flex w-full appearance-none rounded-md bg-secondary text-center text-white shadow-custom-light"
-          >
-            <option value="en">English</option>
-            <option value="fr">Français</option>
-          </select>
+      <div className="flex justify-center lg:justify-start">
+        <div className="relative mb-20 flex h-16 w-96 font-patua text-xl text-textPrimary lg:ml-20">
+          <div className="flex w-1/3 items-center justify-center">
+            <label htmlFor="language">Langue :</label>
+          </div>
+          <div className="flex w-2/3 justify-end">
+            <select
+              id="language"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="flex w-full appearance-none rounded-md bg-secondary text-center text-white shadow-custom-light focus:outline-none"
+            >
+              <option value="en">English</option>
+              <option value="fr">Français</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
