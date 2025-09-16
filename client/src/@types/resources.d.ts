@@ -49,6 +49,7 @@ interface Resources {
   common: {
     create: "Create";
     delete: "Delete";
+    language: "Language :";
     modify: "Modify";
   };
   deck: {

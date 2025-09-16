@@ -1,5 +1,6 @@
 {
   "create": "Create",
   "modify": "Modify",
-  "delete": "Delete"
+  "delete": "Delete",
+  "language": "Language :"
 }
