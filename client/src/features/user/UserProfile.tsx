@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../../store/hooks";
 import FormSelector from "./FormSelector";
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 export type UserModification = "none" | EditActions;
 type EditActions =
@@ -16,6 +17,11 @@ function UserProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const user = useAppSelector((state) => state.user.user);
   const { t } = useTranslation("auth");
+  const [language, setLanguage] = useState(i18next.language);
+
+  useEffect(() => {
+    i18next.changeLanguage(language);
+  }, [language]);
 
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     const value = e.currentTarget.value as EditActions;
@@ -94,6 +100,22 @@ function UserProfile() {
           setVisibleForm={setVisibleForm}
           className="hidden size-96 lg:block"
         />
+      </div>
+      <div className="mb-24 flex h-16 w-96 font-patua text-xl text-textPrimary lg:ml-20">
+        <div className="flex w-1/3 items-center justify-center">
+          <label htmlFor="language">Langue :</label>
+        </div>
+        <div className="flex w-2/3 justify-end">
+          <select
+            id="language"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="flex w-full appearance-none rounded-md bg-secondary text-center text-white shadow-custom-light"
+          >
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+          </select>
+        </div>
       </div>
     </div>
   );
