@@ -41,24 +41,24 @@ function UserProfile() {
 
   return (
     <div className="scrollbar-hide h-full overflow-y-auto">
-      <div className="mt-14 flex h-96 items-center justify-center sm:mt-0">
-        <div className="flex size-80 animate-pop items-center justify-center rounded-full bg-tertiary shadow-custom-light transition-all duration-300">
-          <div className="size-64 rounded-full bg-white shadow-inner-strong" />
+      <div className="mb-4 mt-20 flex h-100 flex-col items-center gap-8 sm:mt-6 md:justify-start  lg:ml-20 lg:h-80 lg:flex-row lg:gap-12">
+        <div className="flex size-64 animate-pop items-center justify-center rounded-full bg-tertiary shadow-custom-light transition-all duration-300">
+          <div className="size-52 rounded-full bg-white shadow-inner-strong" />
+        </div>
+        <div className="h-24 font-patua text-xl sm:text-2xl">
+          <div className="flex h-12 items-center justify-center sm:flex-none lg:justify-start">
+            <span className="text-textPrimary">
+              {t("usernameCol")} <span>{user?.username}</span>
+            </span>
+          </div>
+          <div className="mx-auto flex h-12 w-full items-center sm:flex-none">
+            <span className="justify-center break-words text-center text-textPrimary lg:break-normal lg:text-start">
+              {t("emailCol")} <span>{user?.email}</span>
+            </span>
+          </div>
         </div>
       </div>
-      <div className="h-28 w-full font-patua text-xl sm:text-2xl">
-        <div className="flex h-12 w-full items-center justify-center sm:flex-none">
-          <span className="text-textPrimary">
-            {t("usernameCol")} <span>{user?.username}</span>
-          </span>
-        </div>
-        <div className="mx-auto flex h-12 w-full items-center justify-center sm:flex-none">
-          <span className="break-words text-center text-textPrimary">
-            {t("emailCol")} <span>{user?.email}</span>
-          </span>
-        </div>
-      </div>
-      <div className="mx-16 mb-12 flex justify-center sm:mb-8">
+      <div className="mx-16 mb-12 flex justify-center sm:mb-8 lg:justify-start">
         <div className="mb-8 flex w-96 flex-col gap-4 lg:mx-4 lg:w-112">
           {actions.map((key) => (
             <div key={key}>
