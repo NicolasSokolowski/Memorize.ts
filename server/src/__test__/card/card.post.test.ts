@@ -63,8 +63,28 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Front must be a string", field: "front" },
-      { message: "Back must be a string", field: "back" }
+      {
+        message: "front must be a string",
+        field: "front",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "front",
+          label: "front",
+          value: 1
+        }
+      },
+      {
+        message: "back must be a string",
+        field: "back",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "back",
+          label: "back",
+          value: 2
+        }
+      }
     ]);
   });
 
@@ -78,8 +98,26 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field front", field: "front" },
-      { message: "Missing field back", field: "back" }
+      {
+        message: '"front" is required',
+        field: "front",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "front",
+          label: "front"
+        }
+      },
+      {
+        message: '"back" is required',
+        field: "back",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "back",
+          label: "back"
+        }
+      }
     ]);
   });
 
@@ -96,8 +134,28 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Front cannot be empty", field: "front" },
-      { message: "Back cannot be empty", field: "back" }
+      {
+        message: "front cannot be empty",
+        field: "front",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "front",
+          label: "front",
+          value: ""
+        }
+      },
+      {
+        message: "back cannot be empty",
+        field: "back",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "back",
+          label: "back",
+          value: ""
+        }
+      }
     ]);
   });
 
@@ -114,8 +172,30 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Front must be at most 100 characters long", field: "front" },
-      { message: "Back must be at most 100 characters long", field: "back" }
+      {
+        message: "front must be at most 100 characters long",
+        field: "front",
+        code: "VALIDATION_ERROR",
+        type: "string.max",
+        context: {
+          key: "front",
+          label: "front",
+          limit: 100,
+          value: "a".repeat(101)
+        }
+      },
+      {
+        message: "back must be at most 100 characters long",
+        field: "back",
+        code: "VALIDATION_ERROR",
+        type: "string.max",
+        context: {
+          key: "back",
+          label: "back",
+          limit: 100,
+          value: "b".repeat(101)
+        }
+      }
     ]);
   });
 
@@ -132,7 +212,7 @@ describe("Card tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "You do not own this deck." }
+      { message: "You do not own this deck", code: "ACCESS_DENIED" }
     ]);
   });
 });
