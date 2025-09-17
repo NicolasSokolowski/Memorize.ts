@@ -75,7 +75,9 @@ describe("Deck tests", () => {
   it("returns an error if the user is not authenticated", async () => {
     const response = await request(app).get("/api/decks").expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   it("returns an error if the cookie doesn't contain a valid access token", async () => {
@@ -84,7 +86,9 @@ describe("Deck tests", () => {
       .set("Cookie", mockCookie("invalid-token"))
       .expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   // ---------- GET /api/decks/:deck_id ----------
@@ -107,7 +111,9 @@ describe("Deck tests", () => {
       .set("Cookie", UserCookie)
       .expect(404);
 
-    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Deck not found", code: "DECK_NOT_FOUND" }
+    ]);
   });
 
   it("returns a 400 error when trying to fetch a deck with an invalid ID", async () => {
@@ -117,7 +123,7 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Invalid deck ID provided." }
+      { message: "Invalid deck ID provided.", code: "INVALID_PARAMETER" }
     ]);
   });
 
@@ -126,7 +132,9 @@ describe("Deck tests", () => {
       .get("/api/decks/1") // Assuming user with ID 1 exists
       .expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   it("returns a 403 error when trying to fetch another user's deck", async () => {
@@ -142,7 +150,7 @@ describe("Deck tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "You do not own this deck." }
+      { message: "You do not own this deck", code: "ACCESS_DENIED" }
     ]);
   });
 });
