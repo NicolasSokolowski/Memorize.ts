@@ -75,7 +75,9 @@ describe("Card tests", () => {
       })
       .expect(404);
 
-    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Card not found", code: "CARD_NOT_FOUND" }
+    ]);
   });
 
   it("returns an error when trying to update a card with wrong data type", async () => {
@@ -92,8 +94,28 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Front must be a string", field: "front" },
-      { message: "Back must be a string", field: "back" }
+      {
+        message: "front must be a string",
+        field: "front",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "front",
+          label: "front",
+          value: 123
+        }
+      },
+      {
+        message: "back must be a string",
+        field: "back",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "back",
+          label: "back",
+          value: 456
+        }
+      }
     ]);
   });
 
@@ -130,7 +152,7 @@ describe("Card tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "You do not own this card." }
+      { message: "You do not own this card", code: "ACCESS_DENIED" }
     ]);
   });
 
@@ -148,8 +170,28 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Front cannot be empty", field: "front" },
-      { message: "Back cannot be empty", field: "back" }
+      {
+        message: "front cannot be empty",
+        field: "front",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "front",
+          label: "front",
+          value: ""
+        }
+      },
+      {
+        message: "back cannot be empty",
+        field: "back",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "back",
+          label: "back",
+          value: ""
+        }
+      }
     ]);
   });
 
@@ -165,7 +207,9 @@ describe("Card tests", () => {
       })
       .expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   it("returns a 400 error when trying to update a card with an invalid ID", async () => {
@@ -181,7 +225,7 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Invalid card ID provided." }
+      { message: "Invalid card ID provided", code: "INVALID_PARAMETER" }
     ]);
   });
 
@@ -196,7 +240,16 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: '"value" must have at least 1 key' }
+      {
+        message: '"value" must have at least 1 key',
+        code: "VALIDATION_ERROR",
+        type: "object.min",
+        context: {
+          label: "value",
+          limit: 1,
+          value: {}
+        }
+      }
     ]);
   });
 });
