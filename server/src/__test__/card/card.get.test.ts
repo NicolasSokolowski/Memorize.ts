@@ -106,7 +106,9 @@ describe("Card tests", () => {
       .set("Cookie", UserCookie)
       .expect(404);
 
-    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Deck not found", code: "DECK_NOT_FOUND" }
+    ]);
   });
 
   it("returns a 400 error if the deck ID is invalid", async () => {
@@ -116,7 +118,7 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Invalid deck ID provided." }
+      { message: "Invalid deck ID provided.", code: "INVALID_PARAMETER" }
     ]);
   });
 
@@ -125,7 +127,9 @@ describe("Card tests", () => {
       .get("/api/decks/1/cards") // Assuming user with ID 1 exists
       .expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   it("returns a 403 error if the user tries to access cards from a deck they do not own", async () => {
@@ -147,7 +151,7 @@ describe("Card tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "You do not own this deck." }
+      { message: "You do not own this deck", code: "ACCESS_DENIED" }
     ]);
   });
 
@@ -180,7 +184,9 @@ describe("Card tests", () => {
       .set("Cookie", UserCookie)
       .expect(404);
 
-    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Card not found", code: "CARD_NOT_FOUND" }
+    ]);
   });
 
   it("returns a 400 error if the card ID is invalid", async () => {
@@ -192,7 +198,7 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Invalid card ID provided." }
+      { message: "Invalid card ID provided", code: "INVALID_PARAMETER" }
     ]);
   });
 
@@ -204,7 +210,9 @@ describe("Card tests", () => {
       .get(`/api/decks/${deck.body.id}/cards/${card.body.id}`)
       .expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   it("returns a 403 error if the user tries to access a card from a deck he doesn't own", async () => {
@@ -235,7 +243,7 @@ describe("Card tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "You do not own this deck." }
+      { message: "You do not own this deck", code: "ACCESS_DENIED" }
     ]);
   });
 
@@ -262,7 +270,7 @@ describe("Card tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "You do not own this card." }
+      { message: "You do not own this card", code: "ACCESS_DENIED" }
     ]);
   });
 
@@ -298,7 +306,9 @@ describe("Card tests", () => {
   it("returns a 401 error if the user is not authenticated when trying to fetch all cards by user", async () => {
     const response = await request(app).get("/api/users/me/cards").expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   it("returns a 401 error if the access token is invalid when trying to fetch all cards by user", async () => {
@@ -307,6 +317,8 @@ describe("Card tests", () => {
       .set("Cookie", "invalid_token")
       .expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 });
