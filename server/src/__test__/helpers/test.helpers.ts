@@ -103,11 +103,9 @@ export const createUser = async () => {
   return request(app)
     .post("/api/users")
     .send({
-      userInfo: {
-        email: `${makeRandomString(5)}@user.com`,
-        password: "pAssw0rd!123",
-        username: makeRandomString(10)
-      },
+      email: `${makeRandomString(5)}@user.com`,
+      password: "pAssw0rd!123",
+      username: makeRandomString(10),
       subject: makeRandomString(10)
     })
     .expect(201);
