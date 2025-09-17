@@ -44,11 +44,11 @@ export class UserController extends CoreController<
 
   signup = async (req: Request, res: Response): Promise<void> => {
     const language = req.headers["accept-language"] || "en";
-    const { userInfo, subject } = req.body;
+    const { email, password, username, subject } = req.body;
 
     const isEmailUsed = await this.datamapper.findBySpecificField(
       this.field,
-      userInfo.email
+      email
     );
 
     if (isEmailUsed) {
@@ -61,7 +61,7 @@ export class UserController extends CoreController<
 
     try {
       await this.datamapper.pool.query("BEGIN");
-      const hashedPassword = await Password.toHash(userInfo.password);
+      const hashedPassword = await Password.toHash(password);
 
       if (!hashedPassword) {
         throw new BadRequestError(
@@ -77,9 +77,9 @@ export class UserController extends CoreController<
       }
 
       const newUserData = {
-        email: userInfo.email,
+        email: email,
         password: hashedPassword,
-        username: userInfo.username,
+        username: username,
         role_id: default_role.id
       };
 

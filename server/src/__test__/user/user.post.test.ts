@@ -3,7 +3,12 @@ import request from "supertest";
 import { app } from "../../index.app";
 import { Pool } from "pg";
 import { Password } from "../../helpers/Password";
-import { createCard, createDeck, UserCookie } from "../helpers/test.helpers";
+import {
+  createCard,
+  createDeck,
+  makeRandomString,
+  UserCookie
+} from "../helpers/test.helpers";
 
 const pool = new Pool(poolConfig);
 
@@ -41,7 +46,8 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "pAssw0rd!123",
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(201);
   });
@@ -52,7 +58,8 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "pAssw0rd!123",
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(201);
 
@@ -61,7 +68,8 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "pAssw0rd!123",
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
   });
@@ -72,7 +80,8 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "passw0rd!123", // No uppercase letter
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
@@ -80,7 +89,14 @@ describe("User tests", () => {
       {
         message:
           '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
-        field: "password"
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.passwordComplexity",
+        context: {
+          key: "password",
+          label: "password",
+          value: "passw0rd!123"
+        }
       }
     ]);
   });
@@ -91,7 +107,8 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "PASSW0RD!123", // No lowercase letter
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
@@ -99,7 +116,14 @@ describe("User tests", () => {
       {
         message:
           '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
-        field: "password"
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.passwordComplexity",
+        context: {
+          key: "password",
+          label: "password",
+          value: "PASSW0RD!123"
+        }
       }
     ]);
   });
@@ -110,7 +134,8 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "pAssword!abc", // No digit
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
@@ -118,7 +143,14 @@ describe("User tests", () => {
       {
         message:
           '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
-        field: "password"
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.passwordComplexity",
+        context: {
+          key: "password",
+          label: "password",
+          value: "pAssword!abc"
+        }
       }
     ]);
   });
@@ -129,7 +161,8 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "pAsswordaabc", // No special character
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
@@ -137,7 +170,14 @@ describe("User tests", () => {
       {
         message:
           '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
-        field: "password"
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.passwordComplexity",
+        context: {
+          key: "password",
+          label: "password",
+          value: "pAsswordaabc"
+        }
       }
     ]);
   });
@@ -148,19 +188,35 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "pAssword!", // Less than 12 characters
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
       {
-        message: "Password must be at least 12 characters long",
-        field: "password"
+        message: "password must be at least 12 characters long",
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.min",
+        context: {
+          key: "password",
+          label: "password",
+          limit: 12,
+          value: "pAssword!"
+        }
       },
       {
         message:
           '"password" must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
-        field: "password"
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.passwordComplexity",
+        context: {
+          key: "password",
+          label: "password",
+          value: "pAssword!"
+        }
       }
     ]);
   });
@@ -171,12 +227,23 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "", // Empty password
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Password cannot be empty", field: "password" }
+      {
+        message: "password cannot be empty",
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "password",
+          label: "password",
+          value: ""
+        }
+      }
     ]);
   });
 
@@ -186,12 +253,23 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: 123, // Wrong type
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Password must be a string", field: "password" }
+      {
+        message: "password must be a string",
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "password",
+          label: "password",
+          value: 123
+        }
+      }
     ]);
   });
 
@@ -201,12 +279,22 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         // No password provided
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field password", field: "password" }
+      {
+        message: '"password" is required',
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "password",
+          label: "password"
+        }
+      }
     ]);
   });
 
@@ -216,12 +304,24 @@ describe("User tests", () => {
       .send({
         email: "useruser.com", // Invalid email format
         password: "pAssw0rd!123",
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email must be a valid email address", field: "email" }
+      {
+        message: "email must be a valid email address",
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "string.email",
+        context: {
+          key: "email",
+          label: "email",
+          value: "useruser.com",
+          invalids: ["useruser.com"]
+        }
+      }
     ]);
   });
 
@@ -231,12 +331,23 @@ describe("User tests", () => {
       .send({
         email: 123, // Wrong type
         password: "pAssw0rd!123",
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email must be a string", field: "email" }
+      {
+        message: "email must be a string",
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "email",
+          label: "email",
+          value: 123
+        }
+      }
     ]);
   });
 
@@ -246,12 +357,23 @@ describe("User tests", () => {
       .send({
         email: "", // Empty email
         password: "pAssw0rd!123",
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email cannot be empty", field: "email" }
+      {
+        message: "email cannot be empty",
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "email",
+          label: "email",
+          value: ""
+        }
+      }
     ]);
   });
 
@@ -261,12 +383,22 @@ describe("User tests", () => {
       .send({
         // No email provided
         password: "pAssw0rd!123",
-        username: "test_user"
+        username: "test_user",
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field email", field: "email" }
+      {
+        message: '"email" is required',
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "email",
+          label: "email"
+        }
+      }
     ]);
   });
 
@@ -276,14 +408,23 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "pAssw0rd!123",
-        username: "test_user_with_a_very_long_username_that_exceeds_the_limit" // More than 20 characters
+        username: "test_user_with_a_very_long_username_that_exceeds_the_limit", // More than 20 characters
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username must be at most 20 characters long",
-        field: "username"
+        message: "username must be at most 20 characters long",
+        field: "username",
+        code: "VALIDATION_ERROR",
+        type: "string.max",
+        context: {
+          key: "username",
+          label: "username",
+          value: "test_user_with_a_very_long_username_that_exceeds_the_limit",
+          limit: 20
+        }
       }
     ]);
   });
@@ -294,14 +435,23 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "pAssw0rd!123",
-        username: "te" // Less than 3 characters
+        username: "te", // Less than 3 characters
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username must be at least 3 characters long",
-        field: "username"
+        message: "username must be at least 3 characters long",
+        field: "username",
+        code: "VALIDATION_ERROR",
+        type: "string.min",
+        context: {
+          key: "username",
+          label: "username",
+          value: "te",
+          limit: 3
+        }
       }
     ]);
   });
@@ -312,12 +462,23 @@ describe("User tests", () => {
       .send({
         email: "testuser@user.com",
         password: "pAssw0rd!123",
-        username: "" // Empty username
+        username: "", // Empty username
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Username cannot be empty", field: "username" }
+      {
+        message: "username cannot be empty",
+        field: "username",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "username",
+          label: "username",
+          value: ""
+        }
+      }
     ]);
   });
 
@@ -326,13 +487,23 @@ describe("User tests", () => {
       .post("/api/users")
       .send({
         email: "testuser@user.com",
-        password: "pAssw0rd!123"
+        password: "pAssw0rd!123",
         // No username provided
+        subject: makeRandomString(10)
       })
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field username", field: "username" }
+      {
+        message: '"username" is required',
+        field: "username",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "username",
+          label: "username"
+        }
+      }
     ]);
   });
 
@@ -365,7 +536,18 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email must be a valid email address", field: "email" }
+      {
+        message: "email must be a valid email address",
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "string.email",
+        context: {
+          key: "email",
+          label: "email",
+          value: "useruser.com",
+          invalids: ["useruser.com"]
+        }
+      }
     ]);
   });
 
@@ -379,7 +561,17 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email must be a string", field: "email" }
+      {
+        message: "email must be a string",
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "email",
+          label: "email",
+          value: 123
+        }
+      }
     ]);
   });
 
@@ -393,8 +585,28 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Email cannot be empty", field: "email" },
-      { message: "Password cannot be empty", field: "password" }
+      {
+        message: "email cannot be empty",
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "email",
+          label: "email",
+          value: ""
+        }
+      },
+      {
+        message: '"password" is not allowed to be empty',
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "password",
+          label: "password",
+          value: ""
+        }
+      }
     ]);
   });
 
@@ -405,8 +617,26 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field email", field: "email" },
-      { message: "Missing field password", field: "password" }
+      {
+        message: '"email" is required',
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "email",
+          label: "email"
+        }
+      },
+      {
+        message: '"password" is required',
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "password",
+          label: "password"
+        }
+      }
     ]);
   });
 
@@ -420,7 +650,17 @@ describe("User tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Password must be a string", field: "password" }
+      {
+        message: "password must be a string",
+        field: "password",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "password",
+          label: "password",
+          value: 123
+        }
+      }
     ]);
   });
 
@@ -436,7 +676,7 @@ describe("User tests", () => {
 
     // Simulate a user who hasn't logged in for a day
     await pool.query(
-      `UPDATE "user" SET "last_login" = NOW() - INTERVAL '1 day' WHERE "id" = $1`,
+      `UPDATE "user" SET "last_cards_update" = NOW() - INTERVAL '1 day' WHERE "id" = $1`,
       [user.body.user.id]
     );
 
@@ -451,13 +691,10 @@ describe("User tests", () => {
       [cardTwo.body.id]
     );
 
-    // Log in to trigger the card update
+    // Fetch cards to trigger cards update
     await request(app)
-      .post("/api/profile")
-      .send({
-        email: "user@user.com",
-        password: "pAssw0rd!123"
-      })
+      .get("/api/users/me/cards")
+      .set("Cookie", UserCookie)
       .expect(200);
 
     const responseOne = await request(app)

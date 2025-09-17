@@ -29,7 +29,12 @@ function SignupForm() {
     try {
       await axiosInstance.post(
         "/users",
-        { userInfo, subject: t("auth:accountCreation") },
+        {
+          username: userInfo.username,
+          email: userInfo.email,
+          password: userInfo.password,
+          subject: t("auth:accountCreation")
+        },
         {
           headers: {
             "Accept-Language": i18next.language
