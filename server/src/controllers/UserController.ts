@@ -277,7 +277,7 @@ export class UserController extends CoreController<
     );
 
     if (!role) {
-      throw new NotFoundError("Role not found", "USER_NOT_FOUND");
+      throw new NotFoundError("Role not found", "ROLE_NOT_FOUND");
     }
 
     const updatedUser = await this.datamapper.updateRole(userId, role.id);

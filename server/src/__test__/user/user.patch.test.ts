@@ -78,7 +78,9 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Provided email is already in use. Please choose another one."
+        message: "Provided email is already used",
+        code: "EMAIL_ALREADY_EXISTS",
+        field: "email"
       }
     ]);
   });
@@ -99,8 +101,16 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Email must be a valid email address",
-        field: "email"
+        message: "email must be a valid email address",
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "string.email",
+        context: {
+          key: "email",
+          label: "email",
+          value: "useruser.com",
+          invalids: ["useruser.com"]
+        }
       }
     ]);
   });
@@ -121,8 +131,15 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Email must be a string",
-        field: "email"
+        message: "email must be a string",
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "email",
+          label: "email",
+          value: 1
+        }
       }
     ]);
   });
@@ -143,8 +160,15 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Email cannot be empty",
-        field: "email"
+        message: "email cannot be empty",
+        field: "email",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "email",
+          label: "email",
+          value: ""
+        }
       }
     ]);
   });
@@ -163,7 +187,14 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "At least one field (email or username) must be provided"
+        message: "At least one field (email or username) must be provided",
+        code: "VALIDATION_ERROR",
+        type: "object.min",
+        context: {
+          label: "value",
+          limit: 1,
+          value: {}
+        }
       }
     ]);
   });
@@ -185,8 +216,15 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username must be a string",
-        field: "username"
+        message: "username must be a string",
+        field: "username",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "username",
+          label: "username",
+          value: 123
+        }
       }
     ]);
   });
@@ -207,8 +245,15 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username cannot be empty",
-        field: "username"
+        message: "username cannot be empty",
+        field: "username",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "username",
+          label: "username",
+          value: ""
+        }
       }
     ]);
   });
@@ -229,8 +274,16 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username must be at most 20 characters long",
-        field: "username"
+        message: "username must be at most 20 characters long",
+        field: "username",
+        code: "VALIDATION_ERROR",
+        type: "string.max",
+        context: {
+          key: "username",
+          label: "username",
+          limit: 20,
+          value: "this_is_a_very_long_username_that_exceeds_twenty_characters"
+        }
       }
     ]);
   });
@@ -251,8 +304,16 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Username must be at least 3 characters long",
-        field: "username"
+        message: "username must be at least 3 characters long",
+        field: "username",
+        code: "VALIDATION_ERROR",
+        type: "string.min",
+        context: {
+          key: "username",
+          label: "username",
+          limit: 3,
+          value: "ab"
+        }
       }
     ]);
   });
@@ -317,8 +378,31 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Confirm password must match new password",
-        field: "confirmNewPassword"
+        message: "confirmNewPassword must match new password",
+        field: "confirmNewPassword",
+        code: "VALIDATION_ERROR",
+        type: "any.only",
+        context: {
+          key: "confirmNewPassword",
+          label: "confirmNewPassword",
+          valids: [
+            {
+              adjust: null,
+              ancestor: 1,
+              depth: 1,
+              display: "ref:newPassword",
+              in: false,
+              iterables: null,
+              key: "newPassword",
+              map: null,
+              path: ["newPassword"],
+              root: "newPassword",
+              separator: ".",
+              type: "value"
+            }
+          ],
+          value: "newP@ssw0rd!45"
+        }
       }
     ]);
   });
@@ -341,8 +425,14 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Missing field confirmNewPassword",
-        field: "confirmNewPassword"
+        message: '"confirmNewPassword" is required',
+        field: "confirmNewPassword",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "confirmNewPassword",
+          label: "confirmNewPassword"
+        }
       }
     ]);
   });
@@ -366,11 +456,25 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message: "currentPassword must be a string",
-        field: "currentPassword"
+        field: "currentPassword",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "currentPassword",
+          label: "currentPassword",
+          value: 1
+        }
       },
       {
         message: "newPassword must be a string",
-        field: "newPassword"
+        field: "newPassword",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "newPassword",
+          label: "newPassword",
+          value: 1
+        }
       }
     ]);
   });
@@ -394,11 +498,25 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message: "currentPassword cannot be empty",
-        field: "currentPassword"
+        field: "currentPassword",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "currentPassword",
+          label: "currentPassword",
+          value: ""
+        }
       },
       {
         message: "newPassword cannot be empty",
-        field: "newPassword"
+        field: "newPassword",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "newPassword",
+          label: "newPassword",
+          value: ""
+        }
       }
     ]);
   });
@@ -421,8 +539,14 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Missing field currentPassword",
-        field: "currentPassword"
+        message: '"currentPassword" is required',
+        field: "currentPassword",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "currentPassword",
+          label: "currentPassword"
+        }
       }
     ]);
   });
@@ -456,7 +580,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Not enough permissions"
+        message: "Not enough permissions",
+        code: "ACCESS_DENIED"
       }
     ]);
   });
@@ -474,7 +599,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Not Found"
+        message: "Role not found",
+        code: "ROLE_NOT_FOUND"
       }
     ]);
   });
@@ -493,7 +619,14 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message: "Name must be a string",
-        field: "name"
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "name",
+          label: "name",
+          value: 1
+        }
       }
     ]);
   });
@@ -512,7 +645,14 @@ describe("User tests", () => {
     expect(response.body.errors).toEqual([
       {
         message: "Name cannot be empty",
-        field: "name"
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "name",
+          label: "name",
+          value: ""
+        }
       }
     ]);
   });
@@ -528,7 +668,8 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "You should provide a valid id"
+        message: "You should provide a valid id",
+        code: "INVALID_PARAMETER"
       }
     ]);
   });
@@ -542,8 +683,14 @@ describe("User tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Missing field name",
-        field: "name"
+        message: '"name" is required',
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "name",
+          label: "name"
+        }
       }
     ]);
   });
