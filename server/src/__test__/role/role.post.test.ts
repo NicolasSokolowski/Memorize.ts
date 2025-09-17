@@ -55,7 +55,17 @@ describe("Role tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be a string", field: "name" }
+      {
+        message: "Name must be a string",
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "name",
+          label: "name",
+          value: 1
+        }
+      }
     ]);
   });
 
@@ -67,7 +77,16 @@ describe("Role tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field name", field: "name" }
+      {
+        message: '"name" is required',
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "name",
+          label: "name"
+        }
+      }
     ]);
   });
 
@@ -81,7 +100,17 @@ describe("Role tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name cannot be empty", field: "name" }
+      {
+        message: "Name cannot be empty",
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "name",
+          label: "name",
+          value: ""
+        }
+      }
     ]);
   });
 
@@ -95,7 +124,18 @@ describe("Role tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be at least 3 characters long", field: "name" }
+      {
+        message: "Name must be at least 3 characters long",
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "string.min",
+        context: {
+          key: "name",
+          label: "name",
+          limit: 3,
+          value: "ch"
+        }
+      }
     ]);
   });
 
@@ -109,7 +149,18 @@ describe("Role tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be at most 15 characters long", field: "name" }
+      {
+        message: "Name must be at most 15 characters long",
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "string.max",
+        context: {
+          key: "name",
+          label: "name",
+          limit: 15,
+          value: "super_long_admin_role_name_for_no_test_purposes"
+        }
+      }
     ]);
   });
 
@@ -123,7 +174,7 @@ describe("Role tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Provided item already exists." }
+      { message: "Provided item already exists", code: "DUPLICATE_ENTRY" }
     ]);
   });
 });

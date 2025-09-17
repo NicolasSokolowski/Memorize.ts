@@ -5,7 +5,8 @@ const config: Config = {
   preset: "ts-jest",
   testEnvironment: "node",
   testMatch: ["./**/*.test.ts"],
-  moduleFileExtensions: ["ts", "js"]
+  moduleFileExtensions: ["ts", "js"],
+  setupFilesAfterEnv: ["./tests/jest.setup.ts"]
 };
 
 export default config;

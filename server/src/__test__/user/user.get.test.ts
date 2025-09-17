@@ -49,7 +49,8 @@ describe("User GET tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Not enough permissions"
+        message: "Not enough permissions",
+        code: "ACCESS_DENIED"
       }
     ]);
   });
@@ -59,7 +60,8 @@ describe("User GET tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Not authorized"
+        message: "Not authorized",
+        code: "UNAUTHORIZED"
       }
     ]);
   });
@@ -85,7 +87,8 @@ describe("User GET tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Not Found"
+        message: "Item not found",
+        code: "NOT_FOUND"
       }
     ]);
   });
@@ -98,7 +101,8 @@ describe("User GET tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Not enough permissions"
+        message: "Not enough permissions",
+        code: "ACCESS_DENIED"
       }
     ]);
   });
@@ -108,7 +112,8 @@ describe("User GET tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Not authorized"
+        message: "Not authorized",
+        code: "UNAUTHORIZED"
       }
     ]);
   });
@@ -121,7 +126,8 @@ describe("User GET tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "You should provide an id"
+        message: "ID parameter is missing",
+        code: "INVALID_PARAMETER"
       }
     ]);
   });
@@ -143,7 +149,8 @@ describe("User GET tests", () => {
 
     expect(response.body.errors).toEqual([
       {
-        message: "Not authorized"
+        message: "Not authorized",
+        code: "UNAUTHORIZED"
       }
     ]);
   });

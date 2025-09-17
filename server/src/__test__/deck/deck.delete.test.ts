@@ -53,7 +53,9 @@ describe("Deck tests", () => {
       .set("Cookie", UserCookie)
       .expect(404);
 
-    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Deck not found", code: "DECK_NOT_FOUND" }
+    ]);
   });
 
   it("returns an error when trying to delete a deck that does not exist", async () => {
@@ -62,7 +64,9 @@ describe("Deck tests", () => {
       .set("Cookie", UserCookie)
       .expect(404);
 
-    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Deck not found", code: "DECK_NOT_FOUND" }
+    ]);
   });
 
   it("returns an error when trying to delete a deck with an invalid ID", async () => {
@@ -72,7 +76,7 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Invalid deck ID provided." }
+      { message: "Invalid deck ID provided.", code: "INVALID_PARAMETER" }
     ]);
   });
 
@@ -83,7 +87,9 @@ describe("Deck tests", () => {
       .delete(`/api/decks/${deck.body.id}`)
       .expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   it("returns an error when trying to delete another user's deck", async () => {
@@ -99,7 +105,7 @@ describe("Deck tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "You do not own this deck." }
+      { message: "You do not own this deck", code: "ACCESS_DENIED" }
     ]);
   });
 
@@ -123,7 +129,11 @@ describe("Deck tests", () => {
       .set("Cookie", UserCookie)
       .expect(404);
 
-    expect(responseOne.body.errors).toEqual([{ message: "Not Found" }]);
-    expect(responseTwo.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(responseOne.body.errors).toEqual([
+      { message: "Deck not found", code: "DECK_NOT_FOUND" }
+    ]);
+    expect(responseTwo.body.errors).toEqual([
+      { message: "Deck not found", code: "DECK_NOT_FOUND" }
+    ]);
   });
 });

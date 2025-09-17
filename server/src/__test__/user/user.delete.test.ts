@@ -56,7 +56,9 @@ describe("User GET tests", () => {
   it("returns a 401 error when trying to delete the profile without an access token", async () => {
     const response = await request(app).delete("/api/profile").expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   it("returns a 404 error when trying to delete an already deleted profile", async () => {
@@ -73,7 +75,9 @@ describe("User GET tests", () => {
       .set("Cookie", cookie)
       .expect(404);
 
-    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(response.body.errors).toEqual([
+      { message: "User not found", code: "USER_NOT_FOUND" }
+    ]);
   });
 
   it("deletes all the decks and cards associated with the user", async () => {
@@ -144,7 +148,7 @@ describe("User GET tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "Not enough permissions" }
+      { message: "Not enough permissions", code: "ACCESS_DENIED" }
     ]);
   });
 
@@ -158,7 +162,9 @@ describe("User GET tests", () => {
       .set("Cookie", cookie)
       .expect(404);
 
-    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Item not found", code: "NOT_FOUND" }
+    ]);
   });
 
   it("returns a 400 error when trying to delete a user with an invalid ID", async () => {
@@ -172,7 +178,7 @@ describe("User GET tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Please provide a valid id." }
+      { message: "Please provide a valid id", code: "INVALID_PARAMETER" }
     ]);
   });
 
@@ -181,6 +187,8 @@ describe("User GET tests", () => {
       .delete("/api/users/1") // Assuming user with ID 1 exists
       .expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 });

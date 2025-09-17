@@ -9,7 +9,7 @@ import i18next from "i18next";
 
 function PasswordResetForm({ onCancel }: onCancelProp) {
   const [passwordHasBeenChanged, setPasswordHasBeenChanged] = useState(false);
-  const [newPassword, setNewPassword] = useState({
+  const [passwordData, setPasswordData] = useState({
     newPassword: "",
     passwordConfirmation: ""
   });
@@ -24,12 +24,12 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
     }
   });
 
-  const handleChange = createHandleChange(setNewPassword, setError);
+  const handleChange = createHandleChange(setPasswordData, setError);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!newPassword.newPassword || !newPassword.passwordConfirmation) {
+    if (!passwordData.newPassword || !passwordData.passwordConfirmation) {
       setError({
         ...error,
         messages: [...error.messages, t("errors:allFields")]
@@ -37,7 +37,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
       return;
     }
 
-    if (newPassword.newPassword !== newPassword.passwordConfirmation) {
+    if (passwordData.newPassword !== passwordData.passwordConfirmation) {
       setError({
         ...error,
         fields: [...error.fields, "newPassword"],
@@ -50,7 +50,8 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
       await axiosInstance.patch(
         "/profile/resetpw",
         {
-          passwordData: newPassword,
+          newPassword: passwordData.newPassword,
+          passwordConfirmation: passwordData.passwordConfirmation,
           subject: t("auth:passwordModification"),
           object: t("auth:password").toLowerCase()
         },
@@ -83,7 +84,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
           id="newPassword"
           type="password"
           className={`${error.messages.length > 0 ? "ring-2 ring-error" : ""} my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
-          value={newPassword.newPassword}
+          value={passwordData.newPassword}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
         />
@@ -97,7 +98,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
           id="passwordConfirmation"
           type="password"
           className={`${error.messages.length > 0 ? "ring-2 ring-error" : ""} my-2 h-10 rounded-lg pl-3 font-patua text-lg text-textPrimary shadow-inner-strong focus:outline-none focus:ring-2 focus:ring-primary`}
-          value={newPassword.passwordConfirmation}
+          value={passwordData.passwordConfirmation}
           onChange={(e) => handleChange(e)}
           autoComplete="off"
         />

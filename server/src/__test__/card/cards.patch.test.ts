@@ -164,7 +164,7 @@ describe("Card tests", () => {
     expect(response.body.cards[2].id).toEqual(cardThree.body.id);
     expect(response.body.cards[2].win_streak).toEqual(0);
     expect(response.body.cards[2].difficulty).toEqual(1);
-    expect(response.body.cards[2].next_occurrence).toEqual(1);
+    expect(response.body.cards[2].next_occurrence).toEqual(0);
     expect(response.body.cards[2].max_early).toEqual(4);
   });
 
@@ -179,7 +179,16 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field 0,user_answer", field: 0 }
+      {
+        message: '"[0].user_answer" is required',
+        field: 0,
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "user_answer",
+          label: "[0].user_answer"
+        }
+      }
     ]);
   });
 
@@ -191,7 +200,15 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: '"value" must be an array' }
+      {
+        message: '"value" must be an array',
+        code: "VALIDATION_ERROR",
+        type: "array.base",
+        context: {
+          label: "value",
+          value: {}
+        }
+      }
     ]);
   });
 
@@ -203,7 +220,10 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Invalid cards data provided." }
+      {
+        message: "The provided cards array must not be empty",
+        code: "INVALID_DATA"
+      }
     ]);
   });
 
@@ -219,9 +239,27 @@ describe("Card tests", () => {
     expect(response.body.errors).toEqual([
       {
         message: 'User answer must be one of "easy", "medium", or "hard"',
-        field: 0
+        field: 0,
+        code: "VALIDATION_ERROR",
+        type: "any.only",
+        context: {
+          key: "user_answer",
+          label: "[0].user_answer",
+          valids: ["easy", "medium", "hard"],
+          value: ""
+        }
       },
-      { message: "User answer cannot be empty", field: 0 }
+      {
+        message: "User answer cannot be empty",
+        field: 0,
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: {
+          key: "user_answer",
+          label: "[0].user_answer",
+          value: ""
+        }
+      }
     ]);
   });
 
@@ -233,12 +271,40 @@ describe("Card tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Card ID must be a number", field: 0 },
+      {
+        message: "Card ID must be a number",
+        field: 0,
+        code: "VALIDATION_ERROR",
+        type: "number.base",
+        context: {
+          key: "id",
+          label: "[0].id",
+          value: "not_a_number"
+        }
+      },
       {
         message: 'User answer must be one of "easy", "medium", or "hard"',
-        field: 0
+        field: 0,
+        code: "VALIDATION_ERROR",
+        type: "any.only",
+        context: {
+          key: "user_answer",
+          label: "[0].user_answer",
+          valids: ["easy", "medium", "hard"],
+          value: 1
+        }
       },
-      { message: "User answer must be a string", field: 0 }
+      {
+        message: "User answer must be a string",
+        field: 0,
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: {
+          key: "user_answer",
+          label: "[0].user_answer",
+          value: 1
+        }
+      }
     ]);
   });
 
@@ -250,7 +316,11 @@ describe("Card tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "One or more cards do not belong to you, or does not exist." }
+      {
+        message:
+          "Some cards are either not found or you don't have permission to access them",
+        code: "ACCESS_DENIED"
+      }
     ]);
   });
 
@@ -269,7 +339,11 @@ describe("Card tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "One or more cards do not belong to you, or does not exist." }
+      {
+        message:
+          "Some cards are either not found or you don't have permission to access them",
+        code: "ACCESS_DENIED"
+      }
     ]);
   });
 });

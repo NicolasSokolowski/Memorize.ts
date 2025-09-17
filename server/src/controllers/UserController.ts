@@ -44,11 +44,11 @@ export class UserController extends CoreController<
 
   signup = async (req: Request, res: Response): Promise<void> => {
     const language = req.headers["accept-language"] || "en";
-    const { userInfo, subject } = req.body;
+    const { email, password, username, subject } = req.body;
 
     const isEmailUsed = await this.datamapper.findBySpecificField(
       this.field,
-      userInfo.email
+      email
     );
 
     if (isEmailUsed) {
@@ -61,7 +61,7 @@ export class UserController extends CoreController<
 
     try {
       await this.datamapper.pool.query("BEGIN");
-      const hashedPassword = await Password.toHash(userInfo.password);
+      const hashedPassword = await Password.toHash(password);
 
       if (!hashedPassword) {
         throw new BadRequestError(
@@ -77,9 +77,9 @@ export class UserController extends CoreController<
       }
 
       const newUserData = {
-        email: userInfo.email,
+        email: email,
         password: hashedPassword,
-        username: userInfo.username,
+        username: username,
         role_id: default_role.id
       };
 
@@ -277,7 +277,7 @@ export class UserController extends CoreController<
     );
 
     if (!role) {
-      throw new NotFoundError("Role not found", "USER_NOT_FOUND");
+      throw new NotFoundError("Role not found", "ROLE_NOT_FOUND");
     }
 
     const updatedUser = await this.datamapper.updateRole(userId, role.id);
@@ -362,9 +362,9 @@ export class UserController extends CoreController<
   resetPassword = async (req: Request, res: Response): Promise<void> => {
     const language = req.headers["accept-language"] || "en";
     const userEmail = req.user?.email;
-    const { passwordData, subject, object } = req.body;
+    const { newPassword, passwordConfirmation, subject, object } = req.body;
 
-    if (passwordData.newPassword !== passwordData.passwordConfirmation) {
+    if (newPassword !== passwordConfirmation) {
       throw new BadRequestError(
         "New password and confirmation password are different",
         "CREDENTIALS_ERROR"
@@ -382,7 +382,7 @@ export class UserController extends CoreController<
 
     try {
       await this.datamapper.pool.query("BEGIN");
-      const hashedNewPassword = await Password.toHash(passwordData.newPassword);
+      const hashedNewPassword = await Password.toHash(newPassword);
 
       if (!hashedNewPassword) {
         throw new BadRequestError(

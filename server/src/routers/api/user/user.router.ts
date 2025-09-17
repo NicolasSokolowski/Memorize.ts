@@ -26,7 +26,7 @@ userRouter
   .delete(
     errorCatcher(requireAuth),
     errorCatcher(checkPermissions(["admin"])),
-    errorCatcher(userController.deleteAccount)
+    errorCatcher(userController.delete)
   );
 
 export default userRouter;

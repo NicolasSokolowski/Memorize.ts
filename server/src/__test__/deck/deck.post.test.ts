@@ -57,7 +57,13 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be a string", field: "name" }
+      {
+        message: "name must be a string",
+        field: "name",
+        type: "string.base",
+        code: "VALIDATION_ERROR",
+        context: { key: "name", label: "name", value: 1 }
+      }
     ]);
   });
 
@@ -71,7 +77,13 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name cannot be empty", field: "name" }
+      {
+        message: "name cannot be empty",
+        field: "name",
+        type: "string.empty",
+        code: "VALIDATION_ERROR",
+        context: { key: "name", label: "name", value: "" }
+      }
     ]);
   });
 
@@ -85,7 +97,19 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be at most 50 characters long", field: "name" }
+      {
+        message: "name must be at most 50 characters long",
+        field: "name",
+        code: "VALIDATION_ERROR",
+        context: {
+          key: "name",
+          label: "name",
+          limit: 50,
+          value:
+            "deck_name_with_more_than_fifty_characters_is_not_allowed_in_this_case_1234567890"
+        },
+        type: "string.max"
+      }
     ]);
   });
 
@@ -97,7 +121,13 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field name", field: "name" }
+      {
+        message: '"name" is required',
+        field: "name",
+        type: "any.required",
+        code: "VALIDATION_ERROR",
+        context: { key: "name", label: "name" }
+      }
     ]);
   });
 });

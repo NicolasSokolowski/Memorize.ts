@@ -67,7 +67,9 @@ describe("Deck tests", () => {
       })
       .expect(404);
 
-    expect(response.body.errors).toEqual([{ message: "Not Found" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Deck not found", code: "DECK_NOT_FOUND" }
+    ]);
   });
 
   it("returns an error when trying to update a deck with an already existing name for the same user", async () => {
@@ -82,7 +84,10 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: `Name already exists in this deck.`, field: "name" }
+      {
+        message: "Deck name already exists",
+        code: "DUPLICATE_ENTRY"
+      }
     ]);
   });
 
@@ -102,7 +107,7 @@ describe("Deck tests", () => {
       .expect(403);
 
     expect(response.body.errors).toEqual([
-      { message: "You do not own this deck." }
+      { message: "You do not own this deck", code: "ACCESS_DENIED" }
     ]);
   });
 
@@ -116,7 +121,9 @@ describe("Deck tests", () => {
       })
       .expect(401);
 
-    expect(response.body.errors).toEqual([{ message: "Not authorized" }]);
+    expect(response.body.errors).toEqual([
+      { message: "Not authorized", code: "UNAUTHORIZED" }
+    ]);
   });
 
   it("returns a 400 error when trying to update a deck with an invalid ID", async () => {
@@ -129,7 +136,7 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Invalid deck ID provided." }
+      { message: "Invalid deck ID provided.", code: "INVALID_PARAMETER" }
     ]);
   });
 
@@ -145,7 +152,13 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name cannot be empty", field: "name" }
+      {
+        message: "name cannot be empty",
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "string.empty",
+        context: { key: "name", label: "name", value: "" }
+      }
     ]);
   });
 
@@ -161,7 +174,18 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be at most 50 characters long", field: "name" }
+      {
+        message: "name must be at most 50 characters long",
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "string.max",
+        context: {
+          key: "name",
+          label: "name",
+          limit: 50,
+          value: "a".repeat(51)
+        }
+      }
     ]);
   });
 
@@ -177,7 +201,13 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Name must be a string", field: "name" }
+      {
+        message: "name must be a string",
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "string.base",
+        context: { key: "name", label: "name", value: 123 }
+      }
     ]);
   });
 
@@ -191,7 +221,16 @@ describe("Deck tests", () => {
       .expect(400);
 
     expect(response.body.errors).toEqual([
-      { message: "Missing field name", field: "name" }
+      {
+        message: '"name" is required',
+        field: "name",
+        code: "VALIDATION_ERROR",
+        type: "any.required",
+        context: {
+          key: "name",
+          label: "name"
+        }
+      }
     ]);
   });
 });

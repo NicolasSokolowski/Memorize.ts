@@ -92,7 +92,7 @@ export const checkPermissions = (permissions: string[], entity?: string) => {
           );
 
           if (!cardUser) {
-            throw new NotFoundError("Cards not found", "CARDS_NOT_FOUND");
+            throw new NotFoundError("Card not found", "CARD_NOT_FOUND");
           }
 
           if (cardUser.email !== userEmail) {
