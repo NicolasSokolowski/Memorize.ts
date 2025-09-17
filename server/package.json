@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev index.ts",
-    "test": "jest --config ./jest.config.ts --passWithNoTests --runInBand --detectOpenHandles",
     "build:emails": "maizzle build --config=maizzle.config.js",
     "dev:emails": "maizzle serve --config=maizzle.config.js"
   },

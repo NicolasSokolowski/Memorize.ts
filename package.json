@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "docker compose -f docker-compose-test.yml run --rm server",
     "lint": "lint-staged",
     "prepare": "husky"
   },
