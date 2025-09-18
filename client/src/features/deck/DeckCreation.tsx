@@ -96,7 +96,7 @@ function DeckCreation() {
                     className={`${error.messages.length > 0 && "hidden"}`}
                   >
                     <img
-                      src="/cancelation.png"
+                      src="/images/cancelation.png"
                       alt="Cancelation icon"
                       className="w-20"
                       onClick={handleCancel}
@@ -108,7 +108,7 @@ function DeckCreation() {
                     className={`mr-2 ${error.messages.length > 0 && "hidden"}`}
                   >
                     <img
-                      src="/validation.png"
+                      src="/images/validation.png"
                       alt="Validation icon"
                       className="w-16"
                       draggable={false}

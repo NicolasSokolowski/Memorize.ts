@@ -50,7 +50,7 @@ function DeckModeSelection() {
         {t("selectDeck")}
       </h1>
       <div className="grid grid-cols-[repeat(auto-fit,_21rem)] items-center justify-center gap-8 pb-20">
-        <div className="flex size-80 animate-pop flex-col justify-between rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light">
+        <div className="flex size-80 animate-pop flex-col justify-between rounded-lg bg-tertiary bg-[url('/images/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light">
           <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
             {t("dailyCards")}
           </div>
@@ -67,7 +67,7 @@ function DeckModeSelection() {
                 </span>
               ) : (
                 <img
-                  src="/training.png"
+                  src="/images/training.png"
                   alt="Training icon"
                   className="w-16 cursor-pointer"
                   draggable={false}
@@ -83,7 +83,7 @@ function DeckModeSelection() {
             )}
           </div>
         </div>
-        <div className="flex size-80 animate-pop flex-col justify-between rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light">
+        <div className="flex size-80 animate-pop flex-col justify-between rounded-lg bg-tertiary bg-[url('/images/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light">
           <div className="flex h-16 w-full items-center justify-center font-patua text-2xl text-textPrimary">
             {t("difficultCards")}
           </div>
@@ -100,7 +100,7 @@ function DeckModeSelection() {
                 </span>
               ) : (
                 <img
-                  src="/training.png"
+                  src="/images/training.png"
                   alt="Training icon"
                   className="w-16 cursor-pointer"
                   draggable={false}
@@ -117,7 +117,7 @@ function DeckModeSelection() {
           </div>
         </div>
         <div
-          className="flex size-80 animate-pop flex-col justify-between rounded-lg bg-tertiary bg-[url('/deck.png')] bg-cover bg-center bg-no-repeat shadow-custom-light"
+          className="flex size-80 animate-pop flex-col justify-between rounded-lg bg-tertiary bg-[url('/images/deck.png')] bg-cover bg-center bg-no-repeat shadow-custom-light"
           onClick={() => {
             if (decks.length > 0) {
               navigate("/user/training/decks", { state: { decks } });

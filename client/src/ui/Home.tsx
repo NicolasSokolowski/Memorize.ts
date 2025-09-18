@@ -22,7 +22,7 @@ function Home() {
       <div className="mx-4 sm:w-2/3">
         <div className="mt-5 flex justify-center sm:gap-6">
           <img
-            src="/card.png"
+            src="/images/card.png"
             alt="Snapcard Logo"
             className="h-36 object-contain sm:h-44 lg:h-56 xl:h-64"
             draggable={false}

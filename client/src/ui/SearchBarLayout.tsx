@@ -81,7 +81,7 @@ function SearchBarLayout() {
               onChange={(e) => setSearchedItem(e.target.value)}
             ></input>
             <img
-              src="/glass.png"
+              src="/images/glass.png"
               alt="Magnyfying glass logo"
               className="absolute right-2 h-10"
             />

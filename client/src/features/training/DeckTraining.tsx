@@ -120,7 +120,7 @@ function DeckTraining() {
               {currentCard && (
                 <div className="flip-box-inner">
                   <div
-                    className="flip-training-a flex flex-col rounded-lg bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
+                    className="flip-training-a flex flex-col rounded-lg bg-tertiary bg-[url('/images/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                     onClick={() => handleFlip()}
                   >
                     <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">
@@ -128,7 +128,7 @@ function DeckTraining() {
                     </span>
                   </div>
                   <div
-                    className="flip-training-b flex flex-col rounded-lg bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
+                    className="flip-training-b flex flex-col rounded-lg bg-tertiary bg-[url('/images/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                     onClick={() => handleFlip()}
                   >
                     <span className="mt-8 flex w-full justify-center font-patua text-5xl text-textPrimary">

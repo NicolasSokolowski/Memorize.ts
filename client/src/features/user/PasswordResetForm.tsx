@@ -106,7 +106,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
           <div className="mt-5 flex h-24 w-full justify-center gap-20">
             <button type="button">
               <img
-                src="/cancelation.png"
+                src="/images/cancelation.png"
                 alt="Cancelation icon"
                 onClick={onCancel}
                 className="w-24"
@@ -115,7 +115,7 @@ function PasswordResetForm({ onCancel }: onCancelProp) {
             </button>
             <button type="submit" className="mr-2">
               <img
-                src="/validation.png"
+                src="/images/validation.png"
                 alt="Validation icon"
                 className="w-20"
                 draggable={false}
