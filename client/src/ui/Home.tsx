@@ -28,7 +28,7 @@ function Home() {
             draggable={false}
           />
           <h1 className="flex items-center font-patua text-5xl text-tertiary sm:text-6xl lg:text-8xl xl:text-9xl">
-            Memorize
+            Just flip it !
           </h1>
         </div>
         <div className="relative flex w-full flex-col justify-start">
