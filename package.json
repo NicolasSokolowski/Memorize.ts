@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "docker compose -f docker-compose-test.yml run --rm server",
+    "test": "docker compose -f docker-compose-test.yml -p test_project run --rm server",
     "lint": "lint-staged",
     "prepare": "husky"
   },

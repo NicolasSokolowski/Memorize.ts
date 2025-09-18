@@ -4,6 +4,7 @@ services:
     env_file: .env
     restart: always
     volumes:
+      - db_test_data:/var/lib/postgresql/data
       - ./pg_init:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DATABASE} -U ${POSTGRES_USER}"]
@@ -21,3 +22,6 @@ services:
     depends_on:
       database:
         condition: service_healthy
+
+volumes:
+  db_test_data:
