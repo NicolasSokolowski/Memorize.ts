@@ -35,7 +35,7 @@ function NavBar() {
             >
               <span className="hidden sm:block">{t("training:training")}</span>
               <img
-                src="/training.png"
+                src="/images/training.png"
                 alt="Training icon"
                 className="absolute sm:right-2 sm:w-12 md:w-16"
                 draggable={false}
@@ -49,7 +49,7 @@ function NavBar() {
             >
               <span className="hidden sm:block">{t("deck:myDecks")} </span>
               <img
-                src="/deck.png"
+                src="/images/deck.png"
                 alt="Deck icon"
                 className="absolute w-24 sm:right-[-8px] sm:w-20 md:w-24"
                 draggable={false}
@@ -63,7 +63,7 @@ function NavBar() {
             >
               <span className="hidden sm:block">{t("card:myCards")}</span>
               <img
-                src="/card.png"
+                src="/images/card.png"
                 alt="Card icon"
                 className="absolute sm:right-2 sm:w-12 md:right-3 md:w-14"
                 draggable={false}
@@ -77,7 +77,7 @@ function NavBar() {
             >
               <span className="hidden sm:block">{t("auth:myProfile")}</span>
               <img
-                src="/profile.png"
+                src="/images/profile.png"
                 alt="Deck icon"
                 className="absolute inset-0 m-auto w-14 sm:inset-auto sm:right-2 sm:m-0 md:w-16"
                 draggable={false}

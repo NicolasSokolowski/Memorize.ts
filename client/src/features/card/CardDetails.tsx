@@ -45,7 +45,7 @@ function CardDetails({ card }: CardProps) {
           >
             <div className="flip-card-front">
               <div
-                className="relative flex size-full flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
+                className="relative flex size-full flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/images/card.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                 onClick={() => {
                   if (!isEdit) setIsFlipped(true);
                 }}
@@ -63,7 +63,7 @@ function CardDetails({ card }: CardProps) {
                     }}
                   >
                     <img
-                      src="/modification.png"
+                      src="/images/modification.png"
                       alt="Modification icon"
                       className="w-16"
                       draggable={false}
@@ -78,7 +78,7 @@ function CardDetails({ card }: CardProps) {
                     }}
                   >
                     <img
-                      src="/deletion.png"
+                      src="/images/deletion.png"
                       alt="Deletion icon"
                       className="w-16"
                       draggable={false}
@@ -120,7 +120,7 @@ function CardDetails({ card }: CardProps) {
               >
                 <div className="flip-face flip-face-front">
                   <div
-                    className="relative flex size-full flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
+                    className="relative flex size-full flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/images/cardback.png')] bg-[length:60%] bg-center bg-no-repeat shadow-custom-light"
                     onClick={() => {
                       if (!isEdit) setIsFlipped(false);
                     }}
@@ -137,7 +137,7 @@ function CardDetails({ card }: CardProps) {
                         }}
                       >
                         <img
-                          src="/modification.png"
+                          src="/images/modification.png"
                           alt="Modification icon"
                           className="w-16"
                           draggable={false}

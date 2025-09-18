@@ -14,7 +14,7 @@ function ChoiceButton({ onCancel, width, gap }: ChoiceButtonProps) {
     <div className={`${gap} flex w-full justify-center`}>
       <button type="button">
         <img
-          src="/cancelation.png"
+          src="/images/cancelation.png"
           alt="Cancelation icon"
           onClick={onCancel}
           className={widthStringified}
@@ -23,7 +23,7 @@ function ChoiceButton({ onCancel, width, gap }: ChoiceButtonProps) {
       </button>
       <button type="submit" className="mr-2">
         <img
-          src="/validation.png"
+          src="/images/validation.png"
           alt="Validation icon"
           className={widthStringifiedReduced}
           draggable={false}

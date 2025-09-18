@@ -54,7 +54,7 @@ export class EmailService {
       const html = await this.renderTemplate(template, language, context);
 
       await this.transporter.sendMail({
-        from: `"Memorize" <${process.env.EMAIL_USER}>`,
+        from: `"Snapcard" <${process.env.EMAIL_USER}>`,
         to,
         subject,
         html

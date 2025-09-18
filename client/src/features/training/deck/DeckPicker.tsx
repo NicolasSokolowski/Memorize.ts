@@ -19,14 +19,14 @@ function DeckPicker({ deck }: DeckProps) {
   const { t } = useTranslation("training");
 
   return (
-    <div className="flex size-60 animate-pop flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/deck.png')] bg-cover pt-3 shadow-custom-light">
+    <div className="flex size-60 animate-pop flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/images/deck.png')] bg-cover pt-3 shadow-custom-light">
       <h3 className="w-full break-words text-center font-patua text-xl text-textPrimary">
         {deck.name}
       </h3>
       <div className="flex h-16 w-full items-center justify-center">
         {cards.length > 0 ? (
           <img
-            src="/training.png"
+            src="/images/training.png"
             alt="Training icon"
             className="w-16"
             draggable={false}

@@ -42,7 +42,7 @@ function DeckDetails({ deck }: DeckProps) {
       <div className="flip-box-inner">
         <div className="flip-box-a">
           <div
-            className="flex size-full flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/deck.png')] bg-cover pt-3 shadow-custom-light"
+            className="flex size-full flex-col items-center justify-between rounded-md bg-tertiary bg-[url('/images/deck.png')] bg-cover pt-3 shadow-custom-light"
             onClick={() => navigate(`/user/decks/${deck.id}/cards`)}
           >
             <div className="flex h-[15%] w-full">
@@ -59,7 +59,7 @@ function DeckDetails({ deck }: DeckProps) {
                 }}
               >
                 <img
-                  src="/modification.png"
+                  src="/images/modification.png"
                   alt="Modification icon"
                   className="w-16"
                   draggable={false}
@@ -73,7 +73,7 @@ function DeckDetails({ deck }: DeckProps) {
                 }}
               >
                 <img
-                  src="/deletion.png"
+                  src="/images/deletion.png"
                   alt="Deletion icon"
                   className="w-16"
                   draggable={false}
