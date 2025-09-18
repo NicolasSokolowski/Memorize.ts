@@ -19,7 +19,7 @@ function Footer() {
         <p>CGU</p>
         <p>About us</p>
         <p>Contact</p>
-        <p>© 2025 Memorize</p>
+        <p>© 2025 Snapcard</p>
       </div>
     </footer>
   );

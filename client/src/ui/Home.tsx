@@ -23,12 +23,12 @@ function Home() {
         <div className="mt-5 flex justify-center sm:gap-6">
           <img
             src="/card.png"
-            alt="Memorize Logo"
+            alt="Snapcard Logo"
             className="h-36 object-contain sm:h-44 lg:h-56 xl:h-64"
             draggable={false}
           />
           <h1 className="flex items-center font-patua text-5xl text-tertiary sm:text-6xl lg:text-8xl xl:text-9xl">
-            Just flip it !
+            Snapcard
           </h1>
         </div>
         <div className="relative flex w-full flex-col justify-start">
