@@ -17,8 +17,17 @@ i18next
       order: ["localStorage", "cookie", "navigator"],
       caches: ["localStorage"]
     },
+    supportedLngs: ["en", "fr"],
     interpolation: {
       escapeValue: false
+    }
+  })
+  .then(() => {
+    const lang = i18next.language;
+    const supported = i18next.options.supportedLngs;
+
+    if (supported && Array.isArray(supported) && !supported.includes(lang)) {
+      i18next.changeLanguage("en");
     }
   });
 
