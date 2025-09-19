@@ -36,8 +36,6 @@ services:
     command: npm run dev
     restart: always
     env_file: ./client/.env
-    volumes:
-      - ./client/src:/app/src
 
   gateway:
     image: nginx
