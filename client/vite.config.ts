@@ -8,6 +8,7 @@ export default defineConfig({
     watch: {
       usePolling: false
     },
-    host: true
+    host: true,
+    allowedHosts: ["playsnapcard.com"]
   }
 });
