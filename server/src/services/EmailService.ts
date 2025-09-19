@@ -21,11 +21,7 @@ export class EmailService {
     auth: {
       user: SMTP_USER,
       pass: SMTP_PASSWORD
-    },
-    tls:
-      process.env.NODE_ENV === "development"
-        ? { rejectUnauthorized: false }
-        : undefined
+    }
   });
 
   private static async renderTemplate(
