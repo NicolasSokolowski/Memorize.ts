@@ -50,11 +50,5 @@ services:
     depends_on:
       - server
 
-  bridge:
-    image: alpine
-    container_name: bridge
-    ports:
-      - 1025:1025
-
 volumes:
   pg_data:
