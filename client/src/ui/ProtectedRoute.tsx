@@ -6,15 +6,20 @@ interface ProtectedRouteProps {
 }
 
 function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
-  const { isAuthenticated, user } = useAppSelector((state) => state.user);
+  const { user, isAuthenticated, _persist } = useAppSelector(
+    (state) => state.user
+  );
+
+  if (!_persist?.rehydrated || user === null) {
+    return <Navigate to="/" replace />;
+  }
 
   if (!isAuthenticated || !user) {
     return <Navigate to="/" replace />;
   }
-
   const roleId = user.role_id;
   if (!roleId || (allowedRoles && !allowedRoles.includes(roleId))) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/user/decks" replace />;
   }
 
   return <Outlet />;
