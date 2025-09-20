@@ -1,10 +1,25 @@
 import { useOutletContext } from "react-router-dom";
 import { Card } from "../../store/card/cardSlice";
 import CardDetails from "./CardDetails";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useEffect } from "react";
+import { getDecks } from "../../store/deck/deckThunk";
+import { getAllCardsByUserEmail } from "../../store/card/cardThunks";
 
 function AllCardsList() {
   const cards = useAppSelector((state) => state.card.cards);
+  const dispatch = useAppDispatch();
+
+  const hasBeenFetchedOnce = useAppSelector(
+    (state) => state.deck.hasBeenFetchedOnce
+  );
+
+  useEffect(() => {
+    if (!hasBeenFetchedOnce) {
+      dispatch(getDecks());
+      dispatch(getAllCardsByUserEmail());
+    }
+  }, [dispatch, hasBeenFetchedOnce]);
 
   const filteredItems = useOutletContext<Card[]>() || cards;
 
