@@ -14,6 +14,7 @@ import {
   updateUserInfos,
   verifyCodeValidity
 } from "./userThunk";
+import { REHYDRATE } from "redux-persist";
 
 export interface User {
   email: string;
@@ -30,14 +31,21 @@ interface UserState {
   isLoading: boolean;
   hasAccount?: boolean;
   isAuthenticated: boolean;
+  lastPath?: string;
 }
 
 const initialState: UserState = {
   user: null,
   isLoading: true,
   hasAccount: false,
-  isAuthenticated: false
+  isAuthenticated: false,
+  lastPath: undefined
 };
+
+interface RehydrateAction<T> {
+  type: string;
+  payload?: T;
+}
 
 const userSlice = createSlice({
   name: "user",
@@ -48,6 +56,9 @@ const userSlice = createSlice({
     },
     setUserNull: (state) => {
       state.user = null;
+    },
+    setLastPath(state, action) {
+      state.lastPath = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -77,6 +88,11 @@ const userSlice = createSlice({
         if ("email" in action.payload) {
           // EMAIL_CHANGE
           state.user!.email = action.payload.email;
+        }
+      })
+      .addCase(REHYDRATE, (state, action: RehydrateAction<UserState>) => {
+        if (action.payload?.user) {
+          state.isAuthenticated = true;
         }
       })
       .addMatcher(
@@ -127,6 +143,6 @@ const userSlice = createSlice({
   }
 });
 
-export const { setHasAccount, setUserNull } = userSlice.actions;
+export const { setHasAccount, setUserNull, setLastPath } = userSlice.actions;
 
 export default userSlice.reducer;
