@@ -9,11 +9,12 @@ import DeckSelection from "./features/training/deck/DeckSelection";
 import DeckTraining from "./features/training/DeckTraining";
 import UserProfile from "./features/user/UserProfile";
 import ProtectedRoute from "./ui/ProtectedRoute";
-import AppInit from "./AppInit";
 import SearchBarLayout from "./ui/SearchBarLayout";
 import AllCardsList from "./features/card/AllCardsList";
 import "./i18n";
 import { Suspense } from "react";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor } from "./store/store";
 
 const router = createBrowserRouter([
   {
@@ -81,9 +82,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <Suspense fallback="loading">
-      <AppInit>
+      <PersistGate loading={null} persistor={persistor}>
         <RouterProvider router={router} />
-      </AppInit>
+      </PersistGate>
     </Suspense>
   );
 }
