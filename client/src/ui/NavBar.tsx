@@ -22,7 +22,13 @@ function NavBar() {
         </div>
         <div className="flex items-center justify-center">
           <div className="flex items-center justify-center rounded-full bg-primary shadow-inner-strong sm:size-40 lg:size-48">
-            <div className="rounded-full bg-white shadow-inner-strong sm:size-32 lg:size-40"></div>
+            <div className="overflow-hidden rounded-full shadow-inner-strong sm:size-32 lg:size-40">
+              <img
+                src="/images/panda.png"
+                alt="Panda avatar"
+                className="hidden size-full object-contain sm:block"
+              />
+            </div>
           </div>
         </div>
       </div>

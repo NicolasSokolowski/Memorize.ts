@@ -44,7 +44,13 @@ function UserProfile() {
     <div className="scrollbar-hide min-h-full overflow-y-auto">
       <div className="mb-4 mt-20 flex h-100 flex-col items-center gap-8 sm:mt-4 md:justify-start  lg:ml-20 lg:h-80 lg:flex-row lg:gap-12">
         <div className="flex size-64 animate-pop items-center justify-center rounded-full bg-tertiary shadow-custom-light transition-all duration-300">
-          <div className="size-52 rounded-full bg-white shadow-inner-strong" />
+          <div className="size-52 overflow-hidden rounded-full border-8 border-primary">
+            <img
+              src="/images/panda.png"
+              alt="Panda avatar"
+              className="size-full object-contain"
+            />
+          </div>
         </div>
         <div className="h-24 font-patua text-xl sm:text-2xl">
           <div className="flex h-12 items-center justify-center sm:flex-none lg:justify-start">
