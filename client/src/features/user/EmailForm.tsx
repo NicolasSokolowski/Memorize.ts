@@ -58,7 +58,7 @@ function EmailForm({ onCancel }: onCancelProp) {
 
     try {
       const response = await dispatch(
-        checkIfEmailIsAvailable({ newEmail: user.newEmail })
+        checkIfEmailIsAvailable({ newEmail: user.newEmail.toLowerCase() })
       ).unwrap();
       if (response) {
         setIsNewEmailAvailable(true);
@@ -136,7 +136,7 @@ function EmailForm({ onCancel }: onCancelProp) {
                   setIsCodeValid={setIsCodeValid}
                   requestType="EMAIL_CHANGE"
                   data={{
-                    newEmail: user.newEmail,
+                    newEmail: user.newEmail.toLowerCase(),
                     subject: t("emailModification"),
                     object: t("email").toLowerCase()
                   }}
