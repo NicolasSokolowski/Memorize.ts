@@ -18,11 +18,19 @@ function NavBar() {
     <div className="absolute top-0 z-10 flex h-16 w-full justify-center bg-tertiary shadow-inner-strong sm:static sm:size-full sm:flex-col sm:justify-between sm:shadow-none">
       <div className="flex flex-col justify-between">
         <div className="hidden w-full justify-end p-2 sm:flex">
-          <button className="mr-4 text-xl text-secondary">&larr;</button>
+          <button className="mr-4 h-6 text-xl text-secondary">
+            <span className="hidden">&larr;</span>
+          </button>
         </div>
         <div className="flex items-center justify-center">
           <div className="flex items-center justify-center rounded-full bg-primary shadow-inner-strong sm:size-40 lg:size-48">
-            <div className="rounded-full bg-white shadow-inner-strong sm:size-32 lg:size-40"></div>
+            <div className="overflow-hidden rounded-full shadow-inner-strong sm:size-32 lg:size-40">
+              <img
+                src="/images/panda.png"
+                alt="Panda avatar"
+                className="hidden size-full object-contain sm:block"
+              />
+            </div>
           </div>
         </div>
       </div>
