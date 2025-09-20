@@ -1,8 +1,11 @@
 import DeckPicker from "./DeckPicker";
 import { Link, useLocation, useOutletContext } from "react-router-dom";
 import { Deck } from "../../../store/deck/deckSlice";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { sortDecks } from "../../../helpers/sortDecks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { getDecks } from "../../../store/deck/deckThunk";
+import { getAllCardsByUserEmail } from "../../../store/card/cardThunks";
 
 interface LocationState {
   decks: Deck[];
@@ -15,6 +18,18 @@ function DeckSelection() {
 
   const filteredItems = useOutletContext<Deck[]>() || decks;
   const sortedDecks = sortDecks(filteredItems);
+  const dispatch = useAppDispatch();
+
+  const hasBeenFetchedOnce = useAppSelector(
+    (state) => state.deck.hasBeenFetchedOnce
+  );
+
+  useEffect(() => {
+    if (!hasBeenFetchedOnce) {
+      dispatch(getDecks());
+      dispatch(getAllCardsByUserEmail());
+    }
+  }, [dispatch, hasBeenFetchedOnce]);
 
   return (
     <div className="scrollbar-hide mt-14 overflow-y-auto bg-primary p-8 sm:mt-0">
