@@ -43,7 +43,12 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-      await dispatch(login(userInfo)).unwrap();
+      await dispatch(
+        login({
+          email: userInfo.email.toLowerCase(),
+          password: userInfo.password
+        })
+      ).unwrap();
 
       setUserInfo(initialState);
     } catch (err: unknown) {

@@ -30,8 +30,8 @@ function SignupForm() {
       await axiosInstance.post(
         "/users",
         {
-          username: userInfo.username,
-          email: userInfo.email,
+          username: userInfo.username.toLowerCase(),
+          email: userInfo.email.toLowerCase(),
           password: userInfo.password,
           subject: t("auth:accountCreation")
         },
